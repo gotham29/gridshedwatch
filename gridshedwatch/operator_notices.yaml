@@ -1,0 +1,124 @@
+# GridShedWatch v1.0: operator notices in the week before each event (the status quo row).
+# Times are UTC. approx: true = only the day (or part of day) is published; the marker is
+# placed at local noon (or the stated part of day) and drawn hollow. Prose and sources:
+# htm-monitor docs/operator_comparison.md. Times here are checked against those sources by hand.
+# by: operator (the grid's own public notice), internal (known later from testimony, not
+# announced), external (NERC/regional bodies). public: true = aimed at customers/the public.
+events:
+  tx:
+    title: Winter Storm Uri
+    grid: Texas (ERCOT)
+    when: February 2021
+    tagline: Rotating outages, up to 20,000 MW of load shed; more than 4.5 million customers lost power
+    onset_label: ERCOT declares EEA 3, rotating outages begin
+    onset_source: {title: "ERCOT, Review of February 2021 Extreme Cold Weather Event (Feb 24, 2021)", url: "https://www.ercot.com/files/docs/2021/02/24/2.2_REVISED_ERCOT_Presentation.pdf"}
+    notices:
+      - {utc: "2021-02-09 00:53", label: "Operating Condition Notice: extreme cold approaching", by: operator}
+      - {utc: "2021-02-10 18:00", label: "Advisory: extreme cold weather event", by: operator, approx: true}
+      - {utc: "2021-02-11 18:00", label: "Watch: cold weather event", by: operator, approx: true}
+      - {utc: "2021-02-13 18:00", label: "Emergency Notice: extreme cold weather event", by: operator, approx: true}
+      - {utc: "2021-02-14 14:30", label: "Conservation alert and media appeal", by: operator, public: true}
+      - {utc: "2021-02-15 06:15", label: "EEA 1", by: operator}
+      - {utc: "2021-02-15 07:07", label: "EEA 2", by: operator}
+    sources:
+      - {title: "ERCOT, Review of February 2021 Extreme Cold Weather Event (Texas Legislature, Feb 25 2021)", url: "https://www.ercot.com/files/docs/2021/03/03/Texas_Legislature_Hearings_2-25-2021.pdf"}
+      - {title: "UT Austin Energy Institute, The Timeline and Events of the February 2021 Texas Electric Grid Blackouts", url: "https://energy.utexas.edu/sites/default/files/UTAustin%20(2021)%20EventsFebruary2021TexasBlackout%2020210714.pdf"}
+  ca:
+    title: August 2020 heat wave
+    grid: California (CAISO)
+    when: August 2020
+    tagline: First rotating outages in California since 2001, about 800,000 customers
+    onset_label: CAISO declares Stage 3 Emergency
+    onset_source: {title: "CAISO, CPUC, CEC, Preliminary Root Cause Analysis: Mid-August 2020 Heat Storm", url: "https://www.caiso.com/documents/preliminary-root-cause-analysis-rotating-outages-august-2020.pdf"}
+    notices:
+      - {utc: "2020-08-12 19:00", label: "Restricted Maintenance Operations notice for Aug 14-17", by: operator, approx: true}
+      - {utc: "2020-08-13 22:00", label: "Grid-wide Alert: possible reserve deficiency Aug 14, 5-9 p.m.", by: operator}
+      - {utc: "2020-08-13 22:43", label: "Statewide Flex Alert for Aug 14, 3-10 p.m.; conserving can prevent rotating outages", by: operator, public: true, approx: true}
+      - {utc: "2020-08-14 18:51", label: "Warning re-issued for 5-9 p.m.", by: operator}
+      - {utc: "2020-08-14 22:25", label: "Stage 2 Emergency", by: operator}
+    sources:
+      - {title: "CAISO, CPUC, CEC, Final Root Cause Analysis: Mid-August 2020 Extreme Heat Wave (Jan 2021)", url: "https://www.caiso.com/Documents/Final-Root-Cause-Analysis-Mid-August-2020-Extreme-Heat-Wave.pdf"}
+      - {title: "Canyon Lake Insider, ISO issues statewide Flex Alert for August 14 (Aug 13 2020; time is the article's)", url: "https://canyonlakeinsider.com/iso-issues-statewide-flex-alert-for-august-14/"}
+  tva:
+    title: Winter Storm Elliott
+    grid: Tennessee Valley (TVA)
+    when: December 2022
+    tagline: First system-wide rolling blackouts in TVA's 90-year history, up to 3,000 MW
+    onset_label: TVA declares EEA 3
+    onset_source: {title: "FERC, NERC and Regional Entities, Inquiry into Winter Storm Elliott (Oct 2023)", url: "https://www.ferc.gov/sites/default/files/2024-02/24_Winter-Storm_Elliot_0207_UPDATE.pdf"}
+    notices:
+      - {utc: "2022-12-15 17:00", label: "NERC begins tracking the storm", by: external, approx: true}
+      - {utc: "2022-12-16 17:00", label: "SERC situational-awareness outreach to reliability coordinators", by: external, approx: true}
+      - {utc: "2022-12-21 17:00", label: "Southeast entities activate advisories, alerts, conservative operations (Dec 19-22)", by: external, approx: true}
+      - {utc: "2022-12-23 13:00", label: "TVA asks the public to reduce use; rolling blackouts under way", by: operator, public: true, approx: true}
+    sources:
+      - {title: "NERC Board technical session, Feb 15 2023", url: "https://nerc.com/gov/bot/QuarterlyTechnicalSessions/Presentations_Tech_Session_February_15_2023.pdf"}
+      - {title: "APPA, Report examines TVA's response to Winter Storm Elliott", url: "https://publicpower.org/periodical/article/report-examines-tvas-response-winter-storm-elliott"}
+      - {title: "WSMV, Rolling blackouts across Tennessee (Dec 23 2022)", url: "https://www.wsmv.com/2022/12/23/rolling-blackouts-take-place-across-tennessee/"}
+  spp:
+    title: Winter Storm Uri
+    grid: Southwest Power Pool (SPP)
+    when: February 2021
+    tagline: Load shed across the SPP footprint, up to 2,718 MW
+    onset_label: SPP declares EEA 3
+    onset_source: {title: "U.S. House Energy & Commerce hearing materials, Feb 18 2021", url: "https://docs.house.gov/meetings/IF/IF03/20210218/111210/HHRG-117-IF03-20210218-SD017.pdf"}
+    notices:
+      - {utc: "2021-02-09 06:00", label: "Conservative operations declared", by: operator}
+      - {utc: "2021-02-15 11:00", label: "EEA 1", by: operator}
+      - {utc: "2021-02-15 13:22", label: "EEA 2; members issue conservation appeals", by: operator, public: true}
+    sources:
+      - {title: "U.S. House Energy & Commerce hearing materials, Feb 18 2021", url: "https://docs.house.gov/meetings/IF/IF03/20210218/111210/HHRG-117-IF03-20210218-SD017.pdf"}
+  miso:
+    title: Winter Storm Uri
+    grid: MISO (MISO South)
+    when: February 2021
+    tagline: 700 MW emergency load reduction across MISO South for capacity shortage
+    onset_label: MISO declares Max Gen Event Step 5 (EEA 3) for MISO South
+    onset_source: {title: "MISO, The February 2021 Arctic Event", url: "https://cdn.misoenergy.org/2021%20Arctic%20Event%20Report554429.pdf"}
+    notices:
+      - {utc: "2021-02-15 10:40", label: "Local transmission emergency, East Texas shed (transmission, not a target)", by: operator}
+      - {utc: "2021-02-15 23:00", label: "Max Gen Event Step 2c (EEA 2), South", by: operator}
+      - {utc: "2021-02-16 01:09", label: "At MISO's request, Entergy and Cleco ask Louisiana customers to conserve; outages possible", by: operator, public: true, approx: true}
+      - {utc: "2021-02-16 23:35", label: "Max Gen Event Step 2c (EEA 2) again", by: operator}
+    sources:
+      - {title: "MISO, The February 2021 Arctic Event", url: "https://cdn.misoenergy.org/2021%20Arctic%20Event%20Report554429.pdf"}
+      - {title: "DOE CESER, Extreme Cold & Winter Weather situation update 2", url: "https://www.energy.gov/ceser/articles/extreme-cold-winter-weather-hub-situation-update-2"}
+      - {title: "WAFB, Entergy, Cleco customers asked to conserve electricity (Feb 15 2021, updated 7:09 p.m. CST)", url: "https://www.wafb.com/2021/02/15/entergy-customers-asked-conserve-electricity/"}
+  duk:
+    title: Winter Storm Elliott
+    grid: Duke Energy Carolinas
+    when: December 2022
+    tagline: Rolling blackouts on Christmas Eve, up to 1,000 MW, with no advance customer warning
+    onset_label: Duke Energy Carolinas begins load shed
+    onset_source: {title: "NC Newsline, Duke Energy officials to state regulators (Jan 4 2023)", url: "https://ncnewsline.com/2023/01/04/several-crises-malfunctions-at-duke-energy-led-to-rolling-blackouts-on-christmas-eve-utility-officials-tell-state-regulators/"}
+    notices:
+      - {utc: "2022-12-23 23:00", label: "Load diverging from Duke's forecast model", by: internal, approx: true}
+      - {utc: "2022-12-24 03:00", label: "Duke still estimates 900-1,100 MW of reserve per territory", by: internal}
+    sources:
+      - {title: "NC Newsline, Duke Energy officials to state regulators (Jan 4 2023)", url: "https://ncnewsline.com/2023/01/04/several-crises-malfunctions-at-duke-energy-led-to-rolling-blackouts-on-christmas-eve-utility-officials-tell-state-regulators/"}
+  cple:
+    title: Winter Storm Elliott
+    grid: Duke Energy Progress
+    when: December 2022
+    tagline: Rolling blackouts on Christmas Eve, about 960 MW in total, with no advance customer warning
+    onset_label: Duke Energy Progress requests load shed
+    onset_source: {title: "NC Newsline, Duke Energy officials to state regulators (Jan 4 2023)", url: "https://ncnewsline.com/2023/01/04/several-crises-malfunctions-at-duke-energy-led-to-rolling-blackouts-on-christmas-eve-utility-officials-tell-state-regulators/"}
+    notices:
+      - {utc: "2022-12-23 23:00", label: "Load diverging from Duke's forecast model", by: internal, approx: true}
+      - {utc: "2022-12-24 03:00", label: "Duke still estimates 900-1,100 MW of reserve per territory", by: internal}
+      - {utc: "2022-12-24 13:00", label: "Rolling blackouts begin in Duke Energy Progress territory", by: operator}
+    sources:
+      - {title: "NC Newsline, Duke Energy officials to state regulators (Jan 4 2023)", url: "https://ncnewsline.com/2023/01/04/several-crises-malfunctions-at-duke-energy-led-to-rolling-blackouts-on-christmas-eve-utility-officials-tell-state-regulators/"}
+  lgee:
+    title: Winter Storm Elliott
+    grid: LG&E and KU (Kentucky)
+    when: December 2022
+    tagline: Rotating service interruptions, over 300 MW
+    onset_label: LG&E-KU declares EEA 3
+    onset_source: {title: "LG&E-KU responses to Kentucky PSC, case 2023-00422", url: "https://psc.ky.gov/pscecf/2023-00422/rick.lovekamp@lge-ku.com/07082024011428/02-PSC_DRPH_LGE_KU_Responses.pdf"}
+    notices:
+      - {utc: "2022-12-23 22:59", label: "Rotating service interruptions begin (to 03:11 UTC)", by: operator}
+      - {utc: "2022-12-24 01:00", label: "Press release asks customers to conserve", by: operator, public: true, approx: true}
+    sources:
+      - {title: "LG&E-KU responses to Kentucky PSC, case 2023-00422", url: "https://psc.ky.gov/pscecf/2023-00422/rick.lovekamp@lge-ku.com/07082024011428/02-PSC_DRPH_LGE_KU_Responses.pdf"}
+      - {title: "LG&E-KU press release, Dec 23 2022", url: "https://lge-ku.com/newsroom/press-releases/2022/12/23/lge-and-ku-performing-service-interruptions-need-customers-help"}

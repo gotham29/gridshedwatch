@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+reference_scores/
+reference_scores_v1.0.zip
+my_scores/
+results/scratch/
+.venv/

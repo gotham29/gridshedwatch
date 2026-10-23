@@ -1,0 +1,17 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e ".[test]"
+      - name: fetch reference scores (skipped if the release is not published yet)
+        run: python scripts/fetch_reference.py || echo "reference scores unavailable; those tests will skip"
+      - run: python -m pytest -q

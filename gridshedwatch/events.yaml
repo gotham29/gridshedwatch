@@ -1,0 +1,105 @@
+# GridShedWatch v1.0 events: every operator-initiated firm load shed caused by insufficient
+# supply in North America, Jan 2020 - Sep 2026, of at least 250 MW at its worst, in a balancing
+# authority that reports D, DF and NG to EIA-930. Source list: NERC State of Reliability reports.
+# Selection rule, exclusions and onset fallback: docs/events.md. Times: onset_utc is what scoring uses.
+# split: the three development events were used to design the shared alert rules; the five
+# held-out events were scored once after the rules were frozen.
+version: '1.0'
+events:
+  tx:
+    grid: Texas (ERCOT)
+    eia930_respondent: ERCO
+    local_tz: America/Chicago
+    storm: Uri
+    event: uri_feb2021
+    onset_local: 2021-02-15 01:20
+    onset_utc: 2021-02-15 07:20
+    onset_basis: EEA 3 declared, rotating outages
+    max_shed_mw: 20000
+    source: ERCOT; FERC-NERC Uri report
+    split: development
+  ca:
+    grid: California (CAISO)
+    eia930_respondent: CISO
+    local_tz: America/Los_Angeles
+    storm: Aug 2020 heat wave
+    event: heatwave_aug2020
+    onset_local: 2020-08-14 18:38
+    onset_utc: 2020-08-15 01:38
+    onset_basis: Stage 3 Emergency declared
+    max_shed_mw: 1000
+    source: CAISO Final Root Cause Analysis, Mid-August 2020
+    split: development
+  tva:
+    grid: Tennessee Valley Authority
+    eia930_respondent: TVA
+    local_tz: America/New_York
+    storm: Elliott
+    event: elliott_dec2022
+    onset_local: 2022-12-23 06:12
+    onset_utc: 2022-12-23 11:12
+    onset_basis: EEA 3 declared (source gives Eastern time)
+    max_shed_mw: 3000
+    source: FERC-NERC Elliott inquiry, p. 10 fn. 26
+    split: development
+  spp:
+    grid: Southwest Power Pool
+    eia930_respondent: SWPP
+    local_tz: America/Chicago
+    storm: Uri
+    event: uri_feb2021
+    onset_local: 2021-02-15 10:08
+    onset_utc: 2021-02-15 16:08
+    onset_basis: EEA 3 declared
+    max_shed_mw: 2718
+    source: SPP; FERC-NERC Uri report
+    split: held-out
+  miso:
+    grid: MISO (MISO South)
+    eia930_respondent: MISO
+    local_tz: America/New_York
+    storm: Uri
+    event: uri_feb2021
+    onset_local: 2021-02-16 19:40
+    onset_utc: 2021-02-17 00:40
+    onset_basis: Max Gen Event Step 5 (EEA 3) declared for MISO South; 700 MW load reduction for capacity shortage (Feb 15-16
+      transmission-emergency sheds excluded by rule)
+    max_shed_mw: 700
+    source: MISO, The February 2021 Arctic Event (report times in EST)
+    split: held-out
+  duk:
+    grid: Duke Energy Carolinas
+    eia930_respondent: DUK
+    local_tz: America/New_York
+    storm: Elliott
+    event: elliott_dec2022
+    onset_local: 2022-12-24 06:14
+    onset_utc: 2022-12-24 11:14
+    onset_basis: 'Fallback: first load-shed directive (EEA 3 time not published)'
+    max_shed_mw: 1000
+    source: Duke Energy timeline
+    split: held-out
+  cple:
+    grid: Duke Energy Progress
+    eia930_respondent: CPLE
+    local_tz: America/New_York
+    storm: Elliott
+    event: elliott_dec2022
+    onset_local: 2022-12-24 06:25
+    onset_utc: 2022-12-24 11:25
+    onset_basis: 'Fallback: first load-shed request (EEA 3 time not published)'
+    max_shed_mw: 961
+    source: Duke Energy timeline; SC ORS report
+    split: held-out
+  lgee:
+    grid: LG&E and KU (Kentucky)
+    eia930_respondent: LGEE
+    local_tz: America/New_York
+    storm: Elliott
+    event: elliott_dec2022
+    onset_local: 2022-12-23 13:36
+    onset_utc: 2022-12-23 18:36
+    onset_basis: EEA 3 declared
+    max_shed_mw: 300
+    source: LG&E-KU responses to KY PSC
+    split: held-out

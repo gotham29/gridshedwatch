@@ -1,0 +1,98 @@
+{
+ "tx": {
+  "steps": 59040,
+  "first": "2020-01-01 00:00:00",
+  "last": "2026-10-01 00:00:00",
+  "sums": {
+   "forecast_error": -15323469.0,
+   "imbalance": 5416566.0,
+   "demand_anom": 24116718.5,
+   "net_generation_anom": 23733377.0,
+   "imbalance_anom": 276853.5
+  }
+ },
+ "ca": {
+  "steps": 59027,
+  "first": "2020-01-01 00:00:00",
+  "last": "2026-10-01 00:00:00",
+  "sums": {
+   "forecast_error": 48668423.0,
+   "imbalance": 348593006.0,
+   "demand_anom": 7303895.5,
+   "net_generation_anom": 4992001.0,
+   "imbalance_anom": -230407.5
+  }
+ },
+ "tva": {
+  "steps": 58799,
+  "first": "2020-01-01 00:00:00",
+  "last": "2026-10-01 00:00:00",
+  "sums": {
+   "forecast_error": -8079618.0,
+   "imbalance": 35475427.0,
+   "demand_anom": 9716434.5,
+   "net_generation_anom": 5869730.5,
+   "imbalance_anom": 3351970.5
+  }
+ },
+ "spp": {
+  "steps": 58510,
+  "first": "2020-01-01 00:00:00",
+  "last": "2026-10-01 00:00:00",
+  "sums": {
+   "forecast_error": -67891223.0,
+   "imbalance": -19303725.0,
+   "demand_anom": 12067516.0,
+   "net_generation_anom": 9729924.0,
+   "imbalance_anom": 313732.5
+  }
+ },
+ "miso": {
+  "steps": 58964,
+  "first": "2020-01-01 00:00:00",
+  "last": "2026-10-01 00:00:00",
+  "sums": {
+   "forecast_error": -102847725.0,
+   "imbalance": 127343531.0,
+   "demand_anom": 18675625.5,
+   "net_generation_anom": 18622657.5,
+   "imbalance_anom": -591042.5
+  }
+ },
+ "duk": {
+  "steps": 59110,
+  "first": "2020-01-01 00:00:00",
+  "last": "2026-10-01 00:00:00",
+  "sums": {
+   "forecast_error": -2961598.0,
+   "imbalance": -18235101.0,
+   "demand_anom": 4471057.5,
+   "net_generation_anom": 2995767.0,
+   "imbalance_anom": 349129.5
+  }
+ },
+ "cple": {
+  "steps": 58632,
+  "first": "2020-01-01 00:00:00",
+  "last": "2026-10-01 00:00:00",
+  "sums": {
+   "forecast_error": -5635409.0,
+   "imbalance": -8516080.0,
+   "demand_anom": 3138014.0,
+   "net_generation_anom": 636049.0,
+   "imbalance_anom": 481502.5
+  }
+ },
+ "lgee": {
+  "steps": 58809,
+  "first": "2020-01-01 06:00:00",
+  "last": "2026-10-01 00:00:00",
+  "sums": {
+   "forecast_error": 13944448.0,
+   "imbalance": 21186516.0,
+   "demand_anom": 1784866.5,
+   "net_generation_anom": 1904791.0,
+   "imbalance_anom": -246906.0
+  }
+ }
+}

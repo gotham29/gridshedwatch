@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gridshedwatch"
+version = "1.0.0"
+description = "A benchmark for early warning of grid load sheds, scored the way forecasters score weather warnings"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Sam Heiserman"}]
+requires-python = ">=3.9"
+dependencies = ["numpy>=1.22", "pandas>=1.5", "pyyaml>=6"]
+
+[project.optional-dependencies]
+lstm = ["torch>=2.0"]
+chronos = ["torch>=2.0", "chronos-forecasting>=1.4"]
+test = ["pytest>=7"]
+
+[project.scripts]
+gridshedwatch = "gridshedwatch.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/gotham29/gridshedwatch"
+
+[tool.setuptools]
+packages = ["gridshedwatch", "gridshedwatch.baselines"]
+
+[tool.setuptools.package-data]
+gridshedwatch = ["events.yaml", "operator_notices.yaml"]
+
+[tool.pytest.ini_options]
+markers = ["slow: rebuilds reference methods from the data (about a minute each)"]
+testpaths = ["tests"]

@@ -2,7 +2,7 @@
 """Re-pull EIA-930 D, DF and NG for the eight v1.0 grids and compare with the frozen snapshot.
 
 EIA revises old values, so differences are expected over time; v1.0 is defined by the snapshot
-in data/v1.0/eia930/. This script reports how much today's API differs, and with --write saves a
+in gridshedwatch/snapshot_v1.0/eia930/. This script reports how much today's API differs, and with --write saves a
 fresh pull to a separate folder for a future version. Needs a free key from
 https://www.eia.gov/opendata/ in the EIA_API_KEY environment variable.
 

@@ -5,7 +5,7 @@ import pandas as pd
 
 PACKAGE = Path(__file__).resolve().parent
 ROOT = PACKAGE.parent
-DATA = ROOT / "data" / "v1.0"
+DATA = PACKAGE / "snapshot_v1.0"     # frozen EIA-930 snapshot, shipped inside the package
 
 VERSION = "1.0"
 

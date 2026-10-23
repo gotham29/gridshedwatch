@@ -1,6 +1,6 @@
 """Events, the frozen EIA-930 snapshot, and the five signals built from it.
 
-The snapshot (data/v1.0/eia930/<BA>.csv.gz) holds hourly D (demand), DF (day-ahead demand
+The snapshot (gridshedwatch/snapshot_v1.0/eia930/<BA>.csv.gz) holds hourly D (demand), DF (day-ahead demand
 forecast) and NG (net generation) from EIA-930, UTC, Jan 2019 - Oct 2026, as pulled in Oct 2026.
 EIA revises old values, so the snapshot, not today's API, defines v1.0. scripts/pull_eia930.py
 re-pulls it and reports any differences.

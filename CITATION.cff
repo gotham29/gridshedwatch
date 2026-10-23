@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use GridShedWatch, please cite it as below."
 title: "GridShedWatch: a benchmark for early warning of grid load sheds"
-version: 1.0.0
+version: 1.0.1
 date-released: 2026-10-23
 authors:
   - family-names: Heiserman

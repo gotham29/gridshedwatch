@@ -19,7 +19,7 @@ were false alarms. GridShedWatch asks the same of grid warnings, at two levels: 
 | | |
 |---|---|
 | **Events** | 8 supply-shortfall load sheds of at least 250 MW, Jan 2020 to Sep 2026, chosen by a stated rule from NERC's annual lists ([docs/events.md](docs/events.md)) |
-| **Data** | A frozen snapshot of EIA-930 hourly demand, day-ahead forecast and net generation for the 8 grids, 2019-2026, and the five signals built from it ([gridshedwatch/data.py](gridshedwatch/data.py)) |
+| **Data** | A frozen snapshot of EIA-930 hourly demand, day-ahead forecast and net generation for the 8 grids, 2019-2026, and the five signals built from it ([gridshedwatch/snapshot_v1.0/](gridshedwatch/snapshot_v1.0/), [gridshedwatch/data.py](gridshedwatch/data.py)) |
 | **Rules** | One shared rule that turns per-signal scores into watches and warnings, so methods differ only in how they score each hour ([gridshedwatch/rules.py](gridshedwatch/rules.py)) |
 | **Scoring** | Same alert budget for every method, chosen without looking at the events; events caught, lead time and false alarm ratio, with bootstrap intervals and a chance baseline ([docs/scoring.md](docs/scoring.md)) |
 | **Status quo** | Every operator notice in the week before each event, with times and sources ([gridshedwatch/operator_notices.yaml](gridshedwatch/operator_notices.yaml)) |

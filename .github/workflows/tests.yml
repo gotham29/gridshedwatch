@@ -15,3 +15,18 @@ jobs:
       - name: fetch reference scores (skipped if the release is not published yet)
         run: python scripts/fetch_reference.py || echo "reference scores unavailable; those tests will skip"
       - run: python -m pytest -q
+  installed:
+    # A regular (non-editable) install must work on its own, outside the repo.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install .
+      - name: run from outside the repo
+        run: |
+          cd "$RUNNER_TEMP"
+          gridshedwatch info
+          gridshedwatch score --oprule --no-chance
+          python -c "from gridshedwatch import data; assert len(data.signals('tx')) == 59040"

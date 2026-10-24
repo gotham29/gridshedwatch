@@ -14,7 +14,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from gridshedwatch import benchmark, data, submission  # noqa: E402
+from gridshedwatch import alerts, benchmark, data, submission  # noqa: E402
 from gridshedwatch.baselines import oprule, zscore  # noqa: E402
 
 LABEL = {"oprule": "Operator-style rule", "zscore": "Seasonal z-score", "chronos": "Chronos-Bolt (zero-shot)",
@@ -40,6 +40,7 @@ def main():
             fn, seeds = benchmark.from_scores(sc), sorted(sc)
         r = benchmark.evaluate(LABEL[m], fn, seeds, chance=not a.no_chance)
         r.rows.drop(columns=["starts"]).to_csv(a.out / f"{m}_events.csv", index=False)
+        alerts.write(alerts.from_rows(r.rows), a.out / "alerts" / f"{m}.csv")
         rows.append(r.summary)
         print(json.dumps(r.summary), flush=True)
     S = pd.DataFrame([{k: v for k, v in x.items() if k != "by_grid"} for x in rows])

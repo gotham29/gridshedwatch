@@ -3,6 +3,10 @@
 The benchmark version (events, data, rules, scoring) and the package version are separate:
 a package patch release never changes a score.
 
+## Unreleased
+- Website at https://gotham29.github.io/gridshedwatch (`docs/index.html`, built by
+  `scripts/build_site.py` from `results/v1.0/` and the event files). No score changed.
+
 ## 1.0.1 (2026-10-23)
 - Packaging fix: the EIA-930 snapshot now ships inside the package
   (`gridshedwatch/snapshot_v1.0/`), so a regular `pip install` works outside the repo. No data,

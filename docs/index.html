@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GridShedWatch</title>
+<meta name="description" content="A benchmark for early warning of grid load sheds, scored the way forecasters score weather warnings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f2; --panel:#ffffff; --ink:#1b1d21; --muted:#5d6370; --faint:#8a909b; --line:#dedcd5; --grid:#ecebe6;
+  --watch:#c27a0e; --watch-soft:#f6e7cc; --warn:#b3261e; --warn-soft:#f5d9d6;
+  --accent:#1f5f8b; --accent-soft:#dde9f2; --chance:#8a909b;
+  --cell0:#f1f0eb; --cell1:#1f5f8b;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141619; --panel:#1c1f23; --ink:#e9e7e1; --muted:#a3a8b1; --faint:#7b818b; --line:#2f333a; --grid:#262a30;
+    --watch:#e7a23b; --watch-soft:#3a2d17; --warn:#ef6b61; --warn-soft:#3b1f1d;
+    --accent:#6fb0de; --accent-soft:#1d3240; --chance:#7b818b; --cell0:#23272c; --cell1:#6fb0de;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141619; --panel:#1c1f23; --ink:#e9e7e1; --muted:#a3a8b1; --faint:#7b818b; --line:#2f333a; --grid:#262a30;
+  --watch:#e7a23b; --watch-soft:#3a2d17; --warn:#ef6b61; --warn-soft:#3b1f1d;
+  --accent:#6fb0de; --accent-soft:#1d3240; --chance:#7b818b; --cell0:#23272c; --cell1:#6fb0de;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans",system-ui,sans-serif}
+a{color:var(--accent)}
+code,pre,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+header.top{border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:16px;height:56px}
+.brand{font-weight:700;letter-spacing:.01em;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:8px}
+.brand svg{flex:none}
+nav.links{margin-left:auto;display:flex;gap:18px;font-size:14px}
+nav.links a{color:var(--muted);text-decoration:none}
+nav.links a:hover{color:var(--ink)}
+@media (max-width:640px){nav.links .opt{display:none}}
+.hero{padding:56px 0 32px}
+.eyebrow{font:500 12px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.12;margin:14px 0 16px;font-weight:700;letter-spacing:-.015em;max-width:20ch}
+.lede{font-size:clamp(17px,2.2vw,19px);color:var(--muted);max-width:62ch;margin:0}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:6px;font-weight:500;font-size:15px;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--panel)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:40px 0 8px}
+.stat{background:var(--panel);padding:16px 18px}
+.stat b{display:block;font-size:28px;line-height:1.1;font-weight:600}
+.stat span{font-size:13px;color:var(--muted)}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+section{padding:44px 0;border-top:1px solid var(--line)}
+h2{font-size:24px;margin:0 0 6px;letter-spacing:-.01em}
+h3{font-size:17px;margin:24px 0 6px}
+.sub{color:var(--muted);margin:0 0 22px;max-width:68ch}
+p{max-width:70ch}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.cols{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.card h3{margin-top:0}
+.tag{display:inline-block;font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:5px 7px;border-radius:4px}
+.tag.watch{background:var(--watch-soft);color:var(--watch)}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.tag.dev{background:var(--grid);color:var(--muted)}
+.tag.ho{background:var(--accent-soft);color:var(--accent)}
+ul.tight{padding-left:20px;margin:8px 0}
+ul.tight li{margin:4px 0}
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px}
+.tbl th{text-align:left;font-weight:500;color:var(--muted);font-size:12.5px;border-bottom:1px solid var(--line);padding:8px 10px 8px 0}
+.tbl td{border-bottom:1px solid var(--grid);padding:9px 10px 9px 0;vertical-align:top}
+.tbl td.n,.tbl th.n{text-align:right;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:14px;background:var(--panel)}
+.toggle button{font:inherit;font-size:14px;border:0;background:transparent;color:var(--muted);padding:7px 14px;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 12px 8px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{fill:var(--ink);font-family:"IBM Plex Sans",sans-serif}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted);margin:10px 4px 4px}
+.legend i{display:inline-block;vertical-align:middle;margin-right:6px}
+.note{font-size:13.5px;color:var(--muted);margin-top:10px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:13.5px;line-height:1.55;margin:12px 0}
+#tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.4;padding:7px 10px;border-radius:5px;max-width:280px;opacity:0;transition:opacity .1s;z-index:10}
+footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);font-size:14px}
+.findings{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+@media (max-width:720px){.findings{grid-template-columns:1fr}}
+.finding b{display:block;margin-bottom:4px}
+.finding{font-size:15px;color:var(--muted)}
+.finding b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="tip" role="tooltip"></div>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M12.5 1 4 12.5h6L8.5 21 18 9h-6.2z" fill="var(--watch)"/></svg>GridShedWatch</a>
+  <nav class="links">
+    <a href="#scoring" class="opt">Scoring</a><a href="#events" class="opt">Events</a><a href="#results">Results</a><a href="#submit" class="opt">Add a method</a>
+    <a href="https://github.com/gotham29/gridshedwatch">GitHub</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+<div class="hero">
+  <div class="eyebrow">Benchmark · v1.0</div>
+  <h1>Early warning of grid load sheds, scored like weather warnings</h1>
+  <p class="lede">Since 2020, US grid operators have had to cut power for lack of supply eight times. The public was warned beforehand in four. GridShedWatch is a shared test of whether a warning method would have caught them in time: all eight events, public hourly data, and one fixed scoring procedure any method can be run through.</p>
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/gotham29/gridshedwatch">Code and data on GitHub</a>
+    <a class="btn" href="#submit">Score your method</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>8</b><span>load sheds of 250 MW or more, 2020–2026</span></div>
+    <div class="stat"><b>4 of 8</b><span>had a public notice beforehand</span></div>
+    <div class="stat"><b>5</b><span>reference methods, from rules to a foundation model</span></div>
+    <div class="stat"><b>12 / 2</b><span>watches / warnings per grid per year, for every method</span></div>
+  </div>
+</div>
+
+<section id="gap">
+  <h2>Why a benchmark</h2>
+  <p class="sub">Plenty of methods claim to spot grid trouble early. None of them can be compared, because there has been no common test.</p>
+  <div class="cols">
+    <div class="card"><h3>What exists</h3>
+      <ul class="tight">
+        <li>Seasonal reliability assessments (NERC) and operators' own alert levels, set by judgment.</li>
+        <li>Anomaly-detection studies on simulated grids, or on one event, scored per hour.</li>
+        <li>No public list of real load sheds with a fixed way to score warnings against them.</li>
+      </ul></div>
+    <div class="card"><h3>What GridShedWatch adds</h3>
+      <ul class="tight">
+        <li>Every qualifying load shed since 2020, chosen by a stated rule, not by hand.</li>
+        <li>The same data, rules and alert budget for every method, so only the method differs.</li>
+        <li>The operators' own public notices as the baseline to beat.</li>
+      </ul></div>
+  </div>
+</section>
+
+<section id="scoring">
+  <h2>How it is scored</h2>
+  <p class="sub">The National Weather Service scores every warning on three numbers read together: events warned in advance, lead time, and false alarms. GridShedWatch asks the same of grid warnings, at two levels.</p>
+  <div class="cols">
+    <div class="card"><span class="tag watch">Watch</span><h3>Something unusual is building</h3>
+      <p>About one a month per grid. Counts if an alert starts in the 7 days before the load shed begins.</p></div>
+    <div class="card"><span class="tag warn">Warning</span><h3>Act now</h3>
+      <p>Two a year per grid. Counts from 7 days before onset to 48 hours after, since a warning during the event still helps.</p></div>
+  </div>
+  <div class="chart scroll" style="margin-top:16px"><svg id="windows" viewBox="0 0 940 120" style="min-width:560px" role="img" aria-label="Scoring windows: watch from 7 days before onset to onset; warning from 7 days before to 48 hours after"></svg></div>
+  <h3>The rules every method shares</h3>
+  <ul class="tight">
+    <li><b>A method only scores each hour.</b> For each of five signals from EIA-930 (demand forecast error, demand minus generation, and seasonal anomalies of demand, generation and their gap) it says how unusual the hour is, from 0 to 1, using data up to that hour only.</li>
+    <li><b>One shared rule turns scores into alerts.</b> Both signal groups must be unusual at once and stay so for a few hours. The rule is the same for every method.</li>
+    <li><b>Same alert budget, set without the events.</b> Each method's threshold and persistence are chosen so it raises at most 12 watches and 2 warnings per grid per year, looking only at alert counts.</li>
+    <li><b>Read against chance.</b> Each method's own alerts are shifted to random times 2,000 times to show how many events it would catch by luck. Intervals come from resampling the events.</li>
+  </ul>
+  <p class="note">Full protocol: <a href="https://github.com/gotham29/gridshedwatch/blob/main/docs/scoring.md">docs/scoring.md</a>.</p>
+</section>
+
+<section id="events">
+  <h2>The eight events</h2>
+  <p class="sub">Every operator-initiated load shed caused by too little supply in a grid that reports to EIA-930, January 2020 to September 2026, of at least 250 MW at its worst. Three events were used to design the shared rules; five were held out and scored once.</p>
+  <div class="scroll"><table class="tbl" id="evtable"><thead><tr><th>Event</th><th>Grid</th><th class="n">Shed at worst</th><th>Onset (local)</th><th>Split</th></tr></thead><tbody></tbody></table></div>
+  <p class="note">Selection rule, onsets and exclusions: <a href="https://github.com/gotham29/gridshedwatch/blob/main/docs/events.md">docs/events.md</a>.</p>
+
+  <h3 style="margin-top:34px">What the operators said beforehand</h3>
+  <p class="sub">Every notice each operator issued in the week before its load shed. Public notices (aimed at customers) are the status-quo baseline: they count as a watch if issued before onset.</p>
+  <div class="chart scroll"><svg id="timeline" viewBox="0 0 990 400" style="min-width:620px" role="img" aria-label="Timeline of operator notices before each load shed"></svg>
+    <div class="legend">
+      <span><i style="width:10px;height:10px;border-radius:50%;background:var(--watch)"></i>public notice</span>
+      <span><i style="width:10px;height:10px;border-radius:50%;background:var(--faint)"></i>notice to the industry</span>
+      <span><i style="width:10px;height:10px;border-radius:50%;border:1.5px solid var(--faint)"></i>only the day is published</span>
+      <span><i style="width:2px;height:12px;background:var(--warn)"></i>load shed begins</span>
+    </div></div>
+  <p class="note">Hover a marker for the notice. Sources for every time: <a href="https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/operator_notices.yaml">operator_notices.yaml</a>.</p>
+</section>
+
+<section id="results">
+  <h2>Results, v1.0</h2>
+  <p class="sub">Five reference methods, one from each family: rules, statistics, machine learning (LSTM, HTM) and a foundation model (Chronos-Bolt, zero-shot). All at the same alert budget.</p>
+  <div class="toggle" role="group" aria-label="Alert level"><button data-lv="watch" aria-pressed="true">Watches</button><button data-lv="warning" aria-pressed="false">Warnings</button></div>
+  <div class="chart scroll"><svg id="dots" viewBox="0 0 940 300" style="min-width:600px" role="img" aria-label="Events caught by each method"></svg>
+    <div class="legend">
+      <span><i style="width:10px;height:10px;border-radius:50%;background:var(--accent)"></i>events caught (of 8)</span>
+      <span><i style="width:24px;height:3px;background:var(--accent-soft)"></i>5th–95th percentile, events resampled</span>
+      <span><i style="width:2px;height:12px;background:var(--chance)"></i>caught by chance</span>
+    </div></div>
+  <div class="findings">
+    <div class="finding"><b>All but one beat chance.</b>Every method catches far more than its shifted alerts would, except Chronos's watches.</div>
+    <div class="finding"><b>No method leads at both levels.</b>The LSTM catches the most watches; the z-score the most warnings.</div>
+    <div class="finding"><b>It depends on the emergency.</b>Simple rules caught Uri days ahead; LSTM and HTM caught Elliott, which the public got no warning of.</div>
+  </div>
+
+  <h3 style="margin-top:34px">Event by event</h3>
+  <p class="sub" id="heatsub">Share of runs that caught each event, with the median lead time in hours. The LSTM and HTM have five seeds each.</p>
+  <div class="chart scroll"><svg id="heat" viewBox="0 0 940 300" style="min-width:640px" role="img" aria-label="Which method caught which event"></svg></div>
+
+  <h3 style="margin-top:34px">Full table</h3>
+  <div class="scroll"><table class="tbl" id="lbtable"><thead></thead><tbody></tbody></table></div>
+  <p class="note">With eight events, differences of about one event are not meaningful. Per-event and per-seed results: <a href="https://github.com/gotham29/gridshedwatch/tree/main/results/v1.0">results/v1.0</a>.</p>
+</section>
+
+<section id="submit">
+  <h2>Add your method</h2>
+  <p class="sub">Your method only has to score every hour of every grid on the five signals. The shared rules, the budget step and the scoring are done for you, so a method cannot be tuned toward the eight events.</p>
+<pre><span style="color:var(--faint)"># install and score a built-in method</span>
+pip install "gridshedwatch @ git+https://github.com/gotham29/gridshedwatch@v1.0.1"
+gridshedwatch info
+gridshedwatch score --oprule
+
+<span style="color:var(--faint)"># your method: write my_scores/s0/&lt;grid&gt;.csv with columns p_&lt;signal&gt; in [0, 1]</span>
+python examples/my_method.py
+gridshedwatch score my_scores --name "My method"</pre>
+  <ul class="tight">
+    <li>Use the five signals provided; 2019 is available for calibration and is never scored.</li>
+    <li>Random methods submit several seeds (<code>s0</code>, <code>s1</code>, …); results are averaged.</li>
+    <li>To be listed, open a pull request with your scores, the code that made them and the output of <code>gridshedwatch score --json</code>. Every result is added, including ones that beat the reference methods. Methods that use extra data, such as weather, are listed separately.</li>
+  </ul>
+</section>
+
+<section id="limits">
+  <h2>Limits</h2>
+  <ul class="tight">
+    <li>Eight events, seven from two storms (Uri and Elliott). One storm of a new kind could change the picture.</li>
+    <li>Three events shaped the shared rules; five were held out and scored once.</li>
+    <li>Methods see only five signals from EIA-930: no weather, outage or market data.</li>
+    <li>The baseline covers operators' public notices. Their notices to the industry and their false alarms in ordinary years are not yet compiled.</li>
+  </ul>
+  <p>GridShedWatch grows as new events happen: each load shed that meets the rule is added in a new version and scored with the v1.0 rules.</p>
+</section>
+
+<section id="cite">
+  <h2>Cite</h2>
+<pre>Heiserman, S. (2026). GridShedWatch: a benchmark for early warning of grid load sheds
+(Version 1.0.1). https://github.com/gotham29/gridshedwatch</pre>
+  <p class="note">Code: MIT. Event list, timelines, documentation and results: CC BY 4.0. EIA-930 data: U.S. public domain. HTM's entry is run with <a href="https://htm-monitor.com/grid">htm-monitor</a>, scored like any other submission.</p>
+</section>
+</main>
+<footer><div class="wrap">GridShedWatch v1.0 · <a href="https://github.com/gotham29/gridshedwatch">github.com/gotham29/gridshedwatch</a> · Data: U.S. EIA Hourly Electric Grid Monitor (EIA-930)</div></footer>
+
+<script>
+const D = {"methods":[{"id":"oprule","name":"Operator-style rule","family":"Rules","seeds":1,"watch":{"caught":5.0,"ci":[3.0,7.0],"held_out":4.0,"lead":85.0,"far":0.985,"chance":1.2,"chance_p":0.004,"rate":11.3,"setting":"threshold 0.98, 6 h"},"warning":{"caught":2.0,"ci":[0.0,4.0],"held_out":1.0,"lead":145.0,"far":0.94,"chance":0.2,"chance_p":0.015,"rate":1.2,"setting":"threshold 0.995, 9 h"}},{"id":"zscore","name":"Seasonal z-score","family":"Statistics","seeds":1,"watch":{"caught":5.0,"ci":[3.0,7.0],"held_out":4.0,"lead":105.0,"far":0.981,"chance":1.1,"chance_p":0.001,"rate":10.9,"setting":"threshold 0.95, 6 h"},"warning":{"caught":6.0,"ci":[4.0,8.0],"held_out":4.0,"lead":35.0,"far":0.915,"chance":0.2,"chance_p":0.0,"rate":1.7,"setting":"threshold 0.99, 9 h"}},{"id":"lstm","name":"LSTM forecaster","family":"Machine learning","seeds":5,"watch":{"caught":6.4,"ci":[4.6,8.0],"held_out":4.4,"lead":8.0,"far":0.986,"chance":1.3,"chance_p":0.0,"rate":11.1,"setting":"threshold 0.9, 6 h"},"warning":{"caught":4.8,"ci":[2.8,6.8],"held_out":2.8,"lead":8.0,"far":0.935,"chance":0.3,"chance_p":0.0,"rate":1.6,"setting":"threshold 0.9, 18 h"}},{"id":"htm","name":"HTM (htm-monitor)","family":"Machine learning","seeds":5,"watch":{"caught":6.0,"ci":[4.6,7.2],"held_out":4.0,"lead":56.0,"far":0.984,"chance":1.4,"chance_p":0.007,"rate":11.3,"setting":"threshold 0.99, 3 h"},"warning":{"caught":5.6,"ci":[3.8,7.2],"held_out":3.6,"lead":1.0,"far":0.928,"chance":0.3,"chance_p":0.0,"rate":1.5,"setting":"threshold 0.995, 12 h"}},{"id":"chronos","name":"Chronos-Bolt (zero-shot)","family":"Foundation model","seeds":1,"watch":{"caught":1.0,"ci":[0.0,3.0],"held_out":1.0,"lead":9.0,"far":0.997,"chance":0.9,"chance_p":0.616,"rate":7.3,"setting":"threshold 0.9, 8 h"},"warning":{"caught":3.0,"ci":[1.0,5.0],"held_out":1.0,"lead":null,"far":0.956,"chance":0.3,"chance_p":0.002,"rate":2.1,"setting":"threshold 0.98, 6 h"}}],"operators":{"caught":4.0,"held_out":2.0,"lead":20.0},"cells":{"oprule|ca|warning":{"frac":0.0,"n":1,"lead":null},"oprule|ca|watch":{"frac":0.0,"n":1,"lead":null},"oprule|cple|warning":{"frac":0.0,"n":1,"lead":null},"oprule|cple|watch":{"frac":0.0,"n":1,"lead":null},"oprule|duk|warning":{"frac":0.0,"n":1,"lead":null},"oprule|duk|watch":{"frac":1.0,"n":1,"lead":8.0},"oprule|lgee|warning":{"frac":0.0,"n":1,"lead":null},"oprule|lgee|watch":{"frac":1.0,"n":1,"lead":7.0},"oprule|miso|warning":{"frac":0.0,"n":1,"lead":null},"oprule|miso|watch":{"frac":1.0,"n":1,"lead":85.0},"oprule|spp|warning":{"frac":1.0,"n":1,"lead":160.0},"oprule|spp|watch":{"frac":1.0,"n":1,"lead":134.0},"oprule|tva|warning":{"frac":0.0,"n":1,"lead":null},"oprule|tva|watch":{"frac":0.0,"n":1,"lead":null},"oprule|tx|warning":{"frac":1.0,"n":1,"lead":129.0},"oprule|tx|watch":{"frac":1.0,"n":1,"lead":138.0},"zscore|ca|warning":{"frac":0.0,"n":1,"lead":null},"zscore|ca|watch":{"frac":0.0,"n":1,"lead":null},"zscore|cple|warning":{"frac":0.0,"n":1,"lead":null},"zscore|cple|watch":{"frac":0.0,"n":1,"lead":null},"zscore|duk|warning":{"frac":1.0,"n":1,"lead":3.0},"zscore|duk|watch":{"frac":1.0,"n":1,"lead":9.0},"zscore|lgee|warning":{"frac":1.0,"n":1,"lead":null},"zscore|lgee|watch":{"frac":1.0,"n":1,"lead":7.0},"zscore|miso|warning":{"frac":1.0,"n":1,"lead":61.0},"zscore|miso|watch":{"frac":1.0,"n":1,"lead":117.0},"zscore|spp|warning":{"frac":1.0,"n":1,"lead":10.0},"zscore|spp|watch":{"frac":1.0,"n":1,"lead":159.0},"zscore|tva|warning":{"frac":1.0,"n":1,"lead":null},"zscore|tva|watch":{"frac":0.0,"n":1,"lead":null},"zscore|tx|warning":{"frac":1.0,"n":1,"lead":98.0},"zscore|tx|watch":{"frac":1.0,"n":1,"lead":105.0},"lstm|ca|warning":{"frac":0.0,"n":5,"lead":null},"lstm|ca|watch":{"frac":0.0,"n":5,"lead":null},"lstm|cple|warning":{"frac":0.2,"n":5,"lead":null},"lstm|cple|watch":{"frac":1.0,"n":5,"lead":5.0},"lstm|duk|warning":{"frac":0.8,"n":5,"lead":null},"lstm|duk|watch":{"frac":1.0,"n":5,"lead":4.0},"lstm|lgee|warning":{"frac":0.8,"n":5,"lead":null},"lstm|lgee|watch":{"frac":1.0,"n":5,"lead":9.0},"lstm|miso|warning":{"frac":0.0,"n":5,"lead":null},"lstm|miso|watch":{"frac":1.0,"n":5,"lead":8.0},"lstm|spp|warning":{"frac":1.0,"n":5,"lead":5.0},"lstm|spp|watch":{"frac":0.4,"n":5,"lead":40.0},"lstm|tva|warning":{"frac":1.0,"n":5,"lead":null},"lstm|tva|watch":{"frac":1.0,"n":5,"lead":2.0},"lstm|tx|warning":{"frac":1.0,"n":5,"lead":8.0},"lstm|tx|watch":{"frac":1.0,"n":5,"lead":84.0},"htm|ca|warning":{"frac":0.0,"n":5,"lead":null},"htm|ca|watch":{"frac":0.2,"n":5,"lead":45.0},"htm|cple|warning":{"frac":0.8,"n":5,"lead":0.0},"htm|cple|watch":{"frac":0.8,"n":5,"lead":8.0},"htm|duk|warning":{"frac":1.0,"n":5,"lead":0.0},"htm|duk|watch":{"frac":1.0,"n":5,"lead":9.0},"htm|lgee|warning":{"frac":1.0,"n":5,"lead":null},"htm|lgee|watch":{"frac":1.0,"n":5,"lead":9.0},"htm|miso|warning":{"frac":0.4,"n":5,"lead":56.0},"htm|miso|watch":{"frac":0.8,"n":5,"lead":64.0},"htm|spp|warning":{"frac":0.4,"n":5,"lead":98.0},"htm|spp|watch":{"frac":0.4,"n":5,"lead":136.0},"htm|tva|warning":{"frac":1.0,"n":5,"lead":null},"htm|tva|watch":{"frac":0.8,"n":5,"lead":103.0},"htm|tx|warning":{"frac":1.0,"n":5,"lead":1.0},"htm|tx|watch":{"frac":1.0,"n":5,"lead":103.0},"chronos|ca|warning":{"frac":0.0,"n":1,"lead":null},"chronos|ca|watch":{"frac":0.0,"n":1,"lead":null},"chronos|cple|warning":{"frac":0.0,"n":1,"lead":null},"chronos|cple|watch":{"frac":0.0,"n":1,"lead":null},"chronos|duk|warning":{"frac":1.0,"n":1,"lead":null},"chronos|duk|watch":{"frac":0.0,"n":1,"lead":null},"chronos|lgee|warning":{"frac":0.0,"n":1,"lead":null},"chronos|lgee|watch":{"frac":1.0,"n":1,"lead":9.0},"chronos|miso|warning":{"frac":0.0,"n":1,"lead":null},"chronos|miso|watch":{"frac":0.0,"n":1,"lead":null},"chronos|spp|warning":{"frac":0.0,"n":1,"lead":null},"chronos|spp|watch":{"frac":0.0,"n":1,"lead":null},"chronos|tva|warning":{"frac":1.0,"n":1,"lead":null},"chronos|tva|watch":{"frac":0.0,"n":1,"lead":null},"chronos|tx|warning":{"frac":1.0,"n":1,"lead":null},"chronos|tx|watch":{"frac":0.0,"n":1,"lead":null},"operators|tx|watch":{"frac":1.0,"n":1,"lead":17.0},"operators|ca|watch":{"frac":1.0,"n":1,"lead":27.0},"operators|tva|watch":{"frac":0.0,"n":1,"lead":null},"operators|spp|watch":{"frac":1.0,"n":1,"lead":3.0},"operators|miso|watch":{"frac":1.0,"n":1,"lead":24.0},"operators|duk|watch":{"frac":0.0,"n":1,"lead":null},"operators|cple|watch":{"frac":0.0,"n":1,"lead":null},"operators|lgee|watch":{"frac":0.0,"n":1,"lead":null}},"events":[{"grid":"tx","name":"Texas (ERCOT)","storm":"Uri","title":"Winter Storm Uri","when":"February 2021","tagline":"Rotating outages, up to 20,000 MW of load shed; more than 4.5 million customers lost power","shed_mw":20000,"split":"development","onset_utc":"2021-02-15 07:20:00","onset_local":"Feb 15 2021, 1:20 a.m. CST","onset_basis":"EEA 3 declared, rotating outages","onset_label":"ERCOT declares EEA 3, rotating outages begin","onset_source":{"title":"ERCOT, Review of February 2021 Extreme Cold Weather Event (Feb 24, 2021)","url":"https://www.ercot.com/files/docs/2021/02/24/2.2_REVISED_ERCOT_Presentation.pdf"},"notices":[{"h":-150.4,"label":"Operating Condition Notice: extreme cold approaching","by":"operator","public":false,"approx":false},{"h":-109.3,"label":"Advisory: extreme cold weather event","by":"operator","public":false,"approx":true},{"h":-85.3,"label":"Watch: cold weather event","by":"operator","public":false,"approx":true},{"h":-37.3,"label":"Emergency Notice: extreme cold weather event","by":"operator","public":false,"approx":true},{"h":-16.8,"label":"Conservation alert and media appeal","by":"operator","public":true,"approx":false},{"h":-1.1,"label":"EEA 1","by":"operator","public":false,"approx":false},{"h":-0.2,"label":"EEA 2","by":"operator","public":false,"approx":false}],"sources":[{"title":"ERCOT, Review of February 2021 Extreme Cold Weather Event (Texas Legislature, Feb 25 2021)","url":"https://www.ercot.com/files/docs/2021/03/03/Texas_Legislature_Hearings_2-25-2021.pdf"},{"title":"UT Austin Energy Institute, The Timeline and Events of the February 2021 Texas Electric Grid Blackouts","url":"https://energy.utexas.edu/sites/default/files/UTAustin%20(2021)%20EventsFebruary2021TexasBlackout%2020210714.pdf"}]},{"grid":"ca","name":"California (CAISO)","storm":"Aug 2020 heat wave","title":"August 2020 heat wave","when":"August 2020","tagline":"First rotating outages in California since 2001, about 800,000 customers","shed_mw":1000,"split":"development","onset_utc":"2020-08-15 01:38:00","onset_local":"Aug 14 2020, 6:38 p.m. PDT","onset_basis":"Stage 3 Emergency declared","onset_label":"CAISO declares Stage 3 Emergency","onset_source":{"title":"CAISO, CPUC, CEC, Preliminary Root Cause Analysis: Mid-August 2020 Heat Storm","url":"https://www.caiso.com/documents/preliminary-root-cause-analysis-rotating-outages-august-2020.pdf"},"notices":[{"h":-54.6,"label":"Restricted Maintenance Operations notice for Aug 14-17","by":"operator","public":false,"approx":true},{"h":-27.6,"label":"Grid-wide Alert: possible reserve deficiency Aug 14, 5-9 p.m.","by":"operator","public":false,"approx":false},{"h":-26.9,"label":"Statewide Flex Alert for Aug 14, 3-10 p.m.; conserving can prevent rotating outages","by":"operator","public":true,"approx":true},{"h":-6.8,"label":"Warning re-issued for 5-9 p.m.","by":"operator","public":false,"approx":false},{"h":-3.2,"label":"Stage 2 Emergency","by":"operator","public":false,"approx":false}],"sources":[{"title":"CAISO, CPUC, CEC, Final Root Cause Analysis: Mid-August 2020 Extreme Heat Wave (Jan 2021)","url":"https://www.caiso.com/Documents/Final-Root-Cause-Analysis-Mid-August-2020-Extreme-Heat-Wave.pdf"},{"title":"Canyon Lake Insider, ISO issues statewide Flex Alert for August 14 (Aug 13 2020; time is the article's)","url":"https://canyonlakeinsider.com/iso-issues-statewide-flex-alert-for-august-14/"}]},{"grid":"tva","name":"Tennessee Valley Authority","storm":"Elliott","title":"Winter Storm Elliott","when":"December 2022","tagline":"First system-wide rolling blackouts in TVA's 90-year history, up to 3,000 MW","shed_mw":3000,"split":"development","onset_utc":"2022-12-23 11:12:00","onset_local":"Dec 23 2022, 6:12 a.m. EST","onset_basis":"EEA 3 declared (source gives Eastern time)","onset_label":"TVA declares EEA 3","onset_source":{"title":"FERC, NERC and Regional Entities, Inquiry into Winter Storm Elliott (Oct 2023)","url":"https://www.ferc.gov/sites/default/files/2024-02/24_Winter-Storm_Elliot_0207_UPDATE.pdf"},"notices":[{"h":-186.2,"label":"NERC begins tracking the storm","by":"external","public":false,"approx":true},{"h":-162.2,"label":"SERC situational-awareness outreach to reliability coordinators","by":"external","public":false,"approx":true},{"h":-42.2,"label":"Southeast entities activate advisories, alerts, conservative operations (Dec 19-22)","by":"external","public":false,"approx":true},{"h":1.8,"label":"TVA asks the public to reduce use; rolling blackouts under way","by":"operator","public":true,"approx":true}],"sources":[{"title":"NERC Board technical session, Feb 15 2023","url":"https://nerc.com/gov/bot/QuarterlyTechnicalSessions/Presentations_Tech_Session_February_15_2023.pdf"},{"title":"APPA, Report examines TVA's response to Winter Storm Elliott","url":"https://publicpower.org/periodical/article/report-examines-tvas-response-winter-storm-elliott"},{"title":"WSMV, Rolling blackouts across Tennessee (Dec 23 2022)","url":"https://www.wsmv.com/2022/12/23/rolling-blackouts-take-place-across-tennessee/"}]},{"grid":"spp","name":"Southwest Power Pool","storm":"Uri","title":"Winter Storm Uri","when":"February 2021","tagline":"Load shed across the SPP footprint, up to 2,718 MW","shed_mw":2718,"split":"held-out","onset_utc":"2021-02-15 16:08:00","onset_local":"Feb 15 2021, 10:08 a.m. CST","onset_basis":"EEA 3 declared","onset_label":"SPP declares EEA 3","onset_source":{"title":"U.S. House Energy & Commerce hearing materials, Feb 18 2021","url":"https://docs.house.gov/meetings/IF/IF03/20210218/111210/HHRG-117-IF03-20210218-SD017.pdf"},"notices":[{"h":-154.1,"label":"Conservative operations declared","by":"operator","public":false,"approx":false},{"h":-5.1,"label":"EEA 1","by":"operator","public":false,"approx":false},{"h":-2.8,"label":"EEA 2; members issue conservation appeals","by":"operator","public":true,"approx":false}],"sources":[{"title":"U.S. House Energy & Commerce hearing materials, Feb 18 2021","url":"https://docs.house.gov/meetings/IF/IF03/20210218/111210/HHRG-117-IF03-20210218-SD017.pdf"}]},{"grid":"miso","name":"MISO (MISO South)","storm":"Uri","title":"Winter Storm Uri","when":"February 2021","tagline":"700 MW emergency load reduction across MISO South for capacity shortage","shed_mw":700,"split":"held-out","onset_utc":"2021-02-17 00:40:00","onset_local":"Feb 16 2021, 7:40 p.m. EST","onset_basis":"Max Gen Event Step 5 (EEA 3) declared for MISO South; 700 MW load reduction for capacity shortage (Feb 15-16 transmission-emergency sheds excluded by rule)","onset_label":"MISO declares Max Gen Event Step 5 (EEA 3) for MISO South","onset_source":{"title":"MISO, The February 2021 Arctic Event","url":"https://cdn.misoenergy.org/2021%20Arctic%20Event%20Report554429.pdf"},"notices":[{"h":-38.0,"label":"Local transmission emergency, East Texas shed (transmission, not a target)","by":"operator","public":false,"approx":false},{"h":-25.7,"label":"Max Gen Event Step 2c (EEA 2), South","by":"operator","public":false,"approx":false},{"h":-23.5,"label":"At MISO's request, Entergy and Cleco ask Louisiana customers to conserve; outages possible","by":"operator","public":true,"approx":true},{"h":-1.1,"label":"Max Gen Event Step 2c (EEA 2) again","by":"operator","public":false,"approx":false}],"sources":[{"title":"MISO, The February 2021 Arctic Event","url":"https://cdn.misoenergy.org/2021%20Arctic%20Event%20Report554429.pdf"},{"title":"DOE CESER, Extreme Cold & Winter Weather situation update 2","url":"https://www.energy.gov/ceser/articles/extreme-cold-winter-weather-hub-situation-update-2"},{"title":"WAFB, Entergy, Cleco customers asked to conserve electricity (Feb 15 2021, updated 7:09 p.m. CST)","url":"https://www.wafb.com/2021/02/15/entergy-customers-asked-conserve-electricity/"}]},{"grid":"duk","name":"Duke Energy Carolinas","storm":"Elliott","title":"Winter Storm Elliott","when":"December 2022","tagline":"Rolling blackouts on Christmas Eve, up to 1,000 MW, with no advance customer warning","shed_mw":1000,"split":"held-out","onset_utc":"2022-12-24 11:14:00","onset_local":"Dec 24 2022, 6:14 a.m. EST","onset_basis":"Fallback: first load-shed directive (EEA 3 time not published)","onset_label":"Duke Energy Carolinas begins load shed","onset_source":{"title":"NC Newsline, Duke Energy officials to state regulators (Jan 4 2023)","url":"https://ncnewsline.com/2023/01/04/several-crises-malfunctions-at-duke-energy-led-to-rolling-blackouts-on-christmas-eve-utility-officials-tell-state-regulators/"},"notices":[{"h":-12.2,"label":"Load diverging from Duke's forecast model","by":"internal","public":false,"approx":true},{"h":-8.2,"label":"Duke still estimates 900-1,100 MW of reserve per territory","by":"internal","public":false,"approx":false}],"sources":[{"title":"NC Newsline, Duke Energy officials to state regulators (Jan 4 2023)","url":"https://ncnewsline.com/2023/01/04/several-crises-malfunctions-at-duke-energy-led-to-rolling-blackouts-on-christmas-eve-utility-officials-tell-state-regulators/"}]},{"grid":"cple","name":"Duke Energy Progress","storm":"Elliott","title":"Winter Storm Elliott","when":"December 2022","tagline":"Rolling blackouts on Christmas Eve, about 960 MW in total, with no advance customer warning","shed_mw":961,"split":"held-out","onset_utc":"2022-12-24 11:25:00","onset_local":"Dec 24 2022, 6:25 a.m. EST","onset_basis":"Fallback: first load-shed request (EEA 3 time not published)","onset_label":"Duke Energy Progress requests load shed","onset_source":{"title":"NC Newsline, Duke Energy officials to state regulators (Jan 4 2023)","url":"https://ncnewsline.com/2023/01/04/several-crises-malfunctions-at-duke-energy-led-to-rolling-blackouts-on-christmas-eve-utility-officials-tell-state-regulators/"},"notices":[{"h":-12.4,"label":"Load diverging from Duke's forecast model","by":"internal","public":false,"approx":true},{"h":-8.4,"label":"Duke still estimates 900-1,100 MW of reserve per territory","by":"internal","public":false,"approx":false},{"h":1.6,"label":"Rolling blackouts begin in Duke Energy Progress territory","by":"operator","public":false,"approx":false}],"sources":[{"title":"NC Newsline, Duke Energy officials to state regulators (Jan 4 2023)","url":"https://ncnewsline.com/2023/01/04/several-crises-malfunctions-at-duke-energy-led-to-rolling-blackouts-on-christmas-eve-utility-officials-tell-state-regulators/"}]},{"grid":"lgee","name":"LG&E and KU (Kentucky)","storm":"Elliott","title":"Winter Storm Elliott","when":"December 2022","tagline":"Rotating service interruptions, over 300 MW","shed_mw":300,"split":"held-out","onset_utc":"2022-12-23 18:36:00","onset_local":"Dec 23 2022, 1:36 p.m. EST","onset_basis":"EEA 3 declared","onset_label":"LG&E-KU declares EEA 3","onset_source":{"title":"LG&E-KU responses to Kentucky PSC, case 2023-00422","url":"https://psc.ky.gov/pscecf/2023-00422/rick.lovekamp@lge-ku.com/07082024011428/02-PSC_DRPH_LGE_KU_Responses.pdf"},"notices":[{"h":4.4,"label":"Rotating service interruptions begin (to 03:11 UTC)","by":"operator","public":false,"approx":false},{"h":6.4,"label":"Press release asks customers to conserve","by":"operator","public":true,"approx":true}],"sources":[{"title":"LG&E-KU responses to Kentucky PSC, case 2023-00422","url":"https://psc.ky.gov/pscecf/2023-00422/rick.lovekamp@lge-ku.com/07082024011428/02-PSC_DRPH_LGE_KU_Responses.pdf"},{"title":"LG&E-KU press release, Dec 23 2022","url":"https://lge-ku.com/newsroom/press-releases/2022/12/23/lge-and-ku-performing-service-interruptions-need-customers-help"}]}],"window":{"watch":[168,0],"warning":[168,48]}};
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const txt = (parent, x, y, s, attrs = {}) => { const {fill, ...rest} = attrs; const t = el("text", {x, y, ...rest}, parent); if (fill) t.style.fill = fill; t.textContent = s; return t; };
+const clear = s => { while (s.firstChild) s.removeChild(s.firstChild); };
+const tip = document.getElementById("tip");
+function hover(node, html) {
+  node.style.cursor = "default";
+  node.addEventListener("mousemove", e => { tip.innerHTML = html; tip.style.opacity = 1;
+    const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px"; });
+  node.addEventListener("mouseleave", () => tip.style.opacity = 0);
+}
+const short = {tx:"Texas", ca:"California", tva:"TVA", spp:"SPP", miso:"MISO South", duk:"Duke Carolinas", cple:"Duke Progress", lgee:"Kentucky"};
+const fmt = (x, d = 1) => x == null ? "–" : (Math.round(x * 10 ** d) / 10 ** d).toString();
+const evs = D.events;
+
+/* scoring windows */
+(function () {
+  const s = document.getElementById("windows"), L = 150, R = 900, h0 = -192, h1 = 72;
+  const X = h => L + (h - h0) / (h1 - h0) * (R - L);
+  for (let d = -7; d <= 3; d++) { const x = X(d * 24);
+    el("line", {x1: x, x2: x, y1: 14, y2: 96, stroke: "var(--grid)"}, s);
+    txt(s, x, 112, d === 0 ? "onset" : (d > 0 ? "+" : "") + d + " d", {"text-anchor": "middle", "font-size": 12, fill: "var(--muted)"}); }
+  [["watch", "Watch", 22, "var(--watch-soft)", "var(--watch)"], ["warning", "Warning", 58, "var(--warn-soft)", "var(--warn)"]].forEach(([k, lab, y, f, c]) => {
+    const [b, a] = D.window[k];
+    el("rect", {x: X(-b), y, width: X(a) - X(-b), height: 26, rx: 4, fill: f, stroke: c}, s);
+    txt(s, L - 14, y + 18, lab, {"text-anchor": "end", "font-size": 14, "font-weight": 600});
+    txt(s, X(-b) + 10, y + 18, k === "watch" ? "7 days before onset" : "7 days before to 48 h after", {"font-size": 13, fill: c});
+  });
+  el("line", {x1: X(0), x2: X(0), y1: 10, y2: 96, stroke: "var(--warn)", "stroke-width": 2}, s);
+})();
+
+/* events table */
+(function () {
+  const tb = document.querySelector("#evtable tbody");
+  evs.forEach(e => { const tr = document.createElement("tr");
+    tr.innerHTML = `<td><b>${e.title}</b><br><span style="color:var(--muted);font-size:13px">${e.tagline}</span></td><td>${e.name}</td>` +
+      `<td class="n">${e.shed_mw.toLocaleString()} MW</td><td style="white-space:nowrap">${e.onset_local}</td>` +
+      `<td><span class="tag ${e.split === "held-out" ? "ho" : "dev"}">${e.split}</span></td>`;
+    tb.appendChild(tr); });
+})();
+
+/* operator timeline */
+(function () {
+  const s = document.getElementById("timeline"), L = 150, R = 910, top = 28, row = 44, h0 = -168, h1 = 24;
+  const X = h => L + (Math.max(h0, Math.min(h1, h)) - h0) / (h1 - h0) * (R - L);
+  const H = top + row * evs.length + 24; s.setAttribute("viewBox", `0 0 990 ${H}`);
+  el("rect", {x: X(h0), y: top - 10, width: X(0) - X(h0), height: row * evs.length, fill: "var(--watch-soft)", opacity: .45}, s);
+  for (let d = -7; d <= 1; d++) { const x = X(d * 24);
+    el("line", {x1: x, x2: x, y1: top - 10, y2: top + row * evs.length - 10, stroke: "var(--grid)"}, s);
+    txt(s, x, H - 6, d === 0 ? "onset" : (d > 0 ? "+" : "") + d + " d", {"text-anchor": "middle", "font-size": 12, fill: "var(--muted)"}); }
+  txt(s, X(h0) + 6, top - 14, "watch window (7 days)", {"font-size": 11.5, fill: "var(--watch)"});
+  evs.forEach((e, i) => { const y = top + i * row + 12;
+    txt(s, L - 14, y - 1, short[e.grid], {"text-anchor": "end", "font-size": 14, "font-weight": 600});
+    txt(s, L - 14, y + 14, e.storm.replace("Aug 2020 heat wave", "Heat 2020"), {"text-anchor": "end", "font-size": 11.5, fill: "var(--muted)"});
+    el("line", {x1: X(h0), x2: R, y1: y + 4, y2: y + 4, stroke: "var(--line)"}, s);
+    const pub = e.notices.filter(n => n.public && n.h < 0 && n.h >= h0);
+    if (pub.length) { const lead = -Math.min(...pub.map(n => n.h));
+      txt(s, R + 2, y + 9, Math.round(lead) + " h", {"font-size": 12, fill: "var(--watch)", "font-weight": 600}); }
+    else txt(s, R + 2, y + 9, "none", {"font-size": 12, fill: "var(--faint)"});
+    e.notices.forEach(n => { if (n.h < h0 - 1) return;
+      const c = n.public ? "var(--watch)" : "var(--faint)";
+      const m = el("circle", {cx: X(n.h), cy: y + 4, r: n.public ? 6.5 : 5, fill: n.approx ? "var(--panel)" : c, stroke: c, "stroke-width": n.approx ? 2 : 1}, s);
+      const t = n.h < 0 ? `${fmt(-n.h, 0)} h before onset` : `${fmt(n.h, 0)} h after onset`;
+      hover(m, `<b>${n.label}</b><br>${t}${n.approx ? " (day only)" : ""}${n.public ? "<br>Public notice" : ""}`); });
+    el("line", {x1: X(0), x2: X(0), y1: y - 8, y2: y + 16, stroke: "var(--warn)", "stroke-width": 2}, s);
+  });
+  txt(s, R + 2, top - 14, "public lead", {"font-size": 11.5, fill: "var(--muted)"});
+})();
+
+/* results */
+let LV = "watch";
+const rows = () => [{id: "operators", name: "Operators (public notices)", family: "Status quo", watch: {caught: D.operators.caught, lead: D.operators.lead, held_out: D.operators.held_out}}].concat(D.methods);
+function dots() {
+  const s = document.getElementById("dots"); clear(s);
+  const list = rows().filter(r => LV === "watch" || r.id !== "operators");
+  const L = 240, R = 690, top = 34, row = 40, H = top + row * list.length + 30;
+  s.setAttribute("viewBox", `0 0 940 ${H}`);
+  const X = v => L + v / 8 * (R - L);
+  for (let v = 0; v <= 8; v++) { el("line", {x1: X(v), x2: X(v), y1: top - 12, y2: top + row * list.length - 10, stroke: "var(--grid)"}, s);
+    txt(s, X(v), H - 8, v, {"text-anchor": "middle", "font-size": 12, fill: "var(--muted)"}); }
+  txt(s, (L + R) / 2, top - 18, "events caught (of 8)", {"text-anchor": "middle", "font-size": 12, fill: "var(--muted)"});
+  txt(s, 760, top - 18, "median lead", {"text-anchor": "middle", "font-size": 12, fill: "var(--muted)"});
+  txt(s, 870, top - 18, "false alarms", {"text-anchor": "middle", "font-size": 12, fill: "var(--muted)"});
+  list.forEach((r, i) => { const m = r[LV], y = top + i * row + 6;
+    txt(s, 16, y - 2, r.name.replace(" (htm-monitor)", "").replace(" (zero-shot)", "").replace(" (public notices)", ""), {"font-size": 14.5, "font-weight": 600});
+    txt(s, 16, y + 14, r.family, {"font-size": 11.5, fill: "var(--muted)"});
+    if (m.ci) el("rect", {x: X(m.ci[0]), y: y - 2, width: Math.max(2, X(m.ci[1]) - X(m.ci[0])), height: 8, rx: 4, fill: "var(--accent-soft)"}, s);
+    if (m.chance != null) el("line", {x1: X(m.chance), x2: X(m.chance), y1: y - 7, y2: y + 11, stroke: "var(--chance)", "stroke-width": 2}, s);
+    const c = r.id === "operators" ? "var(--watch)" : "var(--accent)";
+    const dot = el("circle", {cx: X(m.caught), cy: y + 2, r: 7, fill: c, stroke: "var(--panel)", "stroke-width": 2}, s);
+    txt(s, X(m.caught) + 12, y + 7, fmt(m.caught), {"font-size": 13, "font-weight": 600, fill: c});
+    txt(s, 760, y + 7, m.lead == null ? "–" : Math.round(m.lead) + " h", {"text-anchor": "middle", "font-size": 13.5});
+    txt(s, 870, y + 7, m.far == null ? "–" : Math.round(m.far * 100) + "%", {"text-anchor": "middle", "font-size": 13.5});
+    hover(dot, `<b>${r.name}</b><br>${fmt(m.caught)} of 8 caught` + (m.ci ? ` [${m.ci[0]}–${m.ci[1]}]` : "") +
+      `<br>held-out: ${fmt(m.held_out)} of 5` + (m.chance != null ? `<br>by chance: ${m.chance}` : "") +
+      (m.setting ? `<br>setting: ${m.setting}` : "") + (r.seeds > 1 ? `<br>mean of ${r.seeds} seeds` : ""));
+  });
+}
+function heat() {
+  const s = document.getElementById("heat"); clear(s);
+  const list = rows().filter(r => LV === "watch" || r.id !== "operators");
+  const L = 190, top = 58, cw = 100, ch = 40, H = top + ch * list.length + 14;
+  s.setAttribute("viewBox", `0 0 ${L + cw * 8 + 20} ${H}`);
+  const order = ["ca", "tx", "spp", "miso", "tva", "duk", "cple", "lgee"];
+  const groups = [["Heat 2020", 0, 1], ["Uri, Feb 2021", 1, 4], ["Elliott, Dec 2022", 4, 8]];
+  groups.forEach(([g, a, b]) => { el("line", {x1: L + a * cw + 4, x2: L + b * cw - 4, y1: 18, y2: 18, stroke: "var(--line)"}, s);
+    txt(s, L + (a + b) / 2 * cw, 13, g, {"text-anchor": "middle", "font-size": 12, fill: "var(--muted)"}); });
+  order.forEach((g, j) => { const e = evs.find(x => x.grid === g);
+    txt(s, L + j * cw + cw / 2, 38, short[g], {"text-anchor": "middle", "font-size": 12, "font-weight": 600});
+    txt(s, L + j * cw + cw / 2, 52, e.split === "held-out" ? "held-out" : "dev", {"text-anchor": "middle", "font-size": 10.5, fill: e.split === "held-out" ? "var(--accent)" : "var(--faint)"}); });
+  list.forEach((r, i) => { const y = top + i * ch;
+    txt(s, 10, y + ch / 2 + 5, r.name.replace(" (htm-monitor)", "").replace(" (zero-shot)", "").replace(" (public notices)", ""), {"font-size": 13.5, "font-weight": 600});
+    order.forEach((g, j) => { const c = D.cells[`${r.id}|${g}|${LV}`]; if (!c) return;
+      const x = L + j * cw;
+      const rect = el("rect", {x: x + 2, y: y + 2, width: cw - 4, height: ch - 4, rx: 4, fill: c.frac > 0 ? (r.id === "operators" ? "var(--watch)" : "var(--cell1)") : "var(--cell0)", "fill-opacity": c.frac > 0 ? .18 + .82 * c.frac : 1}, s);
+      const dark = c.frac >= .6;
+      const lab = c.frac === 0 ? "–" : (c.lead == null ? "during" : Math.round(c.lead) + " h");
+      txt(s, x + cw / 2, y + ch / 2 + (c.n > 1 && c.frac > 0 ? 0 : 5), lab, {"text-anchor": "middle", "font-size": 13, "font-weight": 600, fill: dark ? "var(--panel)" : "var(--ink)", "pointer-events": "none"});
+      if (c.n > 1 && c.frac > 0) txt(s, x + cw / 2, y + ch / 2 + 13, `${Math.round(c.frac * c.n)}/${c.n} runs`, {"text-anchor": "middle", "font-size": 10.5, fill: dark ? "var(--panel)" : "var(--muted)", "pointer-events": "none"});
+      hover(rect, `<b>${r.name}</b>, ${evs.find(x => x.grid === g).name}<br>` + (c.frac === 0 ? "missed" : `caught in ${Math.round(c.frac * c.n)} of ${c.n} run${c.n > 1 ? "s" : ""}` + (c.lead != null ? `<br>median lead ${Math.round(c.lead)} h` : "<br>only after the load shed began")));
+    });
+  });
+  document.getElementById("heatsub").textContent = (LV === "watch" ? "Watches: " : "Warnings: ") +
+    "share of runs that caught each event, with the median lead time in hours" + (LV === "warning" ? " (\"during\": the warning came only after the load shed began, which still counts)" : "") + ". The LSTM and HTM have five seeds each.";
+}
+function table() {
+  const th = document.querySelector("#lbtable thead"), tb = document.querySelector("#lbtable tbody");
+  th.innerHTML = `<tr><th>Method</th><th class="n">Watches caught</th><th class="n">held-out (of 5)</th><th class="n">lead</th><th class="n">Warnings caught</th><th class="n">held-out (of 5)</th><th class="n">False alarm ratio<br>watch / warning</th></tr>`;
+  tb.innerHTML = "";
+  rows().forEach(r => { const w = r.watch, a = r.warning || {};
+    const cell = m => m.caught == null ? "–" : `<b>${fmt(m.caught)}</b>` + (m.ci ? ` <span style="color:var(--muted)">[${m.ci[0]}–${m.ci[1]}]</span>` : "");
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${r.name}</td><td class="n">${cell(w)}</td><td class="n">${fmt(w.held_out)}</td><td class="n">${w.lead == null ? "–" : Math.round(w.lead) + " h"}</td>` +
+      `<td class="n">${cell(a)}</td><td class="n">${fmt(a.held_out)}</td><td class="n">${w.far == null ? "–" : Math.round(w.far * 100) + "% / " + Math.round(a.far * 100) + "%"}</td>`;
+    tb.appendChild(tr); });
+}
+document.querySelectorAll(".toggle button").forEach(b => b.addEventListener("click", () => {
+  LV = b.dataset.lv; document.querySelectorAll(".toggle button").forEach(x => x.setAttribute("aria-pressed", x === b)); dots(); heat(); }));
+dots(); heat(); table();
+</script>
+</body>
+</html>

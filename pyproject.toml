@@ -21,7 +21,8 @@ test = ["pytest>=7"]
 gridshedwatch = "gridshedwatch.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/gotham29/gridshedwatch"
+Homepage = "https://gotham29.github.io/gridshedwatch"
+Repository = "https://github.com/gotham29/gridshedwatch"
 
 [tool.setuptools]
 packages = ["gridshedwatch", "gridshedwatch.baselines"]

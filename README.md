@@ -2,6 +2,8 @@
 
 **A benchmark for early warning of grid load sheds, scored the way forecasters score weather warnings.**
 
+Website: **https://gotham29.github.io/gridshedwatch** (built from this repo by `scripts/build_site.py`).
+
 Since 2020, US grid operators have had to cut power for lack of supply eight times. The public
 was warned beforehand in four of them, and in none of the four during Winter Storm Elliott.
 Plenty of methods claim to detect grid trouble early, but there has been no shared test of

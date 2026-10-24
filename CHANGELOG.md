@@ -3,7 +3,14 @@
 The benchmark version (events, data, rules, scoring) and the package version are separate:
 a package patch release never changes a score.
 
-## Unreleased
+## 1.1.0 (2026-10-24)
+- Alerts track: `gridshedwatch score-alerts FILE` scores any method's watch and warning start
+  times (`gridshedwatch/alerts.py`), at the same budget plus a per-grid cap of 3x the budget.
+  Template: `examples/my_alerts.py`.
+- The five reference methods' alerts are published in `results/v1.0/alerts/`; scoring them
+  reproduces the v1.0 table exactly (`tests/test_alerts.py`). `gridshedwatch score --alerts-out`
+  writes any scores-track method's alerts in that format.
+- No v1.0 setting or score changed.
 - Website at https://gotham29.github.io/gridshedwatch (`docs/index.html`, built by
   `scripts/build_site.py` from `results/v1.0/` and the event files). No score changed.
 

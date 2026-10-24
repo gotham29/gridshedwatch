@@ -5,7 +5,24 @@ warnings: did the alert come before the event, how much notice did it give, and 
 it cry wolf. All settings below are in `gridshedwatch/config.py`; changing one makes a
 different benchmark.
 
-## What a method sees and produces
+## Two tracks
+
+- **Scores track** (`gridshedwatch score`): a method scores how unusual each of the five
+  signals is, every hour. GridShedWatch's shared rules turn the scores into alerts and choose
+  the method's setting from alert counts alone, so the method never sees how its alerts land on
+  the events. This is the controlled comparison; all five reference methods are in it.
+- **Alerts track** (`gridshedwatch score-alerts`): a method submits its watch and warning start
+  times directly (`gridshedwatch/alerts.py`). Any method can enter, using any data available at
+  the time it alerts (weather forecasts, for example). Verification is identical. Because the
+  submitter places the alerts, nothing stops tuning toward the eight known events, so entries
+  state what they looked at (see *Listing a result*), and the held-out column and future events
+  are the real test.
+
+Every reference method's alerts are also published as alerts-track files
+(`results/v1.0/alerts/`), and scoring those files reproduces the table exactly
+(`tests/test_alerts.py`), so both tracks measure the same thing.
+
+## What a method sees and produces (scores track)
 
 - **Input:** five hourly signals per grid, built from public EIA-930 demand (D), day-ahead
   demand forecast (DF) and net generation (NG) by one rule for every grid
@@ -47,6 +64,15 @@ chosen is the one whose median-grid alert rate (mean over seeds) is the largest 
 budget. This step reads alert counts only, never the events, so a method cannot be tuned
 toward the answers.
 
+## Alerts track: the budget check
+
+Alerts-track entries skip the operating-point step; instead each level must meet the same
+budget: the median grid at most 12 watches (2 warnings) per year, as in the scores track, and,
+because alerts can be placed grid by grid, no single grid above 3 times that (36 watches, 6
+warnings). Every reference method's alerts meet both (highest single-grid rates in v1.0: 17.7
+watches, 5.1 warnings per year). Entries over budget are scored but not listed. Starts must fall
+in the scored period (after the first week of the run); a grid with no rows has no alerts.
+
 ## Verification
 
 At that setting, for each level:
@@ -81,6 +107,17 @@ Same inputs, same shared rules, same budgets, each method's own label-free setti
 with randomness: 5 seeds. Pretrained models run as published, with any possible overlap of
 their training data with the test years stated.
 
+## Listing a result
+
+Open a pull request with the scores or alerts file (or a link), the code that produced it, and
+the output of `gridshedwatch score --json` or `score-alerts --json`, and answer: what data the
+method uses; whether every alert uses only data available at its time; and, for the alerts
+track, which of the eight events were looked at while the method was developed. Methods that use
+data beyond the five signals are listed separately. Every result is listed, including ones that
+beat the reference methods.
+
 ## Change log
 
 - 2026-10-23: v1.0 released. Settings frozen as above; reference results in `results/v1.0/`.
+- 2026-10-24: alerts track added (package 1.1.0). No v1.0 setting or score changed; the
+  reference methods' alerts are published in `results/v1.0/alerts/` and reproduce the table.

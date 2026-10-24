@@ -50,7 +50,7 @@ were false alarms. GridShedWatch asks the same of grid warnings, at two levels: 
 | LSTM forecaster | 6.4 [4.6-8.0] | 4.4 | 1.3 | 8 | 4.8 [2.8-6.8] | 2.8 | 0.3 | 99% / 94% |
 | HTM (htm-monitor) | 6 [4.6-7.2] | 4 | 1.4 | 56 | 5.6 [3.8-7.2] | 3.6 | 0.3 | 98% / 93% |
 
-Mean over 5 seeds for the LSTM and HTM. [a-b]: 5th-95th percentile with events resampled. Operators: public notices in the 7 days before onset, scored as watches.
+All five reference methods are in the scores track; no alerts-track entries yet. Mean over 5 seeds for the LSTM and HTM. [a-b]: 5th-95th percentile with events resampled. Operators: public notices in the 7 days before onset, scored as watches.
 <!-- leaderboard:end -->
 
 Every method except Chronos's watches catches far more than chance, and none leads at both
@@ -66,25 +66,47 @@ git clone https://github.com/gotham29/gridshedwatch && cd gridshedwatch
 pip install -e ".[test]"
 gridshedwatch info                       # the eight events and their timelines
 gridshedwatch score --oprule             # score the built-in operator-style rule
-python examples/my_method.py             # a template method: writes my_scores/
+python examples/my_method.py             # scores track template: writes my_scores/
 gridshedwatch score my_scores --name "My method"
+python examples/my_alerts.py             # alerts track template: writes my_alerts.csv
+gridshedwatch score-alerts my_alerts.csv --name "My rule"
 ```
 
 ## Add your method
 
-A method's only job is to say, for every grid, every hour and each of the five signals, how
-unusual that signal is now, as a score in [0, 1], using data up to that hour only. Write those
-scores in the submission layout (`my_scores/s<seed>/<grid>.csv`, see
+There are two ways in.
+
+**Scores track** (the controlled comparison). Your method says, for every grid, every hour and
+each of the five signals, how unusual that signal is now, as a score in [0, 1], using data up to
+that hour only. Write the scores in the submission layout (`my_scores/s<seed>/<grid>.csv`, see
 [gridshedwatch/submission.py](gridshedwatch/submission.py)) and run `gridshedwatch score`. The
 shared rules, the label-free budget step and the scoring are done for you, so your method
-cannot be tuned toward the eight events.
+cannot be tuned toward the eight events. Template: [examples/my_method.py](examples/my_method.py).
 
-- Use the five signals provided (and 2019 for calibration). Methods that use other data, such as
-  weather, are welcome and are listed separately.
-- If your method is random, submit several seeds (`s0`, `s1`, ...); results are averaged.
-- To add a result to the table, open a pull request with your scores (or a link to them), the
-  code that produced them, and the output of `gridshedwatch score --json`. Every result is
-  added, including ones that beat the reference methods.
+**Alerts track** (any method). If your method decides on its own when to raise a watch or a
+warning (a rule, a classifier, a weather-based model, a human forecaster), list when each alert
+started:
+
+```
+grid,level,start_utc,seed
+tx,watch,2021-02-11 03:00,0
+```
+
+and run `gridshedwatch score-alerts alerts.csv --name "My method"`. It is scored exactly like
+the scores track, at the same budget (median grid at most 12 watches and 2 warnings a year, no
+grid above 3 times that). Format: [gridshedwatch/alerts.py](gridshedwatch/alerts.py); template:
+[examples/my_alerts.py](examples/my_alerts.py); worked examples: the five reference methods'
+alerts in [results/v1.0/alerts/](results/v1.0/alerts/), which reproduce the table above.
+
+- Scores track: use the five signals provided (and 2019 for calibration). Alerts track: any data
+  available at the time of each alert. Methods that use data beyond the five signals are listed
+  separately.
+- If your method is random, submit several seeds; results are averaged.
+- To add a result to the table, open a pull request with your scores or alerts (or a link to
+  them), the code that produced them, the output of `--json`, and short answers on the data used
+  and, for the alerts track, which events you looked at while developing
+  ([docs/scoring.md](docs/scoring.md#listing-a-result)). Every result is added, including ones
+  that beat the reference methods.
 
 ## Reproducing v1.0
 
@@ -107,7 +129,8 @@ reference scores are the official v1.0 results. HTM's scores come from
 - Eight events, seven from two storms (Uri and Elliott). One storm of a new kind could change
   the picture.
 - Three events were used to design the shared rules; five were held out and scored once.
-- Methods see only five signals from EIA-930: no weather, outage or market data.
+- Reference methods see only five signals from EIA-930: no weather, outage or market data. The
+  alerts track is open to methods that use more.
 - The status quo row covers operators' public notices; their notices to the industry and their
   false alarms in ordinary years are not yet compiled.
 

@@ -1,7 +1,7 @@
 """Score a warning method on GridShedWatch.
 
-A method is a function `alerts(grid, level, threshold, persistence, seed) -> 0/1 array` on the
-grid's timebase. Most methods supply per-signal scores and use `from_scores`, which runs them
+Two tracks. Scores track (`evaluate`): a method is a function
+`alerts(grid, level, threshold, persistence, seed) -> 0/1 array` on the grid's timebase. Most methods supply per-signal scores and use `from_scores`, which runs them
 through the shared rules; a method with its own alert logic (the operator-style rule) supplies
 the function directly.
 
@@ -11,6 +11,9 @@ Steps, all fixed in advance:
      is the largest at or under the budget (12 watches, 2 warnings per grid-year). No labels.
   3. Verification at that setting: events caught, lead time, alerts per grid-year, false alarm
      ratio, with bootstrap intervals over events and a chance baseline.
+
+Alerts track (`evaluate_alerts`): a method submits its watch and warning start times directly.
+Step 3 is identical; steps 1-2 are replaced by a check that the entry is within the same budget.
 """
 from dataclasses import dataclass, field
 from typing import Callable, Dict, Iterable
@@ -19,7 +22,7 @@ import numpy as np
 import pandas as pd
 
 from . import data, rules
-from .config import BOOTSTRAP_DRAWS, BUDGET, CHANCE_SHIFTS, PERSISTENCE, THRESHOLDS, WINDOW
+from .config import BOOTSTRAP_DRAWS, BUDGET, GRID_CAP, CHANCE_SHIFTS, PERSISTENCE, THRESHOLDS, WINDOW
 
 H = pd.Timedelta(hours=1)
 LEVELS = ("watch", "warning")
@@ -57,14 +60,19 @@ def sweep(alert_fn: Callable, seeds: Iterable[int], grids: Iterable[str] = None)
                     for L in PERSISTENCE[level]:
                         al = alert_fn(g, level, thr, L, k)
                         st = rules.episodes(al, tb["timestamp"], warm)
-                        ver = verified(st, on, level)
-                        pre = [s for s in ver if s < on]
-                        caught = bool(pre) if level == "watch" else bool(ver)
-                        rows.append(dict(seed=k, grid=g, level=level, threshold=thr, L=L, rate=len(st) / yrs,
-                                         n_alerts=len(st), n_verified=len(ver), years=yrs, caught=caught,
-                                         lead_h=(on - min(pre)) / H if pre else np.nan,
-                                         starts="|".join(str(s) for s in st)))
+                        rows.append(dict(seed=k, grid=g, level=level, threshold=thr, L=L, **_row(st, g, level, yrs, on)))
     return pd.DataFrame(rows)
+
+
+def _row(st: list, grid: str, level: str, yrs: float = None, on: pd.Timestamp = None) -> dict:
+    """Verification of one seed x grid x level from its alert episode start times."""
+    yrs = data.scored_years(grid) if yrs is None else yrs
+    on = data.onset(grid) if on is None else on
+    ver = verified(st, on, level)
+    pre = [s for s in ver if s < on]
+    caught = bool(pre) if level == "watch" else bool(ver)
+    return dict(rate=len(st) / yrs, n_alerts=len(st), n_verified=len(ver), years=yrs, caught=caught,
+                lead_h=(on - min(pre)) / H if pre else np.nan, starts="|".join(str(s) for s in st))
 
 
 def operating_point(sw: pd.DataFrame) -> Dict[str, tuple]:
@@ -120,10 +128,37 @@ class Result:
 
 
 def evaluate(method: str, alert_fn: Callable, seeds: Iterable[int], chance: bool = True, seed: int = 0) -> Result:
+    """Scores track: sweep the shared settings, pick the label-free operating point, verify."""
     seeds = list(seeds)
     sw = sweep(alert_fn, seeds)
     op = operating_point(sw)
     rows = pd.concat([sw[(sw.level == lv) & np.isclose(sw.threshold, op[lv][0]) & (sw.L == op[lv][1])] for lv in LEVELS])
+    setting = {lv: f"threshold {op[lv][0]}, {op[lv][1]} h" for lv in LEVELS}
+    return Result(method, sw, op, *_verify(method, rows, seeds, setting, chance, seed))
+
+
+def evaluate_alerts(method: str, starts: dict, chance: bool = True, seed: int = 0) -> Result:
+    """Alerts track: score submitted alert episode starts {seed: {grid: {level: [Timestamp]}}} as they are.
+
+    No operating point is chosen. Instead each level is checked against the same budget (median-grid
+    rate at most the budget, as in the scores track) and, because alerts can be placed grid by grid,
+    no single grid above GRID_CAP times the budget. `<level>_within_budget` says whether the entry
+    is comparable with the table.
+    """
+    seeds = sorted(starts)
+    rows = [dict(seed=k, grid=g, level=lv, **_row(sorted(starts[k].get(g, {}).get(lv, [])), g, lv))
+            for k in seeds for g in data.grids() for lv in LEVELS]
+    rows = pd.DataFrame(rows)
+    setting = {lv: "submitted alerts" for lv in LEVELS}
+    rows, s = _verify(method, rows, seeds, setting, chance, seed)
+    for lv in LEVELS:
+        per_grid = rows[rows.level == lv].groupby("grid").rate.mean()
+        s[f"{lv}_max_grid_rate"] = round(float(per_grid.max()), 2)
+        s[f"{lv}_within_budget"] = bool(per_grid.median() <= BUDGET[lv] and per_grid.max() <= GRID_CAP * BUDGET[lv])
+    return Result(method, None, None, rows, s)
+
+
+def _verify(method, rows, seeds, setting, chance, seed):
     ev = data.events()
     rows = rows.assign(held_out=rows.grid.map(lambda g: ev[g]["split"] == "held-out"))
     rng = np.random.default_rng(seed)
@@ -134,8 +169,8 @@ def evaluate(method: str, alert_fn: Callable, seeds: Iterable[int], chance: bool
         held = per_event[[g for g in per_event.index if ev[g]["split"] == "held-out"]]
         per_seed = x.groupby("seed").agg(alerts=("n_alerts", "sum"), ver=("n_verified", "sum"),
                                          caught=("caught", "sum"), yrs=("years", "sum"))
-        s[f"{lv}_setting"] = f"threshold {op[lv][0]}, {op[lv][1]} h"
-        s[f"{lv}_median_grid_rate"] = round(op[lv][2], 2)
+        s[f"{lv}_setting"] = setting[lv]
+        s[f"{lv}_median_grid_rate"] = round(float(x.groupby("grid").rate.mean().median()), 2)
         s[f"{lv}_caught_all"] = round(float(per_event.sum()), 1)
         s[f"{lv}_caught_all_ci"] = "%.1f-%.1f" % _boot(per_event.to_numpy(float), rng)
         s[f"{lv}_caught_held_out"] = round(float(held.sum()), 1)
@@ -143,14 +178,15 @@ def evaluate(method: str, alert_fn: Callable, seeds: Iterable[int], chance: bool
         s[f"{lv}_caught_seed_range"] = f"{int(per_seed.caught.min())}-{int(per_seed.caught.max())}"
         s[f"{lv}_median_lead_h"] = round(float(np.nanmedian(x.lead_h)), 0) if x.lead_h.notna().any() else np.nan
         s[f"{lv}_alerts_per_grid_year"] = round(float((per_seed.alerts / per_seed.yrs).mean()), 1)
-        s[f"{lv}_false_alarm_ratio"] = round(float((1 - per_seed.ver / per_seed.alerts).mean()), 3)
+        s[f"{lv}_false_alarm_ratio"] = round(float((1 - per_seed.ver / per_seed.alerts).mean()), 3) \
+            if (per_seed.alerts > 0).all() else np.nan
         if chance:
             nulls = [_chance(g, lv, rng) for _, g in x.groupby("seed")]
             s[f"{lv}_chance_caught"] = round(float(np.mean([c for c, _, _ in nulls])), 1)
             s[f"{lv}_chance_median_lead_h"] = round(float(np.nanmedian([m for _, m, _ in nulls])), 0)
             s[f"{lv}_chance_p"] = round(float(np.mean([(d >= c_obs).mean() for (_, _, d), c_obs in
                                                        zip(nulls, x.groupby("seed").caught.sum())])), 3)
-    return Result(method, sw, op, rows, s)
+    return rows, s
 
 
 def status_quo() -> dict:

@@ -27,7 +27,7 @@ def main():
                      f"{cell(x.get('warning_caught_all'), x.get('warning_caught_all_ci'))} | {cell(x.get('warning_caught_held_out'))} | "
                      f"{cell(x.get('warning_chance_caught'))} | {far} |")
     lines.append("")
-    lines.append("Mean over 5 seeds for the LSTM and HTM. [a-b]: 5th-95th percentile with events resampled. "
+    lines.append("All five reference methods are in the scores track; no alerts-track entries yet. Mean over 5 seeds for the LSTM and HTM. [a-b]: 5th-95th percentile with events resampled. "
                  "Operators: public notices in the 7 days before onset, scored as watches.")
     table = "\n".join(lines)
     p = ROOT / "README.md"

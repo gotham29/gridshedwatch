@@ -24,6 +24,10 @@ WINDOW = {"watch": (168, 0), "warning": (168, 48)}
 
 # Alert budgets (episodes per grid per year), chosen without event labels.
 BUDGET = {"watch": 12.0, "warning": 2.0}
+# Alerts track only: no grid may exceed GRID_CAP x budget (alerts there can be placed grid by grid,
+# so a median alone could be met while flooding a few grids). Every reference method's alerts
+# meet it (highest single-grid rates in v1.0: 17.7 watches, 5.1 warnings per year).
+GRID_CAP = 3.0
 
 # Shared alert rules. Per-signal scores p in [0, 1] -> system alert.
 # Watch = rule A (both signal groups hot within 3 h), warning = rule D (within 24 h).

@@ -1,5 +1,7 @@
 # GridShedWatch
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23626223.svg)](https://doi.org/10.5281/zenodo.23626223) [![tests](https://github.com/gotham29/gridshedwatch/actions/workflows/tests.yml/badge.svg)](https://github.com/gotham29/gridshedwatch/actions/workflows/tests.yml)
+
 **A benchmark for early warning of grid load sheds, scored the way forecasters score weather warnings.**
 
 Website: **https://gotham29.github.io/gridshedwatch** (built from this repo by `scripts/build_site.py`).
@@ -26,6 +28,7 @@ were false alarms. GridShedWatch asks the same of grid warnings, at two levels: 
 | **Scoring** | Same alert budget for every method, chosen without looking at the events; events caught, lead time and false alarm ratio, with bootstrap intervals and a chance baseline ([docs/scoring.md](docs/scoring.md)) |
 | **Status quo** | Every operator notice in the week before each event, with times and sources ([gridshedwatch/operator_notices.yaml](gridshedwatch/operator_notices.yaml)) |
 | **Reference methods** | An operator-style rule, a seasonal z-score, an LSTM forecaster, Chronos-Bolt (zero-shot), and HTM ([gridshedwatch/baselines/](gridshedwatch/baselines/)) |
+| **Datasheet** | Motivation, composition, collection, intended uses, known biases and maintenance ([docs/datasheet.md](docs/datasheet.md)) |
 
 | Event | Grid | Shed at its worst | Split |
 |---|---|---|---|
@@ -139,5 +142,5 @@ version and scored with the rules frozen in v1.0.
 
 ## Citation and license
 
-See [CITATION.cff](CITATION.cff). Code: MIT. Event list, timelines, documentation and results:
+DOI: [10.5281/zenodo.23626223](https://doi.org/10.5281/zenodo.23626223) (archived on Zenodo with every release). See [CITATION.cff](CITATION.cff). Code: MIT. Event list, timelines, documentation and results:
 CC BY 4.0. EIA-930 data: U.S. public domain ([DATA_LICENSE.md](DATA_LICENSE.md)).

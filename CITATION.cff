@@ -6,5 +6,10 @@ date-released: 2026-10-24
 authors:
   - family-names: Heiserman
     given-names: Sam
+doi: 10.5281/zenodo.23626223
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23626223
+    description: Zenodo archive (all versions; resolves to the latest)
 repository-code: "https://github.com/gotham29/gridshedwatch"
 license: MIT

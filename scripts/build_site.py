@@ -3,7 +3,9 @@
     python scripts/build_site.py
 
 Everything the page shows comes from results/v1.0/ and the package's events.yaml and
-operator_notices.yaml; the layout lives in scripts/site_template.html.
+operator_notices.yaml; the layout lives in scripts/site_template.html. The link-preview
+image docs/og.png is a screenshot of scripts/og/card.html at 1200x630 (update its numbers by hand
+if the results change).
 """
 import json
 from pathlib import Path

@@ -1,0 +1,39 @@
+name: publish to PyPI
+# Runs when a GitHub release is published. Uses PyPI trusted publishing: no token is stored
+# anywhere; PyPI trusts this workflow in this repo (set up once at pypi.org, see CHANGELOG 1.1.1).
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check dist/*
+      - name: the built wheel installs and scores on its own
+        run: |
+          pip install dist/*.whl
+          cd "$RUNNER_TEMP"
+          gridshedwatch info
+          gridshedwatch score --oprule --no-chance
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

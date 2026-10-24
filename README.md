@@ -22,13 +22,13 @@ were false alarms. GridShedWatch asks the same of grid warnings, at two levels: 
 
 | | |
 |---|---|
-| **Events** | 8 supply-shortfall load sheds of at least 250 MW, Jan 2020 to Sep 2026, chosen by a stated rule from NERC's annual lists ([docs/events.md](docs/events.md)) |
-| **Data** | A frozen snapshot of EIA-930 hourly demand, day-ahead forecast and net generation for the 8 grids, 2019-2026, and the five signals built from it ([gridshedwatch/snapshot_v1.0/](gridshedwatch/snapshot_v1.0/), [gridshedwatch/data.py](gridshedwatch/data.py)) |
-| **Rules** | One shared rule that turns per-signal scores into watches and warnings, so methods differ only in how they score each hour ([gridshedwatch/rules.py](gridshedwatch/rules.py)) |
-| **Scoring** | Same alert budget for every method, chosen without looking at the events; events caught, lead time and false alarm ratio, with bootstrap intervals and a chance baseline ([docs/scoring.md](docs/scoring.md)) |
-| **Status quo** | Every operator notice in the week before each event, with times and sources ([gridshedwatch/operator_notices.yaml](gridshedwatch/operator_notices.yaml)) |
-| **Reference methods** | An operator-style rule, a seasonal z-score, an LSTM forecaster, Chronos-Bolt (zero-shot), and HTM ([gridshedwatch/baselines/](gridshedwatch/baselines/)) |
-| **Datasheet** | Motivation, composition, collection, intended uses, known biases and maintenance ([docs/datasheet.md](docs/datasheet.md)) |
+| **Events** | 8 supply-shortfall load sheds of at least 250 MW, Jan 2020 to Sep 2026, chosen by a stated rule from NERC's annual lists ([docs/events.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/events.md)) |
+| **Data** | A frozen snapshot of EIA-930 hourly demand, day-ahead forecast and net generation for the 8 grids, 2019-2026, and the five signals built from it ([gridshedwatch/snapshot_v1.0/](https://github.com/gotham29/gridshedwatch/tree/main/gridshedwatch/snapshot_v1.0/), [gridshedwatch/data.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/data.py)) |
+| **Rules** | One shared rule that turns per-signal scores into watches and warnings, so methods differ only in how they score each hour ([gridshedwatch/rules.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/rules.py)) |
+| **Scoring** | Same alert budget for every method, chosen without looking at the events; events caught, lead time and false alarm ratio, with bootstrap intervals and a chance baseline ([docs/scoring.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/scoring.md)) |
+| **Status quo** | Every operator notice in the week before each event, with times and sources ([gridshedwatch/operator_notices.yaml](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/operator_notices.yaml)) |
+| **Reference methods** | An operator-style rule, a seasonal z-score, an LSTM forecaster, Chronos-Bolt (zero-shot), and HTM ([gridshedwatch/baselines/](https://github.com/gotham29/gridshedwatch/tree/main/gridshedwatch/baselines/)) |
+| **Datasheet** | Motivation, composition, collection, intended uses, known biases and maintenance ([docs/datasheet.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/datasheet.md)) |
 
 | Event | Grid | Shed at its worst | Split |
 |---|---|---|---|
@@ -65,6 +65,7 @@ event are not meaningful. Per-event results: `results/v1.0/<method>_events.csv`.
 ## Quick start
 
 ```bash
+pip install gridshedwatch                # or, to work on the code:
 git clone https://github.com/gotham29/gridshedwatch && cd gridshedwatch
 pip install -e ".[test]"
 gridshedwatch info                       # the eight events and their timelines
@@ -82,9 +83,9 @@ There are two ways in.
 **Scores track** (the controlled comparison). Your method says, for every grid, every hour and
 each of the five signals, how unusual that signal is now, as a score in [0, 1], using data up to
 that hour only. Write the scores in the submission layout (`my_scores/s<seed>/<grid>.csv`, see
-[gridshedwatch/submission.py](gridshedwatch/submission.py)) and run `gridshedwatch score`. The
+[gridshedwatch/submission.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/submission.py)) and run `gridshedwatch score`. The
 shared rules, the label-free budget step and the scoring are done for you, so your method
-cannot be tuned toward the eight events. Template: [examples/my_method.py](examples/my_method.py).
+cannot be tuned toward the eight events. Template: [examples/my_method.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_method.py).
 
 **Alerts track** (any method). If your method decides on its own when to raise a watch or a
 warning (a rule, a classifier, a weather-based model, a human forecaster), list when each alert
@@ -97,9 +98,9 @@ tx,watch,2021-02-11 03:00,0
 
 and run `gridshedwatch score-alerts alerts.csv --name "My method"`. It is scored exactly like
 the scores track, at the same budget (median grid at most 12 watches and 2 warnings a year, no
-grid above 3 times that). Format: [gridshedwatch/alerts.py](gridshedwatch/alerts.py); template:
-[examples/my_alerts.py](examples/my_alerts.py); worked examples: the five reference methods'
-alerts in [results/v1.0/alerts/](results/v1.0/alerts/), which reproduce the table above.
+grid above 3 times that). Format: [gridshedwatch/alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/alerts.py); template:
+[examples/my_alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_alerts.py); worked examples: the five reference methods'
+alerts in [results/v1.0/alerts/](https://github.com/gotham29/gridshedwatch/tree/main/results/v1.0/alerts/), which reproduce the table above.
 
 - Scores track: use the five signals provided (and 2019 for calibration). Alerts track: any data
   available at the time of each alert. Methods that use data beyond the five signals are listed
@@ -108,7 +109,7 @@ alerts in [results/v1.0/alerts/](results/v1.0/alerts/), which reproduce the tabl
 - To add a result to the table, open a pull request with your scores or alerts (or a link to
   them), the code that produced them, the output of `--json`, and short answers on the data used
   and, for the alerts track, which events you looked at while developing
-  ([docs/scoring.md](docs/scoring.md#listing-a-result)). Every result is added, including ones
+  ([docs/scoring.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/scoring.md#listing-a-result)). Every result is added, including ones
   that beat the reference methods.
 
 ## Reproducing v1.0
@@ -142,5 +143,5 @@ version and scored with the rules frozen in v1.0.
 
 ## Citation and license
 
-DOI: [10.5281/zenodo.23626223](https://doi.org/10.5281/zenodo.23626223) (archived on Zenodo with every release). See [CITATION.cff](CITATION.cff). Code: MIT. Event list, timelines, documentation and results:
-CC BY 4.0. EIA-930 data: U.S. public domain ([DATA_LICENSE.md](DATA_LICENSE.md)).
+DOI: [10.5281/zenodo.23626223](https://doi.org/10.5281/zenodo.23626223) (archived on Zenodo with every release). See [CITATION.cff](https://github.com/gotham29/gridshedwatch/blob/main/CITATION.cff). Code: MIT. Event list, timelines, documentation and results:
+CC BY 4.0. EIA-930 data: U.S. public domain ([DATA_LICENSE.md](https://github.com/gotham29/gridshedwatch/blob/main/DATA_LICENSE.md)).

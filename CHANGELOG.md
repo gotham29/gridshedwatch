@@ -3,6 +3,13 @@
 The benchmark version (events, data, rules, scoring) and the package version are separate:
 a package patch release never changes a score.
 
+## 1.1.1 (2026-10-24)
+- Published on PyPI: `pip install gridshedwatch`. Releases publish automatically
+  (`.github/workflows/publish.yml`, PyPI trusted publishing).
+- DOI (Zenodo, all versions): 10.5281/zenodo.23626223. Benchmark datasheet: `docs/datasheet.md`.
+- `scripts/reproduce_v1.py` also writes the alerts-track files. README links made absolute so
+  they work on PyPI. No score changed.
+
 ## 1.1.0 (2026-10-24)
 - Alerts track: `gridshedwatch score-alerts FILE` scores any method's watch and warning start
   times (`gridshedwatch/alerts.py`), at the same budget plus a per-grid cap of 3x the budget.

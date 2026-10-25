@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gridshedwatch"
-version = "1.1.1"
+version = "1.1.2"
 description = "A benchmark for early warning of grid load sheds, scored the way forecasters score weather warnings"
 readme = "README.md"
 license = {text = "MIT"}
@@ -28,7 +28,7 @@ Repository = "https://github.com/gotham29/gridshedwatch"
 packages = ["gridshedwatch", "gridshedwatch.baselines"]
 
 [tool.setuptools.package-data]
-gridshedwatch = ["events.yaml", "operator_notices.yaml", "snapshot_v1.0/SHA256SUMS", "snapshot_v1.0/eia930/*.csv.gz"]
+gridshedwatch = ["events.yaml", "operator_notices.yaml", "snapshot_v1.0/SHA256SUMS", "snapshot_v1.0/bounds_2019.json", "snapshot_v1.0/eia930/*.csv.gz"]
 
 [tool.pytest.ini_options]
 markers = ["slow: rebuilds reference methods from the data (about a minute each)"]

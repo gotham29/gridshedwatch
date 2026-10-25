@@ -1,0 +1,181 @@
+{
+ "description": "0.1st-99.9th percentile of each signal over 2019, rounded to 0.01, frozen for v1.0. Computing them afresh can differ by 0.01 where a percentile falls on a rounding boundary (floating point), so the frozen values are the reference. Used by htm-monitor's official v1.0 runs.",
+ "bounds": {
+  "tx": {
+   "forecast_error": [
+    -7468.8,
+    4723.96
+   ],
+   "imbalance": [
+    -1019.48,
+    1069.24
+   ],
+   "demand_anom": [
+    -24899.16,
+    18381.85
+   ],
+   "net_generation_anom": [
+    -24608.97,
+    18196.61
+   ],
+   "imbalance_anom": [
+    -1020.75,
+    1196.91
+   ]
+  },
+  "ca": {
+   "forecast_error": [
+    -11272.39,
+    4918.8
+   ],
+   "imbalance": [
+    -6642.3,
+    16376.76
+   ],
+   "demand_anom": [
+    -11444.53,
+    15011.8
+   ],
+   "net_generation_anom": [
+    -13436.73,
+    11412.39
+   ],
+   "imbalance_anom": [
+    -12540.43,
+    9444.13
+   ]
+  },
+  "tva": {
+   "forecast_error": [
+    -3267.81,
+    1813.49
+   ],
+   "imbalance": [
+    -1363.29,
+    2331.32
+   ],
+   "demand_anom": [
+    -10744.13,
+    10698.88
+   ],
+   "net_generation_anom": [
+    -9525.89,
+    9425.89
+   ],
+   "imbalance_anom": [
+    -1602.57,
+    2292.45
+   ]
+  },
+  "spp": {
+   "forecast_error": [
+    -10523.63,
+    17193.24
+   ],
+   "imbalance": [
+    -4161.27,
+    7201.21
+   ],
+   "demand_anom": [
+    -12611.46,
+    10165.05
+   ],
+   "net_generation_anom": [
+    -12773.06,
+    10895.4
+   ],
+   "imbalance_anom": [
+    -4223.16,
+    6448.64
+   ]
+  },
+  "miso": {
+   "forecast_error": [
+    -10210.49,
+    2513.96
+   ],
+   "imbalance": [
+    -1139.37,
+    9927.83
+   ],
+   "demand_anom": [
+    -22248.77,
+    20525.71
+   ],
+   "net_generation_anom": [
+    -23242.62,
+    22839.13
+   ],
+   "imbalance_anom": [
+    -4944.9,
+    4600.97
+   ]
+  },
+  "duk": {
+   "forecast_error": [
+    -2490.51,
+    1484.12
+   ],
+   "imbalance": [
+    -2751.62,
+    2429.05
+   ],
+   "demand_anom": [
+    -6318.3,
+    5960.68
+   ],
+   "net_generation_anom": [
+    -6941.26,
+    6726.99
+   ],
+   "imbalance_anom": [
+    -2360.81,
+    2914.77
+   ]
+  },
+  "cple": {
+   "forecast_error": [
+    -1696.11,
+    1629.62
+   ],
+   "imbalance": [
+    -2595.57,
+    2109.57
+   ],
+   "demand_anom": [
+    -4138.22,
+    4897.99
+   ],
+   "net_generation_anom": [
+    -3614.21,
+    3606.42
+   ],
+   "imbalance_anom": [
+    -2381.22,
+    2676.1
+   ]
+  },
+  "lgee": {
+   "forecast_error": [
+    -1177.3,
+    687.75
+   ],
+   "imbalance": [
+    -1500.59,
+    322.58
+   ],
+   "demand_anom": [
+    -2278.22,
+    1960.38
+   ],
+   "net_generation_anom": [
+    -2461.88,
+    2444.16
+   ],
+   "imbalance_anom": [
+    -1134.88,
+    600.9
+   ]
+  }
+ }
+}

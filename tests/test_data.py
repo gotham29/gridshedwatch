@@ -50,3 +50,12 @@ def test_no_lookahead_in_seasonal_anomaly():
     w2[w2.index > t] = 0.0
     s2 = data.seasonal_anomaly(w2)
     assert s2[t] == s[t]
+
+
+def test_frozen_bounds_match_recomputed_within_rounding():
+    from gridshedwatch import data
+    for g in data.grids():
+        fz, rc = data.bounds_2019(g), data.bounds_2019(g, frozen=False)
+        assert set(fz) == set(rc)
+        for f in fz:
+            assert abs(fz[f][0] - rc[f][0]) <= 0.0101 and abs(fz[f][1] - rc[f][1]) <= 0.0101, (g, f)

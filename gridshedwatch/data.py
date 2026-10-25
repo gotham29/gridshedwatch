@@ -13,6 +13,7 @@ Signal rule (same for every grid, no look-ahead):
   4. Seasonal anomalies of D, NG and D - NG: value minus the median of the same hour 1-4 weeks
      earlier (2019 seeds the lags).
 """
+import json
 from functools import lru_cache
 
 import numpy as np
@@ -124,8 +125,20 @@ def operator_notices() -> dict:
     return yaml.safe_load((PACKAGE / "operator_notices.yaml").read_text())["events"]
 
 
-def bounds_2019(grid: str) -> dict:
-    """0.1st-99.9th percentile of each signal over 2019 (for methods that need a fixed scale)."""
+@lru_cache(maxsize=None)
+def _frozen_bounds() -> dict:
+    return json.loads((DATA / "bounds_2019.json").read_text())["bounds"]
+
+
+def bounds_2019(grid: str, frozen: bool = True) -> dict:
+    """0.1st-99.9th percentile of each signal over 2019 (for methods that need a fixed scale).
+
+    frozen=True (default) returns the v1.0 values shipped with the snapshot, identical on every
+    platform; frozen=False recomputes them, which can differ by 0.01 where a percentile falls on
+    a rounding boundary.
+    """
+    if frozen:
+        return {f: tuple(v) for f, v in _frozen_bounds()[grid].items()}
     cal = calibration(grid)
     return {f: (round(float(cal[f].dropna().quantile(0.001)), 2), round(float(cal[f].dropna().quantile(0.999)), 2))
             for f in SIGNALS}

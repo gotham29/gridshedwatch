@@ -3,6 +3,12 @@
 The benchmark version (events, data, rules, scoring) and the package version are separate:
 a package patch release never changes a score.
 
+## 1.1.2 (2026-10-25)
+- `data.bounds_2019()` returns frozen v1.0 values shipped in the snapshot
+  (`snapshot_v1.0/bounds_2019.json`). Recomputing them gave a 0.01 difference on two grids under
+  some platforms, where a percentile falls exactly on a rounding boundary; methods that use them
+  as fixed scales (htm-monitor's encoders) now get identical inputs everywhere. No score changed.
+
 ## 1.1.1 (2026-10-24)
 - Published on PyPI: `pip install gridshedwatch`. Releases publish automatically
   (`.github/workflows/publish.yml`, PyPI trusted publishing).

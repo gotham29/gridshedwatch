@@ -5,6 +5,7 @@
 **A benchmark for early warning of grid load sheds, scored the way forecasters score weather warnings.**
 
 Website: **https://gotham29.github.io/gridshedwatch** (built from this repo by `scripts/build_site.py`).
+The story behind it: [Grid emergency warnings don't have a scorecard. So I built one.](https://medium.com/@sheiser1/grid-emergency-warnings-dont-have-a-scorecard-so-i-built-one-0b504dd4e63c) (Medium).
 
 Since 2020, US grid operators have had to cut power for lack of supply eight times. The public
 was warned beforehand in four of them, and in none of the four during Winter Storm Elliott.

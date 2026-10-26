@@ -221,17 +221,27 @@ footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);f
     <div class="card"><h3>Alerts track</h3>
       <p style="margin:0">Any method that decides on its own when to alert: a rule, a classifier, a weather-based model, a forecaster's judgment. List when each watch and warning started. Any data available at the time is allowed.</p></div>
   </div>
-<pre><span style="color:var(--faint)"># install</span>
-pip install gridshedwatch
-
-<span style="color:var(--faint)"># scores track: my_scores/s0/&lt;grid&gt;.csv with columns p_&lt;signal&gt; in [0, 1]</span>
-gridshedwatch score my_scores --name "My method"
-
-<span style="color:var(--faint)"># alerts track: one row per alert, e.g.  tx,watch,2021-02-11 03:00</span>
-gridshedwatch score-alerts my_alerts.csv --name "My method"</pre>
+<h3 style="margin-top:28px">A worked example, in three steps</h3>
+  <p>Say your method is a simple rule of your own: raise a watch when demand has run unusually far above its forecast for three hours, and a warning when it has done so badly for six (<a href="https://github.com/gotham29/gridshedwatch/blob/main/examples/my_alerts.py">examples/my_alerts.py</a>).</p>
+  <p><b>1. Run it over the data and write down when each alert started,</b> one line per alert (add a <code>seed</code> column if your method is random):</p>
+<pre>grid,level,start_utc
+tx,watch,2021-02-09 12:00
+tx,warning,2021-02-09 21:00
+duk,watch,2022-12-24 00:00
+...</pre>
+  <p><b>2. Score it:</b></p>
+<pre>pip install gridshedwatch
+gridshedwatch score-alerts my_alerts.csv --name "My rule"</pre>
+  <p><b>3. Read the result:</b></p>
+<pre>My rule  (1 seed)
+  watch    submitted alerts   caught 3.0 of 8 [1.0-5.0], chance 0.9; held-out 2.0 of 5;
+                              median lead 131.0 h; 5.7 alerts/grid/yr; false alarm ratio 99%
+  warning  submitted alerts   caught 1.0 of 8 [0.0-3.0], chance 0.1; held-out 0.0 of 5;
+                              median lead 130.0 h; 0.6 alerts/grid/yr; false alarm ratio 97%</pre>
+  <p>The rule watched 3 of the 8 load sheds, where its alerts at random times would have caught about one, and warned Texas five days before Uri. It missed the rest. A method in the scores track hands over its hourly scores instead (<code>my_scores/s0/&lt;grid&gt;.csv</code>, columns <code>p_&lt;signal&gt;</code> in [0, 1]) and runs <code>gridshedwatch score my_scores</code>; template: <a href="https://github.com/gotham29/gridshedwatch/blob/main/examples/my_method.py">examples/my_method.py</a>.</p>
   <ul class="tight">
     <li>The budget: about 12 watches and 2 warnings per grid per year (median grid); in the alerts track, also no grid above 3 times that.</li>
-    <li>Templates for both tracks are in <a href="https://github.com/gotham29/gridshedwatch/tree/main/examples">examples/</a>, and the five reference methods' alerts are published in the alerts format, where they reproduce the table above.</li>
+    <li>The five reference methods' alerts are published in the alerts format (<a href="https://github.com/gotham29/gridshedwatch/tree/main/results/v1.0/alerts">results/v1.0/alerts</a>), where they reproduce the table above.</li>
     <li>Random methods submit several seeds; results are averaged.</li>
     <li>To be listed, open a pull request with your scores or alerts, the code that made them, the <code>--json</code> output, and short answers on the data used and, for the alerts track, which events you looked at while developing. Every result is added, including ones that beat the reference methods. Methods that use extra data, such as weather, are listed separately.</li>
   </ul>

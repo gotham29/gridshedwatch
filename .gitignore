@@ -9,3 +9,12 @@ reference_scores_v1.0.zip
 my_scores/
 results/scratch/
 .venv/
+
+# OS and editor files
+.DS_Store
+.idea/
+.vscode/
+.ipynb_checkpoints/
+
+# example output
+my_alerts.csv

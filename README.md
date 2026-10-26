@@ -13,10 +13,19 @@ whether a warning would actually have come in time. GridShedWatch is that test: 
 those eight load sheds, public hourly data, and one fixed scoring procedure that any method can
 be run through.
 
-The National Weather Service scores every warning it issues on three numbers read together:
-how many events were warned in advance, how much lead time people got, and how often warnings
-were false alarms. GridShedWatch asks the same of grid warnings, at two levels: a **watch**
-(about one a month per grid: something unusual is building) and a **warning** (two a year: act).
+The idea behind it isn't new. The National Weather Service has
+[scored its warnings for decades](https://doi.org/10.1175/waf-d-18-0120.1) on three numbers read
+together: how many events were warned in advance, how much notice people got, and how many
+warnings were false alarms. GridShedWatch applies that established framework to grid
+emergencies, at the weather service's own two levels: a **watch** (something unusual is
+building) and a **warning** (act now).
+
+![What operators announced in the week before each load shed](https://raw.githubusercontent.com/gotham29/gridshedwatch/main/docs/img/operator_notices.png)
+
+Uri and the 2020 California heat wave were forecast days out, and operators climbed a ladder of
+notices. Elliott built faster than the forecasts: in all four Elliott events, the public's first
+word was the blackout itself. That gap is what an independent warning signal could fill, and
+what GridShedWatch measures.
 
 ## What's in it
 
@@ -89,18 +98,42 @@ cannot be tuned toward the eight events. Template: [examples/my_method.py](https
 
 **Alerts track** (any method). If your method decides on its own when to raise a watch or a
 warning (a rule, a classifier, a weather-based model, a human forecaster), list when each alert
-started:
+started and score the list. For example, take a simple rule: raise a watch when demand has run
+unusually far above its forecast for three hours, and a warning when it has done so badly for
+six ([examples/my_alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_alerts.py)).
+Running it writes one line per alert (add a `seed` column if your method is random):
 
 ```
-grid,level,start_utc,seed
-tx,watch,2021-02-11 03:00,0
+grid,level,start_utc
+tx,watch,2021-02-09 12:00
+tx,warning,2021-02-09 21:00
+duk,watch,2022-12-24 00:00
+...
 ```
 
-and run `gridshedwatch score-alerts alerts.csv --name "My method"`. It is scored exactly like
-the scores track, at the same budget (median grid at most 12 watches and 2 warnings a year, no
-grid above 3 times that). Format: [gridshedwatch/alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/alerts.py); template:
-[examples/my_alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_alerts.py); worked examples: the five reference methods'
-alerts in [results/v1.0/alerts/](https://github.com/gotham29/gridshedwatch/tree/main/results/v1.0/alerts/), which reproduce the table above.
+Score it:
+
+```
+gridshedwatch score-alerts my_alerts.csv --name "My rule"
+```
+
+```
+My rule  (1 seed)
+  watch    submitted alerts   caught 3.0 of 8 [1.0-5.0], chance 0.9; held-out 2.0 of 5;
+                              median lead 131.0 h; 5.7 alerts/grid/yr; false alarm ratio 99%
+  warning  submitted alerts   caught 1.0 of 8 [0.0-3.0], chance 0.1; held-out 0.0 of 5;
+                              median lead 130.0 h; 0.6 alerts/grid/yr; false alarm ratio 97%
+```
+
+The rule watched 3 of the 8 load sheds where its alerts at random times would have caught about
+one, and warned Texas five days before Uri; it missed the rest. Alerts-track entries are scored
+exactly like the scores track, at the same budget (median grid at most 12 watches and 2 warnings
+a year, no grid above 3 times that); an entry over budget is flagged. Format:
+[gridshedwatch/alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/alerts.py).
+The five reference methods' alerts, in [results/v1.0/alerts/](https://github.com/gotham29/gridshedwatch/tree/main/results/v1.0/alerts/),
+are further worked examples and reproduce the table above.
+
+![How one method is scored on one grid](https://raw.githubusercontent.com/gotham29/gridshedwatch/main/docs/img/scoring_example.png)
 
 - Scores track: use the five signals provided (and 2019 for calibration). Alerts track: any data
   available at the time of each alert. Methods that use data beyond the five signals are listed

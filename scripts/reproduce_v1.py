@@ -15,15 +15,12 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from gridshedwatch import alerts, benchmark, data, submission  # noqa: E402
-from gridshedwatch.baselines import oprule, zscore  # noqa: E402
-
-LABEL = {"oprule": "Operator-style rule", "zscore": "Seasonal z-score", "chronos": "Chronos-Bolt (zero-shot)",
-         "lstm": "LSTM forecaster", "htm": "HTM (htm-monitor)"}
+from gridshedwatch.baselines import LABEL, V1_METHODS, oprule, zscore  # noqa: E402
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--method", nargs="+", default=list(LABEL))
+    ap.add_argument("--method", nargs="+", default=V1_METHODS, choices=list(LABEL))
     ap.add_argument("--no-chance", action="store_true")
     ap.add_argument("--out", type=Path, default=ROOT / "results" / "v1.0")
     a = ap.parse_args()

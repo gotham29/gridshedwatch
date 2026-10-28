@@ -3,6 +3,16 @@
 The benchmark version (events, data, rules, scoring) and the package version are separate:
 a package patch release never changes a score.
 
+## Unreleased
+- Four more reference methods in `gridshedwatch.baselines`: a gradient-boosted forecaster
+  (LightGBM), PatchTST, Sub-PCA and random scores. Not part of the v1.0 table; they will be
+  scored in v2.0.
+- `baselines.METHODS` lists every reference method once; `scripts/make_scores.py <method>`
+  computes any of them in the submission layout and resumes if stopped.
+- `scripts/per_hour_metrics.py`: the reference methods under the usual per-hour metrics (TSB-AD's
+  implementation), compared with event-level scoring. Results in `results/v1.0/per_hour/`.
+  No v1.0 score changed.
+
 ## 1.1.2 (2026-10-25)
 - `data.bounds_2019()` returns frozen v1.0 values shipped in the snapshot
   (`snapshot_v1.0/bounds_2019.json`). Recomputing them gave a 0.01 difference on two grids under

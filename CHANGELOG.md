@@ -11,6 +11,10 @@ a package patch release never changes a score.
   computes any of them in the submission layout and resumes if stopped.
 - `scripts/per_hour_metrics.py`: the reference methods under the usual per-hour metrics (TSB-AD's
   implementation), compared with event-level scoring. Results in `results/v1.0/per_hour/`.
+- `scripts/robustness.py`: significance tests between methods, sensitivity to alert budgets and
+  windows, the earlier shared-setting comparison, results by storm, and seed ensembles. Results in
+  `results/v1.0/robustness/`. `benchmark.evaluate`, `sweep` and `operating_point` take optional
+  `budget` and `window` arguments for this; the defaults are the v1.0 settings.
   No v1.0 score changed.
 
 ## 1.1.2 (2026-10-25)

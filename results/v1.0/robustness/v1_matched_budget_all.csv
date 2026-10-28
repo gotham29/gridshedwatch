@@ -1,0 +1,18 @@
+method,watches,warnings
+Operator-style rule,5.0,2.0
+Seasonal z-score,5.0,6.0
+Chronos-Bolt (zero-shot),1.0,3.0
+LSTM forecaster,6.4,4.8
+LSTM forecaster (5-seed ensemble),7.0,6.0
+"LSTM forecaster (5-seed mean, check)",6.0,6.0
+HTM (htm-monitor),6.0,5.6
+HTM (htm-monitor) (5-seed ensemble),1.0,4.0
+"HTM (htm-monitor) (5-seed mean, check)",3.0,5.0
+Sub-PCA,2.0,3.0
+Gradient-boosted forecaster,7.0,7.0
+Gradient-boosted forecaster (5-seed ensemble),7.0,6.0
+"Gradient-boosted forecaster (5-seed mean, check)",7.0,6.0
+PatchTST forecaster,5.4,5.8
+PatchTST forecaster (5-seed ensemble),7.0,6.0
+"PatchTST forecaster (5-seed mean, check)",5.0,5.0
+Random scores,0.4,0.2

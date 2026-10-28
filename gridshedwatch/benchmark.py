@@ -39,15 +39,15 @@ def from_scores(scores: Dict[int, Dict[str, pd.DataFrame]]) -> Callable:
     return fn
 
 
-def verified(starts: list, onset: pd.Timestamp, level: str) -> list:
-    before, after = WINDOW[level]
+def verified(starts: list, onset: pd.Timestamp, level: str, window: dict = None) -> list:
+    before, after = (window or WINDOW)[level]
     lo, hi = onset - before * H, onset + after * H
     if after == 0:
         return [s for s in starts if lo <= s < onset]
     return [s for s in starts if lo <= s <= hi]
 
 
-def sweep(alert_fn: Callable, seeds: Iterable[int], grids: Iterable[str] = None) -> pd.DataFrame:
+def sweep(alert_fn: Callable, seeds: Iterable[int], grids: Iterable[str] = None, window: dict = None) -> pd.DataFrame:
     rows = []
     for k in seeds:
         for g in grids or data.grids():
@@ -60,29 +60,30 @@ def sweep(alert_fn: Callable, seeds: Iterable[int], grids: Iterable[str] = None)
                     for L in PERSISTENCE[level]:
                         al = alert_fn(g, level, thr, L, k)
                         st = rules.episodes(al, tb["timestamp"], warm)
-                        rows.append(dict(seed=k, grid=g, level=level, threshold=thr, L=L, **_row(st, g, level, yrs, on)))
+                        rows.append(dict(seed=k, grid=g, level=level, threshold=thr, L=L, **_row(st, g, level, yrs, on, window)))
     return pd.DataFrame(rows)
 
 
-def _row(st: list, grid: str, level: str, yrs: float = None, on: pd.Timestamp = None) -> dict:
+def _row(st: list, grid: str, level: str, yrs: float = None, on: pd.Timestamp = None, window: dict = None) -> dict:
     """Verification of one seed x grid x level from its alert episode start times."""
     yrs = data.scored_years(grid) if yrs is None else yrs
     on = data.onset(grid) if on is None else on
-    ver = verified(st, on, level)
+    ver = verified(st, on, level, window)
     pre = [s for s in ver if s < on]
     caught = bool(pre) if level == "watch" else bool(ver)
     return dict(rate=len(st) / yrs, n_alerts=len(st), n_verified=len(ver), years=yrs, caught=caught,
                 lead_h=(on - min(pre)) / H if pre else np.nan, starts="|".join(str(s) for s in st))
 
 
-def operating_point(sw: pd.DataFrame) -> Dict[str, tuple]:
+def operating_point(sw: pd.DataFrame, budget: dict = None) -> Dict[str, tuple]:
     """Label-free setting per level: largest median-grid alert rate within budget."""
+    budget = budget or BUDGET
     op = {}
     for level in LEVELS:
         x = sw[sw.level == level]
         per_grid = x.groupby(["threshold", "L", "grid"]).rate.mean()
         med = per_grid.groupby(["threshold", "L"]).median()
-        ok = med[med <= BUDGET[level]]
+        ok = med[med <= budget[level]]
         if ok.empty:
             raise ValueError(f"no {level} setting within budget")
         best = ok.sort_values(kind="mergesort").index[-1]
@@ -96,9 +97,9 @@ def _boot(v: np.ndarray, rng) -> tuple:
     return float(lo), float(hi)
 
 
-def _chance(rows: pd.DataFrame, level: str, rng) -> tuple:
+def _chance(rows: pd.DataFrame, level: str, rng, window: dict = None) -> tuple:
     """Expected catches and median lead if the same alerts were shifted to random times."""
-    before, after = WINDOW[level]
+    before, after = (window or WINDOW)[level]
     caught = np.zeros(CHANCE_SHIFTS)
     leads = []
     for _, x in rows.iterrows():
@@ -127,14 +128,18 @@ class Result:
     summary: dict = field(default=None)
 
 
-def evaluate(method: str, alert_fn: Callable, seeds: Iterable[int], chance: bool = True, seed: int = 0) -> Result:
-    """Scores track: sweep the shared settings, pick the label-free operating point, verify."""
+def evaluate(method: str, alert_fn: Callable, seeds: Iterable[int], chance: bool = True, seed: int = 0,
+             budget: dict = None, window: dict = None) -> Result:
+    """Scores track: sweep the shared settings, pick the label-free operating point, verify.
+
+    budget and window default to the v1.0 settings (config.BUDGET, config.WINDOW); other values are
+    for sensitivity analyses and make a different benchmark."""
     seeds = list(seeds)
-    sw = sweep(alert_fn, seeds)
-    op = operating_point(sw)
+    sw = sweep(alert_fn, seeds, window=window)
+    op = operating_point(sw, budget)
     rows = pd.concat([sw[(sw.level == lv) & np.isclose(sw.threshold, op[lv][0]) & (sw.L == op[lv][1])] for lv in LEVELS])
     setting = {lv: f"threshold {op[lv][0]}, {op[lv][1]} h" for lv in LEVELS}
-    return Result(method, sw, op, *_verify(method, rows, seeds, setting, chance, seed))
+    return Result(method, sw, op, *_verify(method, rows, seeds, setting, chance, seed, window))
 
 
 def evaluate_alerts(method: str, starts: dict, chance: bool = True, seed: int = 0) -> Result:
@@ -158,7 +163,7 @@ def evaluate_alerts(method: str, starts: dict, chance: bool = True, seed: int = 
     return Result(method, None, None, rows, s)
 
 
-def _verify(method, rows, seeds, setting, chance, seed):
+def _verify(method, rows, seeds, setting, chance, seed, window=None):
     ev = data.events()
     rows = rows.assign(held_out=rows.grid.map(lambda g: ev[g]["split"] == "held-out"))
     rng = np.random.default_rng(seed)
@@ -181,7 +186,7 @@ def _verify(method, rows, seeds, setting, chance, seed):
         s[f"{lv}_false_alarm_ratio"] = round(float((1 - per_seed.ver / per_seed.alerts).mean()), 3) \
             if (per_seed.alerts > 0).all() else np.nan
         if chance:
-            nulls = [_chance(g, lv, rng) for _, g in x.groupby("seed")]
+            nulls = [_chance(g, lv, rng, window) for _, g in x.groupby("seed")]
             s[f"{lv}_chance_caught"] = round(float(np.mean([c for c, _, _ in nulls])), 1)
             s[f"{lv}_chance_median_lead_h"] = round(float(np.nanmedian([m for _, m, _ in nulls])), 0)
             s[f"{lv}_chance_p"] = round(float(np.mean([(d >= c_obs).mean() for (_, _, d), c_obs in

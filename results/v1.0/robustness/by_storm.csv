@@ -1,0 +1,20 @@
+,watch,watch,watch,warning,warning,warning
+storm,Aug 2020 heat wave,Elliott,Uri,Aug 2020 heat wave,Elliott,Uri
+method,,,,,,
+Chronos-Bolt (zero-shot),0.0,1.0,0.0,0.0,2.0,1.0
+Gradient-boosted forecaster,0.0,4.0,3.0,0.0,4.0,3.0
+Gradient-boosted forecaster (5-seed ensemble),0.0,4.0,3.0,0.0,4.0,2.0
+"Gradient-boosted forecaster (5-seed mean, check)",0.0,4.0,3.0,0.0,4.0,2.0
+HTM (htm-monitor),0.2,3.6,2.2,0.0,3.8,1.8
+HTM (htm-monitor) (5-seed ensemble),0.0,0.0,1.0,1.0,1.0,2.0
+"HTM (htm-monitor) (5-seed mean, check)",0.0,1.0,2.0,0.0,4.0,1.0
+LSTM forecaster,0.0,4.0,2.4,0.0,2.8,2.0
+LSTM forecaster (5-seed ensemble),0.0,4.0,3.0,0.0,4.0,2.0
+"LSTM forecaster (5-seed mean, check)",0.0,4.0,2.0,0.0,4.0,2.0
+Operator-style rule,0.0,2.0,3.0,0.0,0.0,2.0
+PatchTST forecaster,0.4,4.0,1.0,0.6,4.0,1.2
+PatchTST forecaster (5-seed ensemble),1.0,4.0,2.0,1.0,4.0,1.0
+"PatchTST forecaster (5-seed mean, check)",0.0,4.0,1.0,0.0,4.0,1.0
+Random scores,0.0,0.2,0.2,0.0,0.0,0.2
+Seasonal z-score,0.0,2.0,3.0,0.0,3.0,3.0
+Sub-PCA,0.0,2.0,0.0,0.0,2.0,1.0

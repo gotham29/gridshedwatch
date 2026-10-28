@@ -78,3 +78,39 @@ candidates:
     reason: "Highest level EEA 2, below the top-level test. ERCOT declares EEA 3 only with controlled outages, so it cannot have a Tier 2 event (strict EEA 3, approved Oct 28)"
     sources:
       ercot_release: {title: "ERCOT has initiated Energy Emergency Alert Level 2", publisher: ERCOT, url: "https://www.ercot.com/news/release/2023-09-06-ercot-has-initiated"}
+
+# Leads from DOE OE-417 (EIA Electric Power Monthly, Table B.2 for 2020 and 2021, Table B.1 for
+# 2022; files in tier2_sources/). Every public appeal or emergency row outside the Tier 1 storms,
+# each still to be checked against the four tests. OE-417 is a cross-check, not a complete list:
+# the 2022 table has no row for CAISO's Sept 6, 2022 EEA 3. No OE-417 summaries are public after
+# 2022 (the DOE site is offline), so 2023-2026 rely on operator logs and NERC and WECC reports.
+oe417_leads:
+  - {date: 2020-08-01, entity: American Electric Power - Texas, region: TRE, type: public appeal, cause: severe weather, mw: null, note: "Hurricane Hanna period; check whether supply or wire damage"}
+  - {date: 2020-08-16, entity: California ISO, region: WECC, type: public appeal, mw: 712, note: "Aug 2020 heat wave after the Aug 14-15 sheds; CAISO's 2020 Stage 3 count (2) is Aug 14 and 15, so likely Stage 2 only"}
+  - {date: 2020-08-17, entity: California ISO, region: WECC, type: public appeal, mw: 829, note: same}
+  - {date: 2020-08-18, entity: California ISO, region: WECC, type: public appeal, mw: 917, note: same}
+  - {date: 2020-08-18, entity: NV Energy, region: WECC, type: public appeal, mw: 7800, note: "EIA-930 NEVP; check EEA level"}
+  - {date: 2020-08-18, entity: Arizona Public Service Co, region: WECC, type: public appeal, mw: 0, note: "EIA-930 AZPS; check EEA level"}
+  - {date: 2020-08-19, entity: City of Redding, region: WECC, type: public appeal, mw: null, note: "Inside BANC in EIA-930; check EEA level"}
+  - {date: 2020-08-19, entity: NV Energy, region: WECC, type: public appeal, mw: 7500, note: "check EEA level"}
+  - {date: 2020-08-19, entity: Salt River Project, region: WECC, type: public appeal, mw: 1200, note: "EIA-930 SRP; check EEA level"}
+  - {date: 2020-08-23, entity: Southwestern Public Service, region: TRE, type: public appeal, mw: null, note: "Inside SWPP in EIA-930; check"}
+  - {date: 2020-09-05, entity: California ISO, region: WECC, type: public appeal, mw: 986, note: "Labor Day 2020 heat; likely Stage 2"}
+  - {date: 2020-09-06, entity: California ISO, region: WECC, type: public appeal, mw: 1071, note: same}
+  - {date: 2020-09-06, entity: NV Energy, region: WECC, type: public appeal, mw: 8180, note: "check EEA level"}
+  - {date: 2021-04-13, entity: ERCOT, region: TRE, type: public appeal, mw: 0, note: "No EEA declared as far as known; ERCOT cannot be Tier 2 under strict EEA 3"}
+  - {date: 2021-05-06, entity: Empire District Electric Co, region: SERC, type: public appeal, mw: 0, note: "Inside SWPP; check"}
+  - {date: 2021-06-14, entity: ERCOT, region: TRE, type: public appeal, mw: null, note: "Conservation appeal, no EEA 3 possible without shed"}
+  - {date: 2021-06-28, entity: Avista Corp, region: WECC, type: public appeal, mw: 44, note: "Pacific Northwest heat dome; Avista also had rotating outages, reported as distribution overload; check cause"}
+  - {date: 2021-09-09, entity: NV Energy, region: WECC, type: public appeal, mw: 8000, note: "system operations; check EEA level"}
+  - {date: 2021-11-09, entity: Clarksdale Public Utilities, region: SERC, type: public appeal, mw: null, note: "Small municipal utility inside MISO; likely local"}
+  - {date: 2022-06-10, entity: El Paso Electric, region: TRE, type: public appeal, mw: 0, note: "Cause listed as physical attack/vandalism; likely excluded"}
+  - {date: 2022-07-10, entity: ERCOT, region: TRE, type: public appeal, mw: null, note: "July 2022 conservation appeals; no EEA"}
+  - {date: 2022-07-13, entity: ERCOT, region: TRE, type: public appeal, mw: null, note: same}
+
+# Firm load sheds found in OE-417 that the v1.0 event list does not show. Each must be explained
+# in docs/events.md (below the 250 MW floor, or not supply-caused), or it is a missed Tier 1 event.
+tier1_audit:
+  - {date: 2020-08-13, entity: El Paso Electric, mw: 218, cause: system operations, window_local: "1:51-4:27 PM", note: "Below the 250 MW floor; add to the events.md exclusion table"}
+  - {date: 2020-09-05, entity: Imperial Irrigation District, mw: 100, cause: severe weather, window_local: "5:25-8:55 PM", note: "Below the 250 MW floor; add to the exclusion table"}
+  - {date: 2022-06-05, entity: California ISO, mw: null, cause: generation inadequacy, window_local: "3:20-8:12 PM", note: "Firm load shed of 100 MW or more, filed by CAISO (possibly as Reliability Coordinator for another balancing authority). NERC's 2022 report notes four operator-initiated load sheds in June from Southwest heat. Must identify the entity and MW: a possible missed Tier 1 event"}

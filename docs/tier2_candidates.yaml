@@ -1,0 +1,80 @@
+# GridShedWatch Tier 2: every candidate checked, with the four tests and the decision.
+# The rule (docs/events.md, Tier 2) is fixed before any candidate is scored. A candidate is
+# included only if all four tests pass. Excluded candidates stay in this file with the reason,
+# so the list can be audited. Included events move to the benchmark's event file at release.
+#
+# Tests
+#   top_level:       EEA 3 (NERC EOP-011: firm load interruption imminent or in progress) or the
+#                    operator's documented equivalent, declared for lack of supply or reserves
+#   material_action: at least one documented emergency action (demand response or interruptible
+#                    load, emergency imports, reserves below requirement, curtailment of large
+#                    customers, or a public conservation appeal made under the emergency)
+#   no_firm_shed:    the operator did not direct firm load shed (otherwise the event is Tier 1)
+#   verifiable:      declaration time from an official source, plus an independent second source
+#
+# Fields: id, grid, eia930_respondent, date_local, declared (level, local, utc), tests
+# (each: pass true / false / null while pending, and basis), actions, decision
+# (include / exclude / pending), reason, sources. Times: local as published, utc converted.
+
+version: tier2-draft
+
+# What each operator's levels mean, so "EEA 3 or equivalent" is applied the same way everywhere.
+levels:
+  CISO:
+    eea3: "EEA 3: all actions exhausted, reserves cannot be met, firm load shed possible (CAISO Emergency Notifications fact sheet)"
+    note: "Before 2022 CAISO used Stage 1/2/3; Stage 3 = load interruption imminent or in progress."
+    source: https://www.caiso.com/documents/emergency-notifications-fact-sheet.pdf
+  ERCO:
+    eea3: "EEA 3: reserves below 1,500 MW or frequency below 59.8 Hz; ERCOT orders controlled outages"
+    note: "In ERCOT an EEA 3 always comes with firm load shed, so an ERCOT EEA 3 is Tier 1, never Tier 2."
+    source: https://www.ercot.com/files/docs/2023/06/20/2024-Energy-Emergency-Alert-Overview.pdf
+
+candidates:
+  - id: ciso_2022-09-06
+    grid: California (CAISO)
+    eia930_respondent: CISO
+    date_local: 2022-09-06
+    declared: {level: EEA 3, local: "2022-09-06 17:17 PDT", utc: "2022-09-07 00:17", ended_local: "20:00 PDT"}
+    tests:
+      top_level: {pass: true, basis: "CAISO declared EEA 3 effective 5:17 p.m. after supplies fell short of demand and reserves"}
+      material_action: {pass: true, basis: "EEA 2 earlier that day enabled emergency demand response; statewide conservation appeal; record peak 52,061 MW"}
+      no_firm_shed: {pass: null, basis: "CAISO ordered no rotating outages (EEA 3 ended 20:00 without load shed). To check: reports that some NCPA member utilities cut load briefly that evening"}
+      verifiable: {pass: true, basis: "CAISO news release (declaration time); Utility Dive (time, end, no load shed)"}
+    actions:
+      - {action: emergency demand response enabled under EEA 2, mw: null, source: caiso_release}
+      - {action: public conservation appeal, mw: null, source: utilitydive}
+    decision: pending
+    reason: "Passes three tests; no-firm-shed test pending the NCPA check"
+    sources:
+      caiso_release: {title: "Rotating power outages are now possible to protect grid", publisher: CAISO, url: "https://www.caiso.com/Documents/rotating-power-outages-are-now-possible-to-protect-grid.pdf"}
+      utilitydive: {title: "California ISO narrowly avoids outages but warns as peak demand hits record", publisher: Utility Dive, url: "https://utilitydive.com/news/california-iso-narrowly-avoids-outages-but-warns-as-peak-demand-hits-record/631280"}
+
+  - id: ciso_2022-09-05
+    grid: California (CAISO)
+    eia930_respondent: CISO
+    date_local: 2022-09-05
+    declared: {level: EEA 2, local: "2022-09-05 18:30 PDT", utc: "2022-09-06 01:30"}
+    tests:
+      top_level: {pass: false, basis: "Highest level was EEA 2"}
+      material_action: {pass: true, basis: "Emergency demand response enabled; Flex Alert"}
+      no_firm_shed: {pass: true, basis: "No load shed"}
+      verifiable: {pass: true, basis: "CAISO grid emergencies history report"}
+    decision: exclude
+    reason: "Highest level EEA 2, below the top-level test"
+    sources:
+      caiso_history: {title: "Grid emergencies history report, 1998 to present", publisher: CAISO, url: "https://www.caiso.com/documents/grid-emergencies-history-report-1998-to-present.pdf"}
+
+  - id: erco_2023-09-06
+    grid: Texas (ERCOT)
+    eia930_respondent: ERCO
+    date_local: 2023-09-06
+    declared: {level: EEA 2, local: null, utc: null}   # time not in the ERCOT release; to source
+    tests:
+      top_level: {pass: false, basis: "Highest level EEA 2; in ERCOT an EEA 3 means controlled outages"}
+      material_action: {pass: true, basis: "Reserves below 1,750 MW and declining; demand response deployed; conservation appeal 6-9 p.m. CT"}
+      no_firm_shed: {pass: true, basis: "No controlled outages"}
+      verifiable: {pass: null, basis: "ERCOT release confirms EEA 2 but not its time; declaration time and a second source still to find"}
+    decision: exclude
+    reason: "Highest level EEA 2, below the top-level test. ERCOT declares EEA 3 only with controlled outages, so it cannot have a Tier 2 event (strict EEA 3, approved Oct 28)"
+    sources:
+      ercot_release: {title: "ERCOT has initiated Energy Emergency Alert Level 2", publisher: ERCOT, url: "https://www.ercot.com/news/release/2023-09-06-ercot-has-initiated"}

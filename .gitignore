@@ -19,3 +19,4 @@ results/scratch/
 # example output
 my_alerts.csv
 results/v1.0/per_hour/per_hour_raw.jsonl
+tier2_sources/

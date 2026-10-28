@@ -36,7 +36,7 @@ def main():
             sc = submission.load(ROOT / "reference_scores" / m)
             fn, seeds = benchmark.from_scores(sc), sorted(sc)
         r = benchmark.evaluate(LABEL[m], fn, seeds, chance=not a.no_chance)
-        r.rows.drop(columns=["starts"]).to_csv(a.out / f"{m}_events.csv", index=False)
+        r.rows.drop(columns=["starts", "event", "onset"]).to_csv(a.out / f"{m}_events.csv", index=False)   # v1.0: event = grid
         alerts.write(alerts.from_rows(r.rows), a.out / "alerts" / f"{m}.csv")
         rows.append(r.summary)
         print(json.dumps(r.summary), flush=True)

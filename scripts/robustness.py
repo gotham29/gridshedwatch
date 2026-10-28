@@ -77,7 +77,7 @@ def reverify(sw, window):
     cols = []
     for r in sw.itertuples():
         st = [pd.Timestamp(s) for s in str(r.starts).split("|") if s and s != "nan"]
-        cols.append(benchmark._row(st, r.grid, r.level, r.years, window=w))
+        cols.append(benchmark._row(st, r.grid, r.level, r.years, pd.Timestamp(r.onset), window=w))   # v1.0: one event per grid
     return sw.assign(**pd.DataFrame(cols, index=sw.index)[["n_verified", "caught", "lead_h"]])
 
 

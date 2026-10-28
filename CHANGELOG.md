@@ -16,6 +16,10 @@ a package patch release never changes a score.
   `results/v1.0/robustness/`. `benchmark.evaluate`, `sweep` and `operating_point` take optional
   `budget` and `window` arguments for this; the defaults are the v1.0 settings.
   No v1.0 score changed.
+- Scoring handles several events per grid: `data.event_list()` lists events (v1.0: one per grid,
+  id = grid), alerts are verified against every event in their grid, and alert counts and false
+  alarms are counted once per grid. `evaluate` and `evaluate_alerts` take an optional `events`
+  list. A full rerun reproduces every v1.0 results file byte for byte.
 
 ## 1.1.2 (2026-10-25)
 - `data.bounds_2019()` returns frozen v1.0 values shipped in the snapshot

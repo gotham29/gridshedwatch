@@ -14,6 +14,11 @@ Steps, all fixed in advance:
 
 Alerts track (`evaluate_alerts`): a method submits its watch and warning start times directly.
 Step 3 is identical; steps 1-2 are replaced by a check that the entry is within the same budget.
+
+Events and grids: alerts are raised per grid, and each grid's alerts are verified against every
+event in that grid (data.event_list(); v1.0 has one per grid). Scored rows are one per seed x event
+x level; alert counts and rates belong to the grid, and an alert counts as verified if it verifies
+any of its grid's events.
 """
 from dataclasses import dataclass, field
 from typing import Callable, Dict, Iterable
@@ -47,20 +52,30 @@ def verified(starts: list, onset: pd.Timestamp, level: str, window: dict = None)
     return [s for s in starts if lo <= s <= hi]
 
 
-def sweep(alert_fn: Callable, seeds: Iterable[int], grids: Iterable[str] = None, window: dict = None) -> pd.DataFrame:
+def _by_grid(events: Iterable[dict] = None) -> Dict[str, list]:
+    """Events grouped by grid id, in list order (default: data.event_list())."""
+    out = {}
+    for e in (data.event_list() if events is None else events):
+        out.setdefault(e["grid"], []).append(e)
+    return out
+
+
+def sweep(alert_fn: Callable, seeds: Iterable[int], grids: Iterable[str] = None, window: dict = None,
+          events: Iterable[dict] = None) -> pd.DataFrame:
+    by_grid = _by_grid(events)
     rows = []
     for k in seeds:
-        for g in grids or data.grids():
+        for g in grids or list(by_grid):
             tb = data.timebase(g)
             yrs = data.scored_years(g)
-            on = data.onset(g)
             warm = tb["in_warmup"].to_numpy()
             for level in LEVELS:
                 for thr in THRESHOLDS:
                     for L in PERSISTENCE[level]:
                         al = alert_fn(g, level, thr, L, k)
                         st = rules.episodes(al, tb["timestamp"], warm)
-                        rows.append(dict(seed=k, grid=g, level=level, threshold=thr, L=L, **_row(st, g, level, yrs, on, window)))
+                        rows += [dict(seed=k, grid=g, level=level, threshold=thr, L=L, **r)
+                                 for r in _rows(st, g, level, by_grid[g], yrs, window)]
     return pd.DataFrame(rows)
 
 
@@ -73,6 +88,17 @@ def _row(st: list, grid: str, level: str, yrs: float = None, on: pd.Timestamp = 
     caught = bool(pre) if level == "watch" else bool(ver)
     return dict(rate=len(st) / yrs, n_alerts=len(st), n_verified=len(ver), years=yrs, caught=caught,
                 lead_h=(on - min(pre)) / H if pre else np.nan, starts="|".join(str(s) for s in st))
+
+
+def _rows(st: list, grid: str, level: str, events: list, yrs: float = None, window: dict = None) -> list:
+    """Verification of one seed x grid x level against each of the grid's events (one row per event).
+    n_verified counts the grid's alerts that verify any of its events, so no alert counts twice."""
+    out = [dict(event=e["id"], onset=e["onset"], **_row(st, grid, level, yrs, e["onset"], window)) for e in events]
+    if len(events) > 1:
+        n = len({s for e in events for s in verified(st, e["onset"], level, window)})
+        for r in out:
+            r["n_verified"] = n
+    return out
 
 
 def operating_point(sw: pd.DataFrame, budget: dict = None) -> Dict[str, tuple]:
@@ -107,7 +133,7 @@ def _chance(rows: pd.DataFrame, level: str, rng, window: dict = None) -> tuple:
         t0 = tb.loc[tb.in_warmup == 0, "timestamp"].iloc[0]
         T = (tb["timestamp"].iloc[-1] - t0) / H
         s = np.array([(pd.Timestamp(v) - t0) / H for v in str(x.starts).split("|") if v and v != "nan"])
-        o = (data.onset(x.grid) - t0) / H
+        o = (pd.Timestamp(x.onset) - t0) / H
         off = rng.uniform(0, T, CHANCE_SHIFTS)
         if not len(s):
             continue
@@ -129,20 +155,20 @@ class Result:
 
 
 def evaluate(method: str, alert_fn: Callable, seeds: Iterable[int], chance: bool = True, seed: int = 0,
-             budget: dict = None, window: dict = None) -> Result:
+             budget: dict = None, window: dict = None, events: Iterable[dict] = None) -> Result:
     """Scores track: sweep the shared settings, pick the label-free operating point, verify.
 
     budget and window default to the v1.0 settings (config.BUDGET, config.WINDOW); other values are
-    for sensitivity analyses and make a different benchmark."""
+    for sensitivity analyses and make a different benchmark. events defaults to data.event_list()."""
     seeds = list(seeds)
-    sw = sweep(alert_fn, seeds, window=window)
+    sw = sweep(alert_fn, seeds, window=window, events=events)
     op = operating_point(sw, budget)
     rows = pd.concat([sw[(sw.level == lv) & np.isclose(sw.threshold, op[lv][0]) & (sw.L == op[lv][1])] for lv in LEVELS])
     setting = {lv: f"threshold {op[lv][0]}, {op[lv][1]} h" for lv in LEVELS}
-    return Result(method, sw, op, *_verify(method, rows, seeds, setting, chance, seed, window))
+    return Result(method, sw, op, *_verify(method, rows, seeds, setting, chance, seed, window, events))
 
 
-def evaluate_alerts(method: str, starts: dict, chance: bool = True, seed: int = 0) -> Result:
+def evaluate_alerts(method: str, starts: dict, chance: bool = True, seed: int = 0, events: Iterable[dict] = None) -> Result:
     """Alerts track: score submitted alert episode starts {seed: {grid: {level: [Timestamp]}}} as they are.
 
     No operating point is chosen. Instead each level is checked against the same budget (median-grid
@@ -151,11 +177,12 @@ def evaluate_alerts(method: str, starts: dict, chance: bool = True, seed: int = 
     is comparable with the table.
     """
     seeds = sorted(starts)
-    rows = [dict(seed=k, grid=g, level=lv, **_row(sorted(starts[k].get(g, {}).get(lv, [])), g, lv))
-            for k in seeds for g in data.grids() for lv in LEVELS]
+    by_grid = _by_grid(events)
+    rows = [dict(seed=k, grid=g, level=lv, **r) for k in seeds for g in by_grid for lv in LEVELS
+            for r in _rows(sorted(starts[k].get(g, {}).get(lv, [])), g, lv, by_grid[g])]
     rows = pd.DataFrame(rows)
     setting = {lv: "submitted alerts" for lv in LEVELS}
-    rows, s = _verify(method, rows, seeds, setting, chance, seed)
+    rows, s = _verify(method, rows, seeds, setting, chance, seed, events=events)
     for lv in LEVELS:
         per_grid = rows[rows.level == lv].groupby("grid").rate.mean()
         s[f"{lv}_max_grid_rate"] = round(float(per_grid.max()), 2)
@@ -163,17 +190,18 @@ def evaluate_alerts(method: str, starts: dict, chance: bool = True, seed: int = 
     return Result(method, None, None, rows, s)
 
 
-def _verify(method, rows, seeds, setting, chance, seed, window=None):
-    ev = data.events()
-    rows = rows.assign(held_out=rows.grid.map(lambda g: ev[g]["split"] == "held-out"))
+def _verify(method, rows, seeds, setting, chance, seed, window=None, events=None):
+    split = {e["id"]: e["split"] for es in _by_grid(events).values() for e in es}
+    rows = rows.assign(held_out=rows.event.map(lambda e: split[e] == "held-out"))
     rng = np.random.default_rng(seed)
     s = {"method": method, "seeds": len(seeds)}
     for lv in LEVELS:
         x = rows[rows.level == lv]
-        per_event = x.groupby("grid").caught.mean()
-        held = per_event[[g for g in per_event.index if ev[g]["split"] == "held-out"]]
-        per_seed = x.groupby("seed").agg(alerts=("n_alerts", "sum"), ver=("n_verified", "sum"),
-                                         caught=("caught", "sum"), yrs=("years", "sum"))
+        per_event = x.groupby("event").caught.mean()
+        held = per_event[[e for e in per_event.index if split[e] == "held-out"]]
+        per_seed = x.drop_duplicates(["seed", "grid"]).groupby("seed").agg(
+            alerts=("n_alerts", "sum"), ver=("n_verified", "sum"), yrs=("years", "sum"))      # per grid
+        per_seed["caught"] = x.groupby("seed").caught.sum()                                     # per event
         s[f"{lv}_setting"] = setting[lv]
         s[f"{lv}_median_grid_rate"] = round(float(x.groupby("grid").rate.mean().median()), 2)
         s[f"{lv}_caught_all"] = round(float(per_event.sum()), 1)

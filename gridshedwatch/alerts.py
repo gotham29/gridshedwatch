@@ -67,6 +67,7 @@ def load(path) -> dict:
 
 def from_rows(rows: pd.DataFrame) -> pd.DataFrame:
     """Alert file rows from a scored Result's rows (to export a scores-track method's alerts)."""
+    rows = rows.drop_duplicates(["seed", "grid", "level"])          # one row per event; alerts belong to the grid
     recs = [dict(grid=r.grid, level=r.level, start_utc=pd.Timestamp(t).strftime("%Y-%m-%d %H:%M"), seed=int(r.seed))
             for r in rows.itertuples() for t in str(r.starts).split("|") if t and t != "nan"]
     return pd.DataFrame(recs, columns=COLUMNS + ["seed"]).sort_values(["seed", "grid", "level", "start_utc"])

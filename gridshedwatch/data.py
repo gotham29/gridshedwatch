@@ -31,6 +31,17 @@ def events() -> dict:
     return yaml.safe_load((PACKAGE / "events.yaml").read_text())["events"]
 
 
+@lru_cache(maxsize=None)
+def event_list() -> tuple:
+    """The scored events, one dict each, with id, grid (the grid id), grid_name and onset (Timestamp).
+
+    Scoring works on this list, so a grid can hold several events. v1.0 has one event per grid,
+    so each event's id is its grid id.
+    """
+    return tuple(dict(e, id=g, grid=g, grid_name=e["grid"], onset=pd.Timestamp(e["onset_utc"]))
+                 for g, e in events().items())
+
+
 def grids() -> list:
     return list(events())
 

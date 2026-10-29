@@ -47,16 +47,39 @@ candidates:
     tests:
       top_level: {pass: true, basis: "CAISO declared EEA 3 effective 5:17 p.m. after supplies fell short of demand and reserves"}
       material_action: {pass: true, basis: "EEA 2 earlier that day enabled emergency demand response; statewide conservation appeal; record peak 52,061 MW"}
-      no_firm_shed: {pass: null, basis: "CAISO ordered no rotating outages (EEA 3 ended 20:00 without load shed). To check: reports that some NCPA member utilities cut load briefly that evening"}
-      verifiable: {pass: true, basis: "CAISO news release (declaration time); Utility Dive (time, end, no load shed)"}
+      no_firm_shed: {pass: true, basis: "CAISO did not order load shed; EEA 3 downgraded to EEA 2 at 20:00. Six NCPA member cities shed 46 MW at 17:53, mostly restored within the hour, after NCPA's dispatcher misinterpreted the EEA 3 as a load shed request (Cal Advocates): not operator-directed, and far below the 250 MW Tier 1 floor"}
+      verifiable: {pass: true, basis: "CAISO news release (declaration time); Cal Advocates timeline (EEA 1 10:09 effective 16:00, EEA 2 13:55, EEA 3 17:17, EEA 2 20:00); Utility Dive"}
     actions:
       - {action: emergency demand response enabled under EEA 2, mw: null, source: caiso_release}
       - {action: public conservation appeal, mw: null, source: utilitydive}
-    decision: pending
-    reason: "Passes three tests; no-firm-shed test pending the NCPA check"
+    decision: include
+    reason: "Passes all four tests"
+    found_by: "CAISO grid emergencies history, then news and Cal Advocates cross-check"
     sources:
       caiso_release: {title: "Rotating power outages are now possible to protect grid", publisher: CAISO, url: "https://www.caiso.com/Documents/rotating-power-outages-are-now-possible-to-protect-grid.pdf"}
       utilitydive: {title: "California ISO narrowly avoids outages but warns as peak demand hits record", publisher: Utility Dive, url: "https://utilitydive.com/news/california-iso-narrowly-avoids-outages-but-warns-as-peak-demand-hits-record/631280"}
+      caladvocates: {title: "September 2022 heat wave: preliminary analysis", publisher: Public Advocates Office (CPUC), url: "https://www.publicadvocates.cpuc.ca.gov/-/media/cal-advocates-website/files/press-room/reports-and-analyses/220922-caladvocates-sept-22-heat-wave-analysis---full.pdf"}
+
+  - id: nevp_2020-08-18
+    grid: Nevada (NV Energy)
+    eia930_respondent: NEVP
+    date_local: 2020-08-18
+    declared: {level: EEA 3, local: "2020-08-18 15:30 PDT", utc: "2020-08-18 22:30", ended_local: "after 21:00 PDT (back to EEA 1)"}
+    tests:
+      top_level: {pass: true, basis: "RC West declared EEA 1 for NV Energy at 12:27 and upgraded to EEA 3 at 15:30 (PUCN report); cause: Western heat wave, restrictive day-ahead market, a 225 MW unit out"}
+      material_action: {pass: true, basis: "Public conservation appeal 2-9 PM (OE-417, 7,800 MW of demand affected); large customers asked to cut use; reserve sharing"}
+      no_firm_shed: {pass: true, basis: "'NV Energy was able to prevent firm load interruption on August 18, 2020' (PUCN report); no customers lost power (Nevada Independent)"}
+      verifiable: {pass: true, basis: "Declaration time from the Public Utilities Commission of Nevada report; independent second sources: DOE OE-417 public appeal record and the Nevada Independent"}
+    actions:
+      - {action: public conservation appeal, mw: null, source: oe417_2020}
+      - {action: large customers asked to reduce use (demand response), mw: null, source: nvindependent}
+    decision: include
+    reason: "Passes all four tests. Time zone of the PUCN times assumed Pacific (NV Energy and RC West both operate on Pacific time); confirm if a source states it"
+    found_by: "web search (NV Energy EEA 2020), then OE-417 cross-check"
+    sources:
+      pucn: {title: "Electric capacity report on the August 2020 Western heat event", publisher: Public Utilities Commission of Nevada, url: "https://puc.nv.gov/uploadedFiles/pucnvgov/Content/Home/Features/ElectricCapacityReport.pdf"}
+      nvindependent: {title: "More details emerge from NV Energy's rare electricity conservation request from August", publisher: The Nevada Independent, url: "https://thenevadaindependent.com/article/more-details-emerge-from-nv-energys-rare-electricity-conservation-request-from-august"}
+      oe417_2020: {title: "DOE OE-417, 2020 (EIA Electric Power Monthly, Table B.2): NV Energy public appeal, 2020-08-18 2:00-9:00 PM", publisher: DOE / EIA, url: "https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html"}
 
   - id: ciso_2022-09-05
     grid: California (CAISO)
@@ -94,6 +117,12 @@ other_leads:
   - {date: 2026-01-24, entity: MISO North and Central, level: "Max Gen Event Step 2c (EEA 2); about 2 GW of LMRs deployed; emergency purchases from PJM", note: "Winter Storm Fern. Below EEA 3; exclude", source: "https://cdn.misoenergy.org/20260217%20RSC%20Item%2005%20Winter%20Storm%20Fern%20Report741721.pdf"}
   - {date: 2026-07-20, entity: SPP, level: "EEA 3 and EEA 2 issued July 20, 2026 (DOE Order 202-26-36: 'SPP has issued EEA Levels 3 and 2 on July 20, 2026'); news: about 18:00 EDT for the western area, lowered within hours", note: "Hot weather. Second source in hand. EIA-930: SPP West reports as SWPW from 2026-04-01 (WACM and WAUW end 2026-04-02), so a western EEA 3 has no 2019 calibration year and under four months of history; exclude for data unless SPP shows it was declared for SPP East (SWPP, full history). Still need SPP's notice for area and time", source: "https://www.energy.gov/documents/doe-order-no-202-26-36"}
   - {date: 2024-01-13, entity: unnamed RC West balancing authority, level: "EEA 3 08:41-11:24 (Pacific), emergency assistance and demand response, no shed", note: "Pacific Northwest cold; name the balancing authority (RC West request pending)", source: "https://www.caiso.com/documents/wintermarketperformancereportforjan2024.pdf"}
+
+# Aug 2020 heat wave (WECC August 2020 Heatwave Event Analysis Report; WIRAB staff report): 18 EEAs,
+# six balancing authorities reached EEA 3, only CAISO shed load (Aug 14-15). Named so far: CAISO
+# (Tier 1) and NV Energy (Aug 18, Tier 2). The other four are anonymized (BA1-BA10 in WIRAB's charts);
+# names depend on the RC West / WECC requests. Public appeals the same week by APS, SRP (after a
+# Salt Fire transmission outage on Aug 19), NV Energy and Redding are not themselves EEA 3 evidence.
 
 # Lists still to obtain: MISO's own history of Max Gen declarations ("Maximum Generation Emergency
 # Declarations through June 2024", MISO OASIS document Capacity_Emergency_Historical_Information.pdf)

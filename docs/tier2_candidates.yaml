@@ -140,6 +140,14 @@ other_leads:
 # names depend on the RC West / WECC requests. Public appeals the same week by APS, SRP (after a
 # Salt Fire transmission outage on Aug 19), NV Energy and Redding are not themselves EEA 3 evidence.
 
+# State-regulator search (Oct 28, 2026), for names behind the anonymized EEA 3s: Nevada PUC (found NV
+# Energy, Aug 18, 2020); California CPUC Public Advocates, CEC reliability docket, DWR Strategic
+# Reliability Reserve report (Dec 2024) and Senate energy committee background (Aug 2026): CAISO only,
+# no EEA 3 after Sept 2022 (EEA 1 on July 20, 2023; EEA Watches in 2023-2024; TID EEA Watch July 25,
+# 2024); Arizona Corporation Commission and utilities: public appeals in Aug 2020, no EEA level
+# published; Washington (WUTC, Puget Sound Energy, Northwest Council): Jan 13, 2024 appeal by PSE at
+# about 19:00 for gas and power, no EEA named (RC West's Jan 13 EEA 3 was 08:41-11:24, so not linked).
+
 # Lists still to obtain: MISO's own history of Max Gen declarations ("Maximum Generation Emergency
 # Declarations through June 2024", MISO OASIS document Capacity_Emergency_Historical_Information.pdf)
 # and PJM's Emergency Procedures postings archive (emergencyprocedures.pjm.com), which tags each

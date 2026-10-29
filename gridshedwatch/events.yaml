@@ -18,6 +18,29 @@ events:
     max_shed_mw: 20000
     source: ERCOT; FERC-NERC Uri report
     split: development
+    cause: Generation outages, derates and failures to start in extreme cold (freezing 44%, fuel supply 31%); ERCOT averaged 34,000 MW of expected generation unavailable for over two days
+    impact:
+      shed_mw: 20000
+      customers: more than 4.5 million people in Texas lost power (all causes, including weather damage)
+      duration: nearly three consecutive days of controlled outages
+    response:
+    - first 1,000 MW of load shed ordered at 01:20 Feb 15
+    - load shed peaking at 20,000 MW by 19:00 Feb 15
+    - public conservation appeals
+    note: At least 210 deaths; Federal Reserve Bank of Dallas estimate of $80 to 130 billion in losses to the Texas economy (both cited in the FERC-NERC report)
+    sources:
+      onset:
+        title: The February 2021 Cold Weather Outages in Texas and the South Central United States (p. 14)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://nerc.com/pa/rrm/ea/Documents/February_2021_Cold_Weather_Report.pdf
+      impact:
+        title: The February 2021 Cold Weather Outages in Texas and the South Central United States (pp. 9-10, 14)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://nerc.com/pa/rrm/ea/Documents/February_2021_Cold_Weather_Report.pdf
+      independent:
+        title: 'DOE OE-417, 2021: ERCOT and distribution utilities'' firm load shed reports, Feb 15'
+        publisher: DOE / EIA
+        url: https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html
   ca:
     grid: California (CAISO)
     eia930_respondent: CISO
@@ -30,6 +53,28 @@ events:
     max_shed_mw: 1000
     source: CAISO Final Root Cause Analysis, Mid-August 2020
     split: development
+    cause: Extreme West-wide heat; resource planning short of demand at the early-evening net peak; day-ahead market practices that worsened the shortfall (CAISO preliminary root cause analysis)
+    impact:
+      shed_mw: 1000
+      customers: about 492,000 on Aug 14 (out 15 to 150 minutes) and 321,000 on Aug 15 (8 to 90 minutes)
+      duration: rotating outages for about an hour on Aug 14; Stage 3 for 20 minutes on Aug 15
+    response:
+    - Stage 3 Emergency declared at 18:38 Aug 14
+    - two 500 MW rotating-outage phases ordered on Aug 14
+    - a second Stage 3 and shed on Aug 15
+    sources:
+      onset:
+        title: Preliminary Root Cause Analysis, Mid-August 2020 Heat Storm
+        publisher: CAISO, CPUC and CEC
+        url: https://www.caiso.com/documents/preliminary-root-cause-analysis-rotating-outages-august-2020.pdf
+      impact:
+        title: Preliminary Root Cause Analysis, Mid-August 2020 Heat Storm
+        publisher: CAISO, CPUC and CEC
+        url: https://www.caiso.com/documents/preliminary-root-cause-analysis-rotating-outages-august-2020.pdf
+      independent:
+        title: 'DOE OE-417, 2020: CAISO, PG&E and SCE firm load shed reports, Aug 14-15'
+        publisher: DOE / EIA
+        url: https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html
   tva:
     grid: Tennessee Valley Authority
     eia930_respondent: TVA
@@ -40,8 +85,30 @@ events:
     onset_utc: 2022-12-23 11:12
     onset_basis: EEA 3 declared (source gives Eastern time)
     max_shed_mw: 3000
-    source: FERC-NERC Elliott inquiry, p. 10 fn. 26
+    source: FERC-NERC Elliott inquiry, p. 10
     split: development
+    cause: Unplanned generation outages in extreme cold with record December demand (Winter Storm Elliott)
+    impact:
+      shed_mw: 3000
+      customers: not published as a count; about 10% of firm load across TVA's 153 local power companies
+      duration: 7 hours in total (FERC-NERC Figure 4), in two instances on Dec 23 and Dec 24
+    response:
+    - EEA 3 declared by 06:12 EST Dec 23
+    - firm load shed of over 1,500 MW on Dec 23
+    - 5% then 10% of peak load shed early Dec 24
+    sources:
+      onset:
+        title: Inquiry into Bulk-Power System Operations During December 2022 Winter Storm Elliott (p. 10)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://www.ferc.gov/sites/default/files/2023-11/24_Winter-Storm_Elliot_1107_1300.pdf
+      impact:
+        title: Inquiry into Bulk-Power System Operations During December 2022 Winter Storm Elliott (pp. 11-14)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://www.ferc.gov/sites/default/files/2023-11/24_Winter-Storm_Elliot_1107_1300.pdf
+      independent:
+        title: 'DOE OE-417, 2022: TVA firm load shed report, Dec 22-25 (3,200 MW)'
+        publisher: DOE / EIA
+        url: https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html
   spp:
     grid: Southwest Power Pool
     eia930_respondent: SWPP
@@ -54,6 +121,28 @@ events:
     max_shed_mw: 2718
     source: SPP; FERC-NERC Uri report
     split: held-out
+    cause: Generation outages in extreme cold; SPP averaged 20,000 MW of expected capacity unavailable from Feb 15 to 19
+    impact:
+      shed_mw: 2718
+      customers: not reported as a total; OE-417 lists about 200,000 for OG&E and 222,000 for Evergy
+      duration: over four hours across Feb 15 (610 MW, 12:04-13:01) and Feb 16 (2,718 MW, 06:44-10:07)
+    response:
+    - EEA 3 declared at 10:08 Feb 15
+    - firm load shed instructed on Feb 15 and Feb 16
+    - member utilities issued public conservation appeals
+    sources:
+      onset:
+        title: SPP grid emergency presentation to the Oklahoma Corporation Commission (Mar 18, 2021)
+        publisher: SPP
+        url: https://aem-prod.oklahoma.gov/content/dam/ok/en/occ/documents/ajls/commissioners/03-18-2021-spp-grid-emergency-presentation-for-occ.pdf
+      impact:
+        title: The February 2021 Cold Weather Outages in Texas and the South Central United States (p. 14)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://nerc.com/pa/rrm/ea/Documents/February_2021_Cold_Weather_Report.pdf
+      independent:
+        title: 'DOE OE-417, 2021: SPP firm load shed report, Feb 14-18'
+        publisher: DOE / EIA
+        url: https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html
   miso:
     grid: MISO (MISO South)
     eia930_respondent: MISO
@@ -67,6 +156,27 @@ events:
     max_shed_mw: 700
     source: MISO, The February 2021 Arctic Event (report times in EST)
     split: held-out
+    cause: Generation outages in extreme cold in MISO South (14,500 MW of expected capacity unavailable on average Feb 16 to 18)
+    impact:
+      shed_mw: 700
+      customers: not reported
+      duration: 2 hours 20 minutes (19:40-22:00 EST Feb 16)
+    response:
+    - Max Gen Event Step 5 (EEA 3) with a 700 MW load shed instruction at 19:40 EST Feb 16
+    - separate transmission-emergency sheds on Feb 15-16 are excluded by rule
+    sources:
+      onset:
+        title: The February Arctic Event (Feb 14-18, 2021)
+        publisher: MISO
+        url: https://www.efis.psc.mo.gov/Document/Display/82729
+      impact:
+        title: The February 2021 Cold Weather Outages in Texas and the South Central United States (p. 15)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://nerc.com/pa/rrm/ea/Documents/February_2021_Cold_Weather_Report.pdf
+      independent:
+        title: 'DOE OE-417, 2021: MISO firm load shed report, Feb 16 (700 MW)'
+        publisher: DOE / EIA
+        url: https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html
   duk:
     grid: Duke Energy Carolinas
     eia930_respondent: DUK
@@ -79,6 +189,28 @@ events:
     max_shed_mw: 1000
     source: Duke Energy timeline
     split: held-out
+    cause: Unplanned generation outages in extreme cold; every member of the Carolinas reserve sharing group was in an EEA and reserve deficient by 05:18 Dec 24
+    impact:
+      shed_mw: 1000
+      customers: about 295,000 (OE-417); about 500,000 across both Duke balancing authorities (FERC-NERC)
+      duration: 3 hours of directed firm load shed (FERC-NERC Figure 4); some customers out over ten hours (SC ORS)
+    response:
+    - 400 MW directed at 06:14 Dec 24
+    - two 300 MW steps at 07:00-07:01
+    - a further 300 MW step failed when the rotating load shed tool stopped working
+    sources:
+      onset:
+        title: 'Inspection and Examination Report: DEC and DEP December 2022 Winter Storm Outages and Blackouts (Docket ND-2023-1-E, Aug 25, 2023)'
+        publisher: South Carolina Office of Regulatory Staff
+        url: https://ors.sc.gov/sites/scors/files/Documents/News%20Archive/Inspection%20and%20Examination%20Report%20of%20DEC%20and%20DEP%20December%202022%20Winter%20Storm%20Outages%20and%20Blackouts.pdf
+      impact:
+        title: Inquiry into Bulk-Power System Operations During December 2022 Winter Storm Elliott (p. 14)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://www.ferc.gov/sites/default/files/2023-11/24_Winter-Storm_Elliot_1107_1300.pdf
+      independent:
+        title: 'DOE OE-417, 2022: Duke Energy Carolinas firm load shed report, Dec 24'
+        publisher: DOE / EIA
+        url: https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html
   cple:
     grid: Duke Energy Progress
     eia930_respondent: CPLE
@@ -91,6 +223,29 @@ events:
     max_shed_mw: 961
     source: Duke Energy timeline; SC ORS report
     split: held-out
+    cause: Unplanned generation outages in extreme cold; every member of the Carolinas reserve sharing group was in an EEA and reserve deficient by 05:18 Dec 24
+    impact:
+      shed_mw: 961
+      customers: about 130,000 (OE-417)
+      duration: 2 hours of directed firm load shed (FERC-NERC Figure 4)
+    response:
+    - 600 MW requested at 06:25 Dec 24
+    - rotating load shed tool failed at 06:57
+    - further 200 MW and 50 MW requests shed manually
+    - about 111 MW shed at transmission level
+    sources:
+      onset:
+        title: 'Inspection and Examination Report: DEC and DEP December 2022 Winter Storm Outages and Blackouts (Docket ND-2023-1-E, Aug 25, 2023)'
+        publisher: South Carolina Office of Regulatory Staff
+        url: https://ors.sc.gov/sites/scors/files/Documents/News%20Archive/Inspection%20and%20Examination%20Report%20of%20DEC%20and%20DEP%20December%202022%20Winter%20Storm%20Outages%20and%20Blackouts.pdf
+      impact:
+        title: Inquiry into Bulk-Power System Operations During December 2022 Winter Storm Elliott (p. 14)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://www.ferc.gov/sites/default/files/2023-11/24_Winter-Storm_Elliot_1107_1300.pdf
+      independent:
+        title: 'DOE OE-417, 2022: Duke Energy Progress firm load shed report, Dec 24'
+        publisher: DOE / EIA
+        url: https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html
   lgee:
     grid: LG&E and KU (Kentucky)
     eia930_respondent: LGEE
@@ -103,3 +258,26 @@ events:
     max_shed_mw: 300
     source: LG&E-KU responses to KY PSC
     split: held-out
+    cause: Unplanned generation outages in extreme cold (Winter Storm Elliott)
+    impact:
+      shed_mw: 317
+      customers: 54,637 in total, about 38,000 at the peak (under 4% of customers)
+      duration: 17:58-22:11 EST Dec 23 (the brief also states 4 hours 18 minutes)
+    response:
+    - EEA 3 at 13:36 (requested of TVA as Reliability Coordinator)
+    - improved to EEA 2 at 14:52
+    - EEA 3 again at 16:45
+    - curtailments from 17:58
+    sources:
+      onset:
+        title: LG&E and KU post-hearing brief, Kentucky PSC Case 2023-00422 (pp. 12-16)
+        publisher: LG&E and KU
+        url: https://psc.ky.gov/pscecf/2023-00422/rick.lovekamp%40lge-ku.com/08092024111742/02-LGE_KU_Post-Hearing_Brief_2023-00422.pdf
+      impact:
+        title: LG&E and KU post-hearing brief, Kentucky PSC Case 2023-00422 (pp. 3, 14)
+        publisher: LG&E and KU
+        url: https://psc.ky.gov/pscecf/2023-00422/rick.lovekamp%40lge-ku.com/08092024111742/02-LGE_KU_Post-Hearing_Brief_2023-00422.pdf
+      independent:
+        title: Inquiry into Bulk-Power System Operations During December 2022 Winter Storm Elliott (pp. 12-14)
+        publisher: FERC-NERC-Regional Entity staff
+        url: https://www.ferc.gov/sites/default/files/2023-11/24_Winter-Storm_Elliot_1107_1300.pdf

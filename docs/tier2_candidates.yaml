@@ -40,6 +40,7 @@ levels:
 
 candidates:
   - id: ciso_2022-09-06
+    event_name: Sept 2022 heat wave
     grid: California (CAISO)
     eia930_respondent: CISO
     date_local: 2022-09-06
@@ -55,12 +56,20 @@ candidates:
     decision: include
     reason: "Passes all four tests"
     found_by: "CAISO grid emergencies history, then news and Cal Advocates cross-check"
+    onset_source: caiso_release
+    cause: "Record heat across the West; CAISO peak demand of 52,061 MW, an all-time record"
+    impact:
+      shed_mw: 0
+      customers: "no CAISO-ordered outages; PG&E warned over 500,000 customers of possible outages; six NCPA cities shed 46 MW in error for under an hour"
+      duration: "EEA 3 from 17:17 to 20:00 PDT"
+    response: ["EEA Watch Sept 5, EEA 1 (declared 10:09, effective 16:00), EEA 2 at 13:55 with emergency demand response, EEA 3 at 17:17", "statewide conservation appeal"]
     sources:
       caiso_release: {title: "Rotating power outages are now possible to protect grid", publisher: CAISO, url: "https://www.caiso.com/Documents/rotating-power-outages-are-now-possible-to-protect-grid.pdf"}
       utilitydive: {title: "California ISO narrowly avoids outages but warns as peak demand hits record", publisher: Utility Dive, url: "https://utilitydive.com/news/california-iso-narrowly-avoids-outages-but-warns-as-peak-demand-hits-record/631280"}
       caladvocates: {title: "September 2022 heat wave: preliminary analysis", publisher: Public Advocates Office (CPUC), url: "https://www.publicadvocates.cpuc.ca.gov/-/media/cal-advocates-website/files/press-room/reports-and-analyses/220922-caladvocates-sept-22-heat-wave-analysis---full.pdf"}
 
   - id: nevp_2020-08-18
+    event_name: Aug 2020 heat wave
     grid: Nevada (NV Energy)
     eia930_respondent: NEVP
     date_local: 2020-08-18
@@ -75,7 +84,14 @@ candidates:
       - {action: large customers asked to reduce use (demand response), mw: null, source: nvindependent}
     decision: include
     reason: "Passes all four tests. Time zone of the PUCN times assumed Pacific (NV Energy and RC West both operate on Pacific time); confirm if a source states it"
+    cause: "Western heat wave (Las Vegas about 11 degrees above normal), a day-ahead market with heavy buyers and few sellers, and a 225 MW unit out since late July"
+    impact:
+      shed_mw: 0
+      customers: "no customers lost power; conservation appeal 2-9 PM to about 1.4 million customers (OE-417)"
+      duration: "EEA 3 from 15:30 to after 21:00 PDT, EEA 1 from 12:27"
+    response: ["RC West declared EEA 1 at 12:27 and EEA 3 at 15:30", "public conservation appeal", "large customers asked to reduce use", "reserve sharing and real-time purchases"]
     found_by: "web search (NV Energy EEA 2020), then OE-417 cross-check"
+    onset_source: pucn
     sources:
       pucn: {title: "Electric capacity report on the August 2020 Western heat event", publisher: Public Utilities Commission of Nevada, url: "https://puc.nv.gov/uploadedFiles/pucnvgov/Content/Home/Features/ElectricCapacityReport.pdf"}
       nvindependent: {title: "More details emerge from NV Energy's rare electricity conservation request from August", publisher: The Nevada Independent, url: "https://thenevadaindependent.com/article/more-details-emerge-from-nv-energys-rare-electricity-conservation-request-from-august"}
@@ -161,6 +177,7 @@ oe417_leads:
 # Firm load sheds found in OE-417 that the v1.0 event list does not show. Each must be explained
 # in docs/events.md (below the 250 MW floor, or not supply-caused), or it is a missed Tier 1 event.
 tier1_audit:
+  - {date: 2025-05-25, entity: MISO (Entergy New Orleans and CLECO), mw: 600, cause: transmission system emergency, window_local: "from 4:21 PM", note: "MISO classified it as a Transmission System Emergency, not an EEA; excluded by rule and listed in events.md", source: "https://www.lpsc.louisiana.gov/docs/news/Miso_load_shed.pdf"}
   - {date: 2020-08-13, entity: El Paso Electric, mw: 218, cause: system operations, window_local: "1:51-4:27 PM", note: "Below the 250 MW floor; add to the events.md exclusion table"}
   - {date: 2020-09-05, entity: Imperial Irrigation District, mw: 100, cause: severe weather, window_local: "5:25-8:55 PM", note: "Below the 250 MW floor; add to the exclusion table"}
   - {date: 2022-06-05, entity: California ISO, mw: null, cause: generation inadequacy, window_local: "3:20-8:12 PM", resolved: "Baja California, Mexico: CENACE ordered cuts after a supplier plant failed (about 6% of the state population affected); CAISO filed as Reliability Coordinator. Outside the US and not in EIA-930, so not a Tier 1 event", source: "https://zetatijuana.com/2022/06/vamos-a-buscar-que-no-se-repitan-los-apagones-electricos-marina/"}

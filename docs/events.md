@@ -75,7 +75,8 @@ affected balancing authorities come from the FERC-NERC inquiry reports on Winter
 | 2022 | Winter Storm Elliott | **Targets:** TVA (3,000 MW), Duke Energy Carolinas and Duke Energy Progress (1,900 MW combined), LG&E-KU (300 MW). Excluded: Dominion Energy SC (94 MW, 9 min), Santee Cooper (86 MW, 17 min), below the floor |
 | 2023 | None | - |
 | 2024 | Western Interconnection generator trip, failed dispatch (0.43 h) | Excluded: entity and MW not published, so it cannot be placed in a balancing authority |
-| 2025 | None (10 EEA 3 declarations, none with load shed) | - |
+| 2025 | No supply-caused load shed (NERC: 10 EEA 3 declarations, none with load shed) | - |
+| 2025 | MISO, New Orleans area, May 25 (500 MW to Entergy at 4:21 PM and 100 MW to CLECO at 4:30 PM; Louisiana PSC) | Excluded: declared a Transmission System Emergency, not a capacity emergency (no EEA 3) |
 | 2026 (Jan-Sep) | None found (Winter Storm Fern, summer heat: emergency orders, no load shed reported) | To confirm against NERC's 2027 report |
 
 ### Known limitations, stated up front

@@ -56,7 +56,9 @@ only reduce claimed lead time and never turn a late alert into a "predicted" one
 ## Completeness: where the event list comes from
 
 NERC's annual *State of Reliability* reports list every operator-initiated firm load shed in
-North America by year (2026 report, Table 3.1; 2025 overview, Table 2). Event sizes and
+North America by year (2026 report, Table 3.1; 2025 overview, Table 2), cross-checked against
+DOE OE-417 reports for 2020-2022 (EIA Electric Power Monthly, Appendix B; later years are not
+public). Event sizes and
 affected balancing authorities come from the FERC-NERC inquiry reports on Winter Storm Uri
 (2021) and Winter Storm Elliott (2022) and from CAISO's August 2020 root cause analysis.
 
@@ -65,8 +67,11 @@ affected balancing authorities come from the FERC-NERC inquiry reports on Winter
 | 2020 | California heat wave (Aug 14-15) | **Target** (CAISO, 1,000 MW) |
 | 2020 | California wildfires | Excluded: wildfire / public safety shutoffs |
 | 2020 | Hurricane Laura | Excluded: storm damage |
+| 2020 | El Paso Electric, Aug 13 (218 MW, 1:51-4:27 PM MDT; DOE OE-417) | Excluded: below the 250 MW floor |
+| 2020 | Imperial Irrigation District, Sept 5 (100 MW, 5:25-8:55 PM PDT; DOE OE-417) | Excluded: below the 250 MW floor |
 | 2021 | Winter Storm Uri | **Targets:** ERCOT (20,000 MW), SPP (2,700 MW), MISO (700 MW, MISO South) |
 | 2022 | June heat wave | Excluded: AEP Columbus load shed after a derecho damaged transmission (NERC event analysis) |
+| 2022 | Baja California, June 5 (filed in DOE OE-417 by CAISO as Reliability Coordinator) | Excluded: in Mexico (CENACE cuts after a supplier plant failed), not an EIA-930 balancing authority |
 | 2022 | Winter Storm Elliott | **Targets:** TVA (3,000 MW), Duke Energy Carolinas and Duke Energy Progress (1,900 MW combined), LG&E-KU (300 MW). Excluded: Dominion Energy SC (94 MW, 9 min), Santee Cooper (86 MW, 17 min), below the floor |
 | 2023 | None | - |
 | 2024 | Western Interconnection generator trip, failed dispatch (0.43 h) | Excluded: entity and MW not published, so it cannot be placed in a balancing authority |

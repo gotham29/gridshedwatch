@@ -4,6 +4,7 @@
   gridshedwatch signals <grid> -o FILE        the five signals for one grid (CSV)
   gridshedwatch baseline zscore -o DIR        write reference scores in the submission layout
   gridshedwatch score DIR --name NAME         scores track: score a method from its per-signal scores
+  gridshedwatch score DIR --version 2.0       the same at the v1.0 operating point on every v2.0 grid
   gridshedwatch score-alerts FILE --name NAME  alerts track: score a method's watch/warning start times
 """
 import argparse
@@ -50,8 +51,11 @@ def _score(a):
         from .baselines import oprule
         fn, seeds, name = oprule.alerts, [0], a.name or "Operator-style rule"
     else:
-        sc = submission.load(a.folder)
+        sc = submission.load(a.folder, a.version)
         fn, seeds, name = benchmark.from_scores(sc), sorted(sc), a.name or str(a.folder)
+    if a.version != "1.0":
+        r = benchmark.evaluate_release(name, fn, seeds, a.version, chance=not a.no_chance)
+        return _report_release(a, r)
     r = benchmark.evaluate(name, fn, seeds, chance=not a.no_chance)
     if a.alerts_out:
         alerts.write(alerts.from_rows(r.rows), a.alerts_out)
@@ -88,6 +92,24 @@ def _report(a, r):
               f"{s[lv + '_alerts_per_grid_year']} alerts/grid/yr; false alarm ratio {far}")
 
 
+def _report_release(a, r):
+    if a.events:
+        r.rows.drop(columns=["starts"]).to_csv(a.events, index=False)
+    s = r.summary
+    if a.json:
+        print(json.dumps(s, indent=2, default=lambda v: None))
+        return
+    print(f"\n{s['method']}  ({s['seeds']} seed{'s' if s['seeds'] > 1 else ''}), v{s['version']} at the v1.0 operating point")
+    for lv in ("watch", "warning"):
+        print(f"  {lv:8s} {s['tier1_' + lv + '_setting']:24s} Tier 1 caught {s['tier1_' + lv + '_caught_all']} of 8; "
+              f"Tier 2 caught {s['tier2_' + lv + '_caught_all']} of 2; false alarm ratio, all events "
+              f"{s['all_' + lv + '_false_alarm_ratio']:.0%}")
+        for g in ("all", "quiet", "quiet_unflagged"):
+            k = f"burden_{g}_{lv}"
+            print(f"           alerts/grid/yr, {g.replace('_', ' ')} grids ({s[k + '_grids']}): median {s[k + '_median']}, "
+                  f"90th pct {s[k + '_p90']}, highest {s[k + '_max']} ({s[k + '_max_grid']}); over cap: {s[k + '_over_cap']}")
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="gridshedwatch", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -111,6 +133,7 @@ def main(argv=None):
     p.add_argument("--events", help="also write per-event rows to this CSV")
     p.add_argument("--json", action="store_true")
     p.add_argument("--alerts-out", help="also write the alerts at the operating point, in the alerts-track format")
+    p.add_argument("--version", default="1.0", choices=["1.0", "2.0"], help="release to score (2.0: every v2.0 grid)")
     p.set_defaults(fn=_score)
     p = sub.add_parser("score-alerts")
     p.add_argument("file", help="CSV with grid, level, start_utc[, seed] (see gridshedwatch/alerts.py)")

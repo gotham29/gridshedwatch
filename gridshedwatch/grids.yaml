@@ -1,0 +1,206 @@
+# Grids of GridShedWatch: one EIA-930 balancing authority each. `since` is the release that added it
+# (v1.0: the 8 grids with Tier 1 events; v2.0: every other balancing authority that passes the coverage
+# rule in config.py). Data-quality flags are computed into snapshot_v2.0/quality.csv; `note` records
+# what that table cannot show. Grid ids of v1.0 are unchanged.
+version: '2.0'
+name_source:
+  title: 'PUDL code metadata: balancing authorities (EIA respondent descriptions)'
+  publisher: Catalyst Cooperative
+  url: https://docs.catalyst.coop/pudl/en/stable/data_dictionaries/codes_and_labels.html
+grids:
+  tx:
+    name: Electric Reliability Council of Texas, Inc.
+    eia930_respondent: ERCO
+    since: '1.0'
+  ca:
+    name: California Independent System Operator
+    eia930_respondent: CISO
+    since: '1.0'
+  tva:
+    name: Tennessee Valley Authority
+    eia930_respondent: TVA
+    since: '1.0'
+  spp:
+    name: Southwest Power Pool
+    eia930_respondent: SWPP
+    since: '1.0'
+  miso:
+    name: Midcontinent Independent Transmission System Operator, Inc.
+    eia930_respondent: MISO
+    since: '1.0'
+  duk:
+    name: Duke Energy Carolinas
+    eia930_respondent: DUK
+    since: '1.0'
+  cple:
+    name: Duke Energy Progress East
+    eia930_respondent: CPLE
+    since: '1.0'
+  lgee:
+    name: LG&E and KU Services Company as agent for Louisville Gas and Electric Company and Kentucky Utilities
+    eia930_respondent: LGEE
+    since: '1.0'
+  aeci:
+    name: Associated Electric Cooperative, Inc.
+    eia930_respondent: AECI
+    since: '2.0'
+  ava:
+    name: Avista Corporation
+    eia930_respondent: AVA
+    since: '2.0'
+  azps:
+    name: Arizona Public Service Company
+    eia930_respondent: AZPS
+    since: '2.0'
+  banc:
+    name: Balancing Authority of Northern California
+    eia930_respondent: BANC
+    since: '2.0'
+  bpat:
+    name: Bonneville Power Administration
+    eia930_respondent: BPAT
+    since: '2.0'
+  chpd:
+    name: Public Utility District No. 1 of Chelan County
+    eia930_respondent: CHPD
+    since: '2.0'
+  cplw:
+    name: Duke Energy Progress West
+    eia930_respondent: CPLW
+    since: '2.0'
+  dopd:
+    name: PUD No. 1 of Douglas County
+    eia930_respondent: DOPD
+    since: '2.0'
+  epe:
+    name: El Paso Electric Company
+    eia930_respondent: EPE
+    since: '2.0'
+    note: a 218 MW firm load shed, below the Tier 1 floor (docs/events.md, exclusions)
+  fmpp:
+    name: Florida Municipal Power Pool
+    eia930_respondent: FMPP
+    since: '2.0'
+  fpc:
+    name: Progress Energy Florida
+    eia930_respondent: FPC
+    since: '2.0'
+  fpl:
+    name: Florida Power & Light Company
+    eia930_respondent: FPL
+    since: '2.0'
+  gcpd:
+    name: Public Utility District No. 2 of Grant County, Washington
+    eia930_respondent: GCPD
+    since: '2.0'
+  iid:
+    name: Imperial Irrigation District
+    eia930_respondent: IID
+    since: '2.0'
+    note: a 100 MW firm load shed, below the Tier 1 floor (docs/events.md, exclusions)
+  ipco:
+    name: Idaho Power Company
+    eia930_respondent: IPCO
+    since: '2.0'
+  isne:
+    name: ISO New England Inc.
+    eia930_respondent: ISNE
+    since: '2.0'
+  ldwp:
+    name: Los Angeles Department of Water and Power
+    eia930_respondent: LDWP
+    since: '2.0'
+  nevp:
+    name: Nevada Power Company
+    eia930_respondent: NEVP
+    since: '2.0'
+  nwmt:
+    name: NorthWestern Energy (NWMT)
+    eia930_respondent: NWMT
+    since: '2.0'
+  nyis:
+    name: New York Independent System Operator
+    eia930_respondent: NYIS
+    since: '2.0'
+  pace:
+    name: PacifiCorp - East
+    eia930_respondent: PACE
+    since: '2.0'
+  pacw:
+    name: PacifiCorp - West
+    eia930_respondent: PACW
+    since: '2.0'
+  pge:
+    name: Portland General Electric Company
+    eia930_respondent: PGE
+    since: '2.0'
+  pjm:
+    name: PJM Interconnection, LLC
+    eia930_respondent: PJM
+    since: '2.0'
+  pnm:
+    name: Public Service Company of New Mexico
+    eia930_respondent: PNM
+    since: '2.0'
+  psco:
+    name: Public Service Company of Colorado
+    eia930_respondent: PSCO
+    since: '2.0'
+  sc:
+    name: South Carolina Public Service Authority
+    eia930_respondent: SC
+    since: '2.0'
+  sceg:
+    name: South Carolina Electric & Gas Company
+    eia930_respondent: SCEG
+    since: '2.0'
+  scl:
+    name: Seattle City Light
+    eia930_respondent: SCL
+    since: '2.0'
+  soco:
+    name: Southern Company Services, Inc. - Trans
+    eia930_respondent: SOCO
+    since: '2.0'
+  spa:
+    name: Southwestern Power Administration
+    eia930_respondent: SPA
+    since: '2.0'
+  srp:
+    name: Salt River Project
+    eia930_respondent: SRP
+    since: '2.0'
+  tal:
+    name: City of Tallahassee
+    eia930_respondent: TAL
+    since: '2.0'
+  tec:
+    name: Tampa Electric Company
+    eia930_respondent: TEC
+    since: '2.0'
+  tepc:
+    name: Tucson Electric Power Company
+    eia930_respondent: TEPC
+    since: '2.0'
+  tidc:
+    name: Turlock Irrigation District
+    eia930_respondent: TIDC
+    since: '2.0'
+  tpwr:
+    name: City of Tacoma, Department of Public Utilities, Light Division
+    eia930_respondent: TPWR
+    since: '2.0'
+  wacm:
+    name: Western Area Power Administration - Rocky Mountain Region
+    eia930_respondent: WACM
+    since: '2.0'
+    note: EIA-930 data end 2026-04-02, the day after SPP's RTO West (reported as SWPW) began
+  walc:
+    name: Western Area Power Administration - Desert Southwest Region
+    eia930_respondent: WALC
+    since: '2.0'
+  wauw:
+    name: Western Area Power Administration UGP West
+    eia930_respondent: WAUW
+    since: '2.0'
+    note: EIA-930 data end 2026-04-02, the day after SPP's RTO West (reported as SWPW) began

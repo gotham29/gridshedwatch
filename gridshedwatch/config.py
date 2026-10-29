@@ -5,9 +5,20 @@ import pandas as pd
 
 PACKAGE = Path(__file__).resolve().parent
 ROOT = PACKAGE.parent
-DATA = PACKAGE / "snapshot_v1.0"     # frozen EIA-930 snapshot, shipped inside the package
+# Frozen EIA-930 snapshots, shipped inside the package. Each release adds grids in its own folder;
+# grids from earlier releases keep their files unchanged.
+SNAPSHOTS = {"1.0": PACKAGE / "snapshot_v1.0", "2.0": PACKAGE / "snapshot_v2.0"}
+DATA = SNAPSHOTS["1.0"]
 
-VERSION = "1.0"
+VERSION = "1.0"     # default release for data.grids() and data.event_list()
+
+# Grids added in v2.0: every EIA-930 balancing authority (not a region) with all of D, DF and NG
+# for at least MIN_COVERAGE of the hours in 2019 and in the scored period, after the bad-data filter.
+MIN_COVERAGE = 0.9
+# Data-quality flags (quality.csv; flagged grids are reported with and without, never dropped):
+FLAT_FLAG_H = 48            # demand unchanged for at least this many hours in a row
+SHIFT_FLAG = 0.25           # forecast error outside its 2019 range in at least this share of scored hours
+                            # (a change in how the forecast is reported; demand growth alone is not flagged)
 
 # Scored period (UTC) and calibration year. Methods may learn from 2019; it is never scored.
 RUN_START, RUN_END = pd.Timestamp("2020-01-01 00:00"), pd.Timestamp("2026-10-01 00:00")

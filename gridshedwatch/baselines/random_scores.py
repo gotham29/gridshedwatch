@@ -10,6 +10,6 @@ from ..config import SIGNALS
 
 
 def scores(grid: str, seed: int = 0) -> pd.DataFrame:
-    rng = np.random.default_rng([1000 + seed, data.grids().index(grid)])
+    rng = np.random.default_rng([1000 + seed, data.grids("2.0").index(grid)])
     n = len(data.timebase(grid))
     return pd.DataFrame({f"p_{f}": np.round(rng.random(n), 6) for f in SIGNALS})

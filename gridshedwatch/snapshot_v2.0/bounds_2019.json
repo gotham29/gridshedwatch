@@ -1,0 +1,885 @@
+{
+ "description": "0.1st-99.9th percentile of each signal over 2019, rounded to 0.01, frozen for v2.0 (grids added in this release; earlier grids keep their own files).",
+ "bounds": {
+  "aeci": {
+   "forecast_error": [
+    -748.0,
+    718.65
+   ],
+   "imbalance": [
+    -1487.68,
+    1057.0
+   ],
+   "demand_anom": [
+    -1541.09,
+    1688.75
+   ],
+   "net_generation_anom": [
+    -1299.29,
+    1557.11
+   ],
+   "imbalance_anom": [
+    -1428.75,
+    1373.25
+   ]
+  },
+  "ava": {
+   "forecast_error": [
+    -173.6,
+    142.6
+   ],
+   "imbalance": [
+    -290.11,
+    1321.11
+   ],
+   "demand_anom": [
+    -480.44,
+    454.44
+   ],
+   "net_generation_anom": [
+    -663.08,
+    584.75
+   ],
+   "imbalance_anom": [
+    -696.05,
+    685.44
+   ]
+  },
+  "azps": {
+   "forecast_error": [
+    -868.8,
+    596.64
+   ],
+   "imbalance": [
+    -4352.32,
+    2100.28
+   ],
+   "demand_anom": [
+    -1940.44,
+    2522.1
+   ],
+   "net_generation_anom": [
+    -4180.38,
+    2155.5
+   ],
+   "imbalance_anom": [
+    -2025.32,
+    4346.6
+   ]
+  },
+  "banc": {
+   "forecast_error": [
+    -417.3,
+    174263.79
+   ],
+   "imbalance": [
+    -695.86,
+    1391.58
+   ],
+   "demand_anom": [
+    -14605.57,
+    197485.26
+   ],
+   "net_generation_anom": [
+    -14609.16,
+    256143.47
+   ],
+   "imbalance_anom": [
+    -822.44,
+    1057.59
+   ]
+  },
+  "bpat": {
+   "forecast_error": [
+    -596.24,
+    882.02
+   ],
+   "imbalance": [
+    -8773.69,
+    178.82
+   ],
+   "demand_anom": [
+    -2491.91,
+    2029.45
+   ],
+   "net_generation_anom": [
+    -3833.41,
+    3888.72
+   ],
+   "imbalance_anom": [
+    -3833.55,
+    3893.16
+   ]
+  },
+  "chpd": {
+   "forecast_error": [
+    -299.0,
+    -203.74
+   ],
+   "imbalance": [
+    -1247.79,
+    131.32
+   ],
+   "demand_anom": [
+    -145.0,
+    119.5
+   ],
+   "net_generation_anom": [
+    -876.32,
+    815.45
+   ],
+   "imbalance_anom": [
+    -832.09,
+    882.68
+   ]
+  },
+  "cplw": {
+   "forecast_error": [
+    -199.0,
+    129.94
+   ],
+   "imbalance": [
+    10.69,
+    558.31
+   ],
+   "demand_anom": [
+    -331.4,
+    402.98
+   ],
+   "net_generation_anom": [
+    -364.22,
+    554.7
+   ],
+   "imbalance_anom": [
+    -396.07,
+    336.42
+   ]
+  },
+  "dopd": {
+   "forecast_error": [
+    -68.0,
+    46.75
+   ],
+   "imbalance": [
+    -536.75,
+    164.98
+   ],
+   "demand_anom": [
+    -114.96,
+    107.96
+   ],
+   "net_generation_anom": [
+    -422.91,
+    396.59
+   ],
+   "imbalance_anom": [
+    -390.0,
+    411.87
+   ]
+  },
+  "epe": {
+   "forecast_error": [
+    -304.0,
+    167.94
+   ],
+   "imbalance": [
+    18.52,
+    915.48
+   ],
+   "demand_anom": [
+    -580.12,
+    505.04
+   ],
+   "net_generation_anom": [
+    -474.55,
+    468.84
+   ],
+   "imbalance_anom": [
+    -432.0,
+    273.2
+   ]
+  },
+  "fmpp": {
+   "forecast_error": [
+    -670.86,
+    574.94
+   ],
+   "imbalance": [
+    -352.41,
+    534.34
+   ],
+   "demand_anom": [
+    -997.5,
+    745.08
+   ],
+   "net_generation_anom": [
+    -989.94,
+    1020.44
+   ],
+   "imbalance_anom": [
+    -417.86,
+    577.93
+   ]
+  },
+  "fpc": {
+   "forecast_error": [
+    -23.83,
+    3239.44
+   ],
+   "imbalance": [
+    701.74,
+    2951.79
+   ],
+   "demand_anom": [
+    -3250.16,
+    3268.61
+   ],
+   "net_generation_anom": [
+    -2950.43,
+    2554.55
+   ],
+   "imbalance_anom": [
+    -1133.54,
+    1289.8
+   ]
+  },
+  "fpl": {
+   "forecast_error": [
+    -3317.46,
+    3218.62
+   ],
+   "imbalance": [
+    -1333.74,
+    1672.63
+   ],
+   "demand_anom": [
+    -7478.3,
+    5259.21
+   ],
+   "net_generation_anom": [
+    -7018.72,
+    5165.74
+   ],
+   "imbalance_anom": [
+    -1244.35,
+    1553.88
+   ]
+  },
+  "gcpd": {
+   "forecast_error": [
+    -127.24,
+    80.0
+   ],
+   "imbalance": [
+    -1046.2,
+    373.2
+   ],
+   "demand_anom": [
+    -174.7,
+    140.5
+   ],
+   "net_generation_anom": [
+    -875.14,
+    841.43
+   ],
+   "imbalance_anom": [
+    -814.57,
+    829.82
+   ]
+  },
+  "iid": {
+   "forecast_error": [
+    -107.85,
+    78.85
+   ],
+   "imbalance": [
+    -444.42,
+    418.78
+   ],
+   "demand_anom": [
+    -311.98,
+    358.5
+   ],
+   "net_generation_anom": [
+    -579.14,
+    223.59
+   ],
+   "imbalance_anom": [
+    -272.55,
+    650.64
+   ]
+  },
+  "ipco": {
+   "forecast_error": [
+    -482.24,
+    313.24
+   ],
+   "imbalance": [
+    -1036.51,
+    1342.61
+   ],
+   "demand_anom": [
+    -1183.29,
+    1041.36
+   ],
+   "net_generation_anom": [
+    -796.41,
+    758.2
+   ],
+   "imbalance_anom": [
+    -1066.02,
+    1133.43
+   ]
+  },
+  "isne": {
+   "forecast_error": [
+    -1066.27,
+    1609.86
+   ],
+   "imbalance": [
+    303.14,
+    4065.23
+   ],
+   "demand_anom": [
+    -5671.38,
+    7603.49
+   ],
+   "net_generation_anom": [
+    -6004.88,
+    6544.4
+   ],
+   "imbalance_anom": [
+    -2400.59,
+    1697.82
+   ]
+  },
+  "ldwp": {
+   "forecast_error": [
+    -416.88,
+    1179.63
+   ],
+   "imbalance": [
+    -443.13,
+    1210.31
+   ],
+   "demand_anom": [
+    -1811.89,
+    1922.48
+   ],
+   "net_generation_anom": [
+    -1876.94,
+    2172.85
+   ],
+   "imbalance_anom": [
+    -831.79,
+    803.72
+   ]
+  },
+  "nevp": {
+   "forecast_error": [
+    -741.85,
+    779.64
+   ],
+   "imbalance": [
+    -257.47,
+    1982.27
+   ],
+   "demand_anom": [
+    -2498.73,
+    2355.76
+   ],
+   "net_generation_anom": [
+    -2034.99,
+    1971.5
+   ],
+   "imbalance_anom": [
+    -1048.05,
+    942.1
+   ]
+  },
+  "nwmt": {
+   "forecast_error": [
+    -172.0,
+    249.71
+   ],
+   "imbalance": [
+    -1618.41,
+    618.71
+   ],
+   "demand_anom": [
+    -377.34,
+    325.28
+   ],
+   "net_generation_anom": [
+    -2092.52,
+    1120.5
+   ],
+   "imbalance_anom": [
+    -1018.86,
+    1897.3
+   ]
+  },
+  "nyis": {
+   "forecast_error": [
+    -1684.18,
+    2259.82
+   ],
+   "imbalance": [
+    0.0,
+    5508.75
+   ],
+   "demand_anom": [
+    -6364.14,
+    7687.28
+   ],
+   "net_generation_anom": [
+    -6182.83,
+    8140.63
+   ],
+   "imbalance_anom": [
+    -3987.06,
+    2498.22
+   ]
+  },
+  "pace": {
+   "forecast_error": [
+    -1156.17,
+    424.69
+   ],
+   "imbalance": [
+    -1619.37,
+    2316.72
+   ],
+   "demand_anom": [
+    -2132.45,
+    1739.47
+   ],
+   "net_generation_anom": [
+    -2091.02,
+    2654.13
+   ],
+   "imbalance_anom": [
+    -2460.11,
+    1990.13
+   ]
+  },
+  "pacw": {
+   "forecast_error": [
+    -427.72,
+    234.24
+   ],
+   "imbalance": [
+    -280.93,
+    2067.3
+   ],
+   "demand_anom": [
+    -866.66,
+    994.29
+   ],
+   "net_generation_anom": [
+    -1095.27,
+    1070.32
+   ],
+   "imbalance_anom": [
+    -1034.41,
+    1169.91
+   ]
+  },
+  "pge": {
+   "forecast_error": [
+    -411.26,
+    275.39
+   ],
+   "imbalance": [
+    711.12,
+    2908.26
+   ],
+   "demand_anom": [
+    -800.07,
+    1259.47
+   ],
+   "net_generation_anom": [
+    -662.25,
+    901.82
+   ],
+   "imbalance_anom": [
+    -943.54,
+    753.09
+   ]
+  },
+  "pjm": {
+   "forecast_error": [
+    -11236.69,
+    16997.08
+   ],
+   "imbalance": [
+    -12282.77,
+    13992.84
+   ],
+   "demand_anom": [
+    -34591.91,
+    35382.6
+   ],
+   "net_generation_anom": [
+    -33851.14,
+    33767.9
+   ],
+   "imbalance_anom": [
+    -12577.74,
+    14628.1
+   ]
+  },
+  "pnm": {
+   "forecast_error": [
+    -818.24,
+    168.0
+   ],
+   "imbalance": [
+    -747.24,
+    941.69
+   ],
+   "demand_anom": [
+    -552.75,
+    471.11
+   ],
+   "net_generation_anom": [
+    -924.95,
+    822.82
+   ],
+   "imbalance_anom": [
+    -863.84,
+    879.34
+   ]
+  },
+  "psco": {
+   "forecast_error": [
+    -868.16,
+    984.53
+   ],
+   "imbalance": [
+    -106.03,
+    1467.48
+   ],
+   "demand_anom": [
+    -2087.16,
+    2420.35
+   ],
+   "net_generation_anom": [
+    -1749.28,
+    2248.36
+   ],
+   "imbalance_anom": [
+    -498.19,
+    952.87
+   ]
+  },
+  "sc": {
+   "forecast_error": [
+    -1061.92,
+    195.58
+   ],
+   "imbalance": [
+    -334.18,
+    1394.65
+   ],
+   "demand_anom": [
+    -1439.32,
+    1511.04
+   ],
+   "net_generation_anom": [
+    -1353.16,
+    2171.46
+   ],
+   "imbalance_anom": [
+    -1001.91,
+    697.62
+   ]
+  },
+  "sceg": {
+   "forecast_error": [
+    -546.53,
+    662.0
+   ],
+   "imbalance": [
+    -651.0,
+    870.85
+   ],
+   "demand_anom": [
+    -1466.36,
+    1295.16
+   ],
+   "net_generation_anom": [
+    -1330.11,
+    1353.27
+   ],
+   "imbalance_anom": [
+    -537.15,
+    1089.4
+   ]
+  },
+  "scl": {
+   "forecast_error": [
+    -189.91,
+    164.0
+   ],
+   "imbalance": [
+    -485.09,
+    1082.73
+   ],
+   "demand_anom": [
+    -407.93,
+    381.66
+   ],
+   "net_generation_anom": [
+    -619.38,
+    799.86
+   ],
+   "imbalance_anom": [
+    -830.21,
+    652.62
+   ]
+  },
+  "soco": {
+   "forecast_error": [
+    -3900.03,
+    3450.78
+   ],
+   "imbalance": [
+    -2735.14,
+    1863.6
+   ],
+   "demand_anom": [
+    -15299.24,
+    12313.44
+   ],
+   "net_generation_anom": [
+    -13374.79,
+    11637.55
+   ],
+   "imbalance_anom": [
+    -2427.98,
+    2864.83
+   ]
+  },
+  "spa": {
+   "forecast_error": [
+    -40.0,
+    51.77
+   ],
+   "imbalance": [
+    -1610.0,
+    -270.08
+   ],
+   "demand_anom": [
+    -35.5,
+    47.0
+   ],
+   "net_generation_anom": [
+    -775.09,
+    589.59
+   ],
+   "imbalance_anom": [
+    -585.99,
+    764.0
+   ]
+  },
+  "srp": {
+   "forecast_error": [
+    -799.8,
+    3024.38
+   ],
+   "imbalance": [
+    -5698.85,
+    -1963.09
+   ],
+   "demand_anom": [
+    -2046.48,
+    2203.0
+   ],
+   "net_generation_anom": [
+    -2863.93,
+    3207.03
+   ],
+   "imbalance_anom": [
+    -2066.37,
+    1989.3
+   ]
+  },
+  "tal": {
+   "forecast_error": [
+    -69.48,
+    64.0
+   ],
+   "imbalance": [
+    -94.0,
+    171.0
+   ],
+   "demand_anom": [
+    -198.5,
+    190.91
+   ],
+   "net_generation_anom": [
+    -194.84,
+    161.2
+   ],
+   "imbalance_anom": [
+    -91.7,
+    171.2
+   ]
+  },
+  "tec": {
+   "forecast_error": [
+    -641.45,
+    516.69
+   ],
+   "imbalance": [
+    -710.73,
+    513.21
+   ],
+   "demand_anom": [
+    -1238.04,
+    970.48
+   ],
+   "net_generation_anom": [
+    -1238.6,
+    1355.7
+   ],
+   "imbalance_anom": [
+    -799.64,
+    782.2
+   ]
+  },
+  "tepc": {
+   "forecast_error": [
+    -1034.17,
+    1483.3
+   ],
+   "imbalance": [
+    -346.36,
+    1475.36
+   ],
+   "demand_anom": [
+    -1200.23,
+    1413.22
+   ],
+   "net_generation_anom": [
+    -705.97,
+    741.97
+   ],
+   "imbalance_anom": [
+    -657.0,
+    880.41
+   ]
+  },
+  "tidc": {
+   "forecast_error": [
+    -57.47,
+    48.0
+   ],
+   "imbalance": [
+    -87.47,
+    376.94
+   ],
+   "demand_anom": [
+    -181.64,
+    261.42
+   ],
+   "net_generation_anom": [
+    -268.28,
+    297.32
+   ],
+   "imbalance_anom": [
+    -172.5,
+    216.82
+   ]
+  },
+  "tpwr": {
+   "forecast_error": [
+    -265.86,
+    83.96
+   ],
+   "imbalance": [
+    -2.17,
+    683.24
+   ],
+   "demand_anom": [
+    -242.25,
+    205.0
+   ],
+   "net_generation_anom": [
+    -344.0,
+    239.0
+   ],
+   "imbalance_anom": [
+    -246.75,
+    272.82
+   ]
+  },
+  "wacm": {
+   "forecast_error": [
+    -812.75,
+    402.5
+   ],
+   "imbalance": [
+    -2722.75,
+    -488.5
+   ],
+   "demand_anom": [
+    -974.81,
+    664.09
+   ],
+   "net_generation_anom": [
+    -1423.21,
+    1117.4
+   ],
+   "imbalance_anom": [
+    -872.63,
+    1238.75
+   ]
+  },
+  "walc": {
+   "forecast_error": [
+    -545.93,
+    439.28
+   ],
+   "imbalance": [
+    -890.28,
+    785.0
+   ],
+   "demand_anom": [
+    -607.44,
+    413.44
+   ],
+   "net_generation_anom": [
+    -626.89,
+    804.11
+   ],
+   "imbalance_anom": [
+    -648.17,
+    591.33
+   ]
+  },
+  "wauw": {
+   "forecast_error": [
+    -33.0,
+    27.0
+   ],
+   "imbalance": [
+    -9.0,
+    126.24
+   ],
+   "demand_anom": [
+    -42.21,
+    41.5
+   ],
+   "net_generation_anom": [
+    -76.5,
+    53.21
+   ],
+   "imbalance_anom": [
+    -50.0,
+    97.5
+   ]
+  }
+ }
+}

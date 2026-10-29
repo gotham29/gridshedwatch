@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 
 from . import data
-from .config import SIGNALS
+from .config import SIGNALS, VERSION
 
 COLUMNS = [f"p_{s}" for s in SIGNALS]
 
@@ -36,8 +36,8 @@ def check(df: pd.DataFrame, grid: str) -> None:
         raise ValueError(f"{grid}: scores outside [0, 1]")
 
 
-def load(folder) -> dict:
-    """{seed: {grid: DataFrame}} for every seed folder found."""
+def load(folder, version: str = VERSION) -> dict:
+    """{seed: {grid: DataFrame}} for every seed folder found, with every grid of the release."""
     folder = Path(folder)
     out = {}
     for sd in sorted(folder.glob("s[0-9]*")):
@@ -45,7 +45,7 @@ def load(folder) -> dict:
             continue
         k = int(sd.name[1:])
         out[k] = {}
-        for g in data.grids():
+        for g in data.grids(version):
             f = next((p for p in (sd / f"{g}.csv", sd / f"{g}.csv.gz") if p.exists()), None)
             if f is None:
                 raise FileNotFoundError(f"{sd}: no scores for {g}")

@@ -4,6 +4,14 @@ The benchmark version (events, data, rules, scoring) and the package version are
 a package patch release never changes a score.
 
 ## Unreleased
+- v2.0 events, grids and scoring (protocol fixed before scoring: `docs/protocol_v2.md`). Two Tier 2
+  events (`events.yaml`, `tier2`); 48 grids (`grids.yaml`): the 8 of v1.0 plus every EIA-930
+  balancing authority that passes the coverage rule, with the 40 new data files in `snapshot_v2.0`
+  (`scripts/build_snapshot.py`, which also writes data-quality flags to `quality.csv`).
+  `data.grids()`, `data.event_list()` and `submission.load()` take a `version` (default "1.0", so
+  nothing changes for v1.0); `benchmark.evaluate_release` scores a release at the v1.0 operating
+  point, with Tier 1 and Tier 2 verified separately and alert burden on every grid;
+  `gridshedwatch score DIR --version 2.0` runs it. No v1.0 score changed.
 - Four more reference methods in `gridshedwatch.baselines`: a gradient-boosted forecaster
   (LightGBM), PatchTST, Sub-PCA and random scores. Not part of the v1.0 table; they will be
   scored in v2.0.

@@ -281,3 +281,78 @@ events:
         title: Inquiry into Bulk-Power System Operations During December 2022 Winter Storm Elliott (pp. 12-14)
         publisher: FERC-NERC-Regional Entity staff
         url: https://www.ferc.gov/sites/default/files/2023-11/24_Winter-Storm_Elliot_1107_1300.pdf
+
+# Tier 2 (v2.0): strict EEA 3 for lack of supply, a material action, no operator-directed firm load
+# shed, and an official declaration time plus an independent source (docs/tier2_candidates.yaml has
+# the four tests for each). Onset = the EEA 3 declaration. List frozen 2026-10-29, before scoring.
+tier2_frozen: '2026-10-29'
+tier2:
+  nevp_2020-08-18:
+    grid_id: nevp
+    grid_name: Nevada (NV Energy)
+    eia930_respondent: NEVP
+    local_tz: America/Los_Angeles
+    event: Aug 2020 heat wave
+    onset_local: 2020-08-18 15:30
+    onset_utc: 2020-08-18 22:30
+    onset_basis: EEA 3 declared
+    split: held-out
+    since: '2.0'
+    cause: Western heat wave (Las Vegas about 11 degrees above normal), a day-ahead market with heavy buyers and few sellers, and a 225 MW unit out since
+      late July
+    impact:
+      shed_mw: 0
+      customers: no customers lost power; conservation appeal 2-9 PM to about 1.4 million customers (OE-417)
+      duration: EEA 3 from 15:30 to after 21:00 PDT, EEA 1 from 12:27
+    response:
+    - RC West declared EEA 1 at 12:27 and EEA 3 at 15:30
+    - public conservation appeal
+    - large customers asked to reduce use
+    - reserve sharing and real-time purchases
+    sources:
+      onset:
+        title: Electric capacity report on the August 2020 Western heat event
+        publisher: Public Utilities Commission of Nevada
+        url: https://puc.nv.gov/uploadedFiles/pucnvgov/Content/Home/Features/ElectricCapacityReport.pdf
+      nvindependent:
+        title: More details emerge from NV Energy's rare electricity conservation request from August
+        publisher: The Nevada Independent
+        url: https://thenevadaindependent.com/article/more-details-emerge-from-nv-energys-rare-electricity-conservation-request-from-august
+      oe417_2020:
+        title: 'DOE OE-417, 2020 (EIA Electric Power Monthly, Table B.2): NV Energy public appeal, 2020-08-18 2:00-9:00 PM'
+        publisher: DOE / EIA
+        url: https://www.eia.gov/electricity/data/disturbance/disturb_events_archive.html
+    record: docs/tier2_candidates.yaml#nevp_2020-08-18
+  ciso_2022-09-06:
+    grid_id: ca
+    grid_name: California (CAISO)
+    eia930_respondent: CISO
+    local_tz: America/Los_Angeles
+    event: Sept 2022 heat wave
+    onset_local: 2022-09-06 17:17
+    onset_utc: 2022-09-07 00:17
+    onset_basis: EEA 3 declared
+    split: held-out
+    since: '2.0'
+    cause: Record heat across the West; CAISO peak demand of 52,061 MW, an all-time record
+    impact:
+      shed_mw: 0
+      customers: no CAISO-ordered outages; PG&E warned over 500,000 customers of possible outages; six NCPA cities shed 46 MW in error for under an hour
+      duration: EEA 3 from 17:17 to 20:00 PDT
+    response:
+    - EEA Watch Sept 5, EEA 1 (declared 10:09, effective 16:00), EEA 2 at 13:55 with emergency demand response, EEA 3 at 17:17
+    - statewide conservation appeal
+    sources:
+      onset:
+        title: Rotating power outages are now possible to protect grid
+        publisher: CAISO
+        url: https://www.caiso.com/Documents/rotating-power-outages-are-now-possible-to-protect-grid.pdf
+      utilitydive:
+        title: California ISO narrowly avoids outages but warns as peak demand hits record
+        publisher: Utility Dive
+        url: https://utilitydive.com/news/california-iso-narrowly-avoids-outages-but-warns-as-peak-demand-hits-record/631280
+      caladvocates:
+        title: 'September 2022 heat wave: preliminary analysis'
+        publisher: Public Advocates Office (CPUC)
+        url: https://www.publicadvocates.cpuc.ca.gov/-/media/cal-advocates-website/files/press-room/reports-and-analyses/220922-caladvocates-sept-22-heat-wave-analysis---full.pdf
+    record: docs/tier2_candidates.yaml#ciso_2022-09-06

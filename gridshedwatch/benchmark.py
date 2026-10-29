@@ -15,6 +15,11 @@ Steps, all fixed in advance:
 Alerts track (`evaluate_alerts`): a method submits its watch and warning start times directly.
 Step 3 is identical; steps 1-2 are replaced by a check that the entry is within the same budget.
 
+Releases (`evaluate_release`): v2.0 keeps each method's v1.0 operating point, chosen on v1.0's 8 grids
+as above, and applies it unchanged to every grid of the release. Each tier of events is verified on
+its own (Tier 1 reproduces v1.0 exactly), one false alarm ratio counts every event, and alert burden
+(alerts per grid-year, no labels needed) is reported for every grid, including grids with no event.
+
 Events and grids: alerts are raised per grid, and each grid's alerts are verified against every
 event in that grid (data.event_list(); v1.0 has one per grid). Scored rows are one per seed x event
 x level; alert counts and rates belong to the grid, and an alert counts as verified if it verifies
@@ -152,6 +157,7 @@ class Result:
     op: dict
     rows: pd.DataFrame = field(default=None)       # one row per seed x grid x level at the operating point
     summary: dict = field(default=None)
+    burden: pd.DataFrame = field(default=None)     # evaluate_release: one row per seed x grid x level
 
 
 def evaluate(method: str, alert_fn: Callable, seeds: Iterable[int], chance: bool = True, seed: int = 0,
@@ -220,6 +226,71 @@ def _verify(method, rows, seeds, setting, chance, seed, window=None, events=None
             s[f"{lv}_chance_p"] = round(float(np.mean([(d >= c_obs).mean() for (_, _, d), c_obs in
                                                        zip(nulls, x.groupby("seed").caught.sum())])), 3)
     return rows, s
+
+
+def evaluate_release(method: str, alert_fn: Callable, seeds: Iterable[int], version: str = "2.0",
+                     chance: bool = True, seed: int = 0) -> Result:
+    """Score a release at the v1.0 operating point (see the module docstring).
+
+    Summary keys: tier1_* (the v1.0 summary, reproduced), tier2_* (catches, lead and chance for the
+    Tier 2 events), all_<level>_false_alarm_ratio (alerts on event grids that verify no event of any
+    tier), and burden_* over all grids, quiet grids (no event) and quiet grids without a data-quality
+    flag: median, 90th percentile and highest alerts per grid-year, and grids over GRID_CAP x budget.
+    """
+    seeds = list(seeds)
+    sw = sweep(alert_fn, seeds)                         # v1.0 grids and events: the v1.0 operating point
+    op = operating_point(sw)
+    events = data.event_list(version)
+    sets = {"tier1": [e for e in events if e["tier"] == 1], "tier2": [e for e in events if e["tier"] == 2], "all": events}
+    by = {k: _by_grid(v) for k, v in sets.items()}
+    rows, burden = {k: [] for k in sets}, []
+    for k in seeds:
+        for g in data.grids(version):
+            tb, yrs = data.timebase(g), data.scored_years(g)
+            warm = tb["in_warmup"].to_numpy()
+            for lv in LEVELS:
+                st = rules.episodes(alert_fn(g, lv, op[lv][0], op[lv][1], k), tb["timestamp"], warm)
+                burden.append(dict(seed=k, grid=g, level=lv, rate=len(st) / yrs, n_alerts=len(st), years=yrs))
+                for name in sets:
+                    if g in by[name]:
+                        rows[name] += [dict(seed=k, grid=g, level=lv, threshold=op[lv][0], L=op[lv][1], **r)
+                                       for r in _rows(st, g, lv, by[name][g], yrs)]
+    setting = {lv: f"threshold {op[lv][0]}, {op[lv][1]} h" for lv in LEVELS}
+    s = {"method": method, "seeds": len(seeds), "version": version}
+    out = {}
+    for name in sets:
+        out[name], t = _verify(method, pd.DataFrame(rows[name]), seeds, setting, chance and name != "all", seed,
+                               events=sets[name])
+        if name == "tier1":
+            s.update({f"tier1_{key}": v for key, v in t.items() if key not in ("method", "seeds")})
+        elif name == "tier2":
+            s.update({f"tier2_{key}": v for key, v in t.items() if "caught" in key or "lead" in key or "chance" in key})
+        else:
+            s.update({f"all_{lv}_false_alarm_ratio": t[f"{lv}_false_alarm_ratio"] for lv in LEVELS})
+    burden = pd.DataFrame(burden)
+    s.update(_burden(burden, version))
+    rows = pd.concat([out["tier1"], out["tier2"]], ignore_index=True)
+    return Result(method, sw, op, rows, s, burden)
+
+
+def _burden(burden: pd.DataFrame, version: str) -> dict:
+    """Alerts per grid-year (mean over seeds) across grids: all, quiet (no event), quiet without a flag."""
+    q = data.quality(version)
+    has_event = set(data.event_grids(version))
+    groups = {"all": list(q.index), "quiet": [g for g in q.index if g not in has_event]}
+    groups["quiet_unflagged"] = [g for g in groups["quiet"] if not (q.loc[g, "flat_flag"] or q.loc[g, "shift_flag"])]
+    s = {}
+    for lv in LEVELS:
+        per_grid = burden[burden.level == lv].groupby("grid").rate.mean()
+        for name, gs in groups.items():
+            x = per_grid.reindex(gs)
+            s[f"burden_{name}_{lv}_grids"] = len(gs)
+            s[f"burden_{name}_{lv}_median"] = round(float(x.median()), 2)
+            s[f"burden_{name}_{lv}_p90"] = round(float(x.quantile(0.9)), 2)
+            s[f"burden_{name}_{lv}_max"] = round(float(x.max()), 2)
+            s[f"burden_{name}_{lv}_max_grid"] = str(x.idxmax())
+            s[f"burden_{name}_{lv}_over_cap"] = int((x > GRID_CAP * BUDGET[lv]).sum())
+    return s
 
 
 def status_quo() -> dict:

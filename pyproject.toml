@@ -30,7 +30,8 @@ Repository = "https://github.com/gotham29/gridshedwatch"
 packages = ["gridshedwatch", "gridshedwatch.baselines"]
 
 [tool.setuptools.package-data]
-gridshedwatch = ["events.yaml", "operator_notices.yaml", "snapshot_v1.0/SHA256SUMS", "snapshot_v1.0/bounds_2019.json", "snapshot_v1.0/eia930/*.csv.gz"]
+gridshedwatch = ["events.yaml", "grids.yaml", "operator_notices.yaml", "snapshot_v*/SHA256SUMS", "snapshot_v*/bounds_2019.json",
+                 "snapshot_v*/quality.csv", "snapshot_v*/eia930/*.csv.gz"]
 
 [tool.pytest.ini_options]
 markers = ["slow: rebuilds reference methods from the data (about a minute each)"]

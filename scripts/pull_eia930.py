@@ -28,6 +28,17 @@ from gridshedwatch import data  # noqa: E402
 API = "https://api.eia.gov/v2/electricity/rto/region-data/data/"
 
 
+def _get(url: str, tries: int = 4) -> dict:
+    """GET JSON, retrying when EIA's server is slow to answer."""
+    for i in range(tries):
+        try:
+            return json.loads(urllib.request.urlopen(url, timeout=120).read())
+        except (TimeoutError, OSError):
+            if i == tries - 1:
+                raise
+            time.sleep(10 * (i + 1))
+
+
 def pull(ba: str, key: str) -> pd.DataFrame:
     rows, offset = [], 0
     while True:
@@ -35,7 +46,7 @@ def pull(ba: str, key: str) -> pd.DataFrame:
              ("facets[type][]", "D"), ("facets[type][]", "DF"), ("facets[type][]", "NG"),
              ("start", "2019-01-01T00"), ("end", "2026-10-01T00"), ("sort[0][column]", "period"),
              ("sort[0][direction]", "asc"), ("offset", offset), ("length", 5000)]
-        d = json.loads(urllib.request.urlopen(API + "?" + urllib.parse.urlencode(q), timeout=120).read())["response"]
+        d = _get(API + "?" + urllib.parse.urlencode(q))["response"]
         rows += d["data"]
         offset += 5000
         if offset >= int(d["total"]):
@@ -51,7 +62,7 @@ def pull(ba: str, key: str) -> pd.DataFrame:
 def respondents(key: str) -> list:
     """Every EIA-930 respondent code (balancing authorities and regions)."""
     url = API.replace("/data/", "/facet/respondent") + "?" + urllib.parse.urlencode({"api_key": key})
-    return sorted(f["id"] for f in json.loads(urllib.request.urlopen(url, timeout=120).read())["response"]["facets"])
+    return sorted(f["id"] for f in _get(url)["response"]["facets"])
 
 
 def main():
@@ -78,7 +89,7 @@ def main():
         old_file = data.DATA / "eia930" / f"{ba}.csv.gz"
         if old_file.exists():
             old = pd.read_csv(old_file, index_col="period_utc")
-            j = old.join(new, how="outer", lsuffix="_v1", rsuffix="_now")
+            j = old.add_suffix("_v1").join(new.add_suffix("_now"), how="outer")
             diff = {c: int((j[f"{c}_v1"].fillna(-1) != j[f"{c}_now"].fillna(-1)).sum()) for c in ("D", "DF", "NG")}
             print(f"{g:5s} {ba:5s} hours v1 {len(old)}, now {len(new)}; values that differ: {diff}")
         else:

@@ -28,6 +28,15 @@ levels:
     eea3: "EEA 3: reserves below 1,500 MW or frequency below 59.8 Hz; ERCOT orders controlled outages"
     note: "In ERCOT an EEA 3 always comes with firm load shed, so an ERCOT EEA 3 is Tier 1, never Tier 2."
     source: https://www.ercot.com/files/docs/2023/06/20/2024-Energy-Emergency-Alert-Overview.pdf
+  PJM:
+    eea3: "Manual Load Dump Warning (shed imminent) and Manual Load Dump Action (shed) - Capacity Emergency - NERC EEA 3"
+    note: "Emergency Load Management Reduction, Deploy All Resources and Voltage Reduction are EEA 2. A real Manual Load Dump Warning without an Action would be Tier 2."
+    checked: "All PJM Emergency Procedures postings 2020-01-01 to 2026-10-28 filtered on 'Load Dump' (Oct 28, 2026): only drills (2 per year). No capacity EEA 3. Winter Storm Elliott (Dec 23-24, 2022) peaked at EEA 2 (Emergency Load Management Reductions). Local Load Shed Directives (AEP June 14-15, 2022, derecho damage; BGE Aug 11, 2025, 15:52-16:20, msg 104779, to keep post-contingency flow on the 115 kV Chestnut-Fredrick Rd line below its load dump rating) are transmission-related, not capacity emergencies"
+    source: https://emergencyprocedures.pjm.com/ep/pages/dashboard.jsf
+  MISO:
+    eea3: "Max Gen Event Step 5 declares EEA 3 with load shed; Steps 3a and 4b declare EEA 3 when contingency reserves stay below the requirement (more than 30 minutes, no fix within 90), without requiring load shed"
+    note: "Step 1b = EEA 1, Step 2a = EEA 2. So MISO can have a Tier 2 event (EEA 3 under Step 3a or 4b, no shed)."
+    source: https://cdn.misoenergy.org/SO-P-EOP-11-002%20Rev%2023%20MISO%20Market%20Capacity%20Emergency683501.pdf
 
 candidates:
   - id: ciso_2022-09-06
@@ -78,6 +87,18 @@ candidates:
     reason: "Highest level EEA 2, below the top-level test. ERCOT declares EEA 3 only with controlled outages, so it cannot have a Tier 2 event (strict EEA 3, approved Oct 28)"
     sources:
       ercot_release: {title: "ERCOT has initiated Energy Emergency Alert Level 2", publisher: ERCOT, url: "https://www.ercot.com/news/release/2023-09-06-ercot-has-initiated"}
+
+# Leads from other sources (2023-2026), each still to be checked against the four tests.
+other_leads:
+  - {date: 2023-08-24, entity: MISO, level: "Max Gen Event Step 2a (EEA 2), downgraded 19:30 EST", note: "Below EEA 3; exclude unless a later source shows Step 3a or higher", source: "https://cdn.misoenergy.org/20231003%20RSC%20Item%2005%20Overview%20of%20August%2024%20Max%20Gen%20Event630385.pdf"}
+  - {date: 2026-01-24, entity: MISO North and Central, level: "Max Gen Event Step 2c (EEA 2); about 2 GW of LMRs deployed; emergency purchases from PJM", note: "Winter Storm Fern. Below EEA 3; exclude", source: "https://cdn.misoenergy.org/20260217%20RSC%20Item%2005%20Winter%20Storm%20Fern%20Report741721.pdf"}
+  - {date: 2026-07-20, entity: SPP, level: "EEA 3 and EEA 2 issued July 20, 2026 (DOE Order 202-26-36: 'SPP has issued EEA Levels 3 and 2 on July 20, 2026'); news: about 18:00 EDT for the western area, lowered within hours", note: "Hot weather. Second source in hand. EIA-930: SPP West reports as SWPW from 2026-04-01 (WACM and WAUW end 2026-04-02), so a western EEA 3 has no 2019 calibration year and under four months of history; exclude for data unless SPP shows it was declared for SPP East (SWPP, full history). Still need SPP's notice for area and time", source: "https://www.energy.gov/documents/doe-order-no-202-26-36"}
+  - {date: 2024-01-13, entity: unnamed RC West balancing authority, level: "EEA 3 08:41-11:24 (Pacific), emergency assistance and demand response, no shed", note: "Pacific Northwest cold; name the balancing authority (RC West request pending)", source: "https://www.caiso.com/documents/wintermarketperformancereportforjan2024.pdf"}
+
+# Lists still to obtain: MISO's own history of Max Gen declarations ("Maximum Generation Emergency
+# Declarations through June 2024", MISO OASIS document Capacity_Emergency_Historical_Information.pdf)
+# and PJM's Emergency Procedures postings archive (emergencyprocedures.pjm.com), which tags each
+# posting with its NERC EEA level.
 
 # Leads from DOE OE-417 (EIA Electric Power Monthly, Table B.2 for 2020 and 2021, Table B.1 for
 # 2022; files in tier2_sources/). Every public appeal or emergency row outside the Tier 1 storms,

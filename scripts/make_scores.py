@@ -20,11 +20,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("method", choices=[m for m, v in METHODS.items() if v[1]])
     ap.add_argument("--seeds", nargs="+", type=int)
-    ap.add_argument("--version", default="1.0", help="every grid of this release (v1.0 grids keep their files)")
+    ap.add_argument("--version", default="1.0", help="the grids this release added (1.0: its 8 grids)")
     ap.add_argument("--out", type=Path, default=ROOT / "reference_scores")
     a = ap.parse_args()
     for k in a.seeds if a.seeds is not None else METHODS[a.method][2]:
-        for g in data.grids(a.version):
+        for g in [g for g in data.grids(a.version) if data.grid_table()[g]["since"] == a.version]:
             if (a.out / a.method / f"s{k}" / f"{g}.csv.gz").exists():
                 continue
             submission.write({k: {g: scores(a.method, g, k)}}, a.out / a.method)

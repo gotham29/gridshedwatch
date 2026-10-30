@@ -84,6 +84,21 @@ def sweep(alert_fn: Callable, seeds: Iterable[int], grids: Iterable[str] = None,
     return pd.DataFrame(rows)
 
 
+def rates(alert_fn: Callable, seeds: Iterable[int], grids: Iterable[str]) -> pd.DataFrame:
+    """Alerts per grid-year for every setting, seed and grid (no events needed), for operating_point."""
+    rows = []
+    for k in seeds:
+        for g in grids:
+            tb, yrs = data.timebase(g), data.scored_years(g)
+            warm = tb["in_warmup"].to_numpy()
+            for level in LEVELS:
+                for thr in THRESHOLDS:
+                    for L in PERSISTENCE[level]:
+                        n = len(rules.episodes(alert_fn(g, level, thr, L, k), tb["timestamp"], warm))
+                        rows.append(dict(seed=k, grid=g, level=level, threshold=thr, L=L, rate=n / yrs))
+    return pd.DataFrame(rows)
+
+
 def _row(st: list, grid: str, level: str, yrs: float = None, on: pd.Timestamp = None, window: dict = None) -> dict:
     """Verification of one seed x grid x level from its alert episode start times."""
     yrs = data.scored_years(grid) if yrs is None else yrs
@@ -229,16 +244,21 @@ def _verify(method, rows, seeds, setting, chance, seed, window=None, events=None
 
 
 def evaluate_release(method: str, alert_fn: Callable, seeds: Iterable[int], version: str = "2.0",
-                     chance: bool = True, seed: int = 0) -> Result:
+                     chance: bool = True, seed: int = 0, op_from: str = "1.0") -> Result:
     """Score a release at the v1.0 operating point (see the module docstring).
 
     Summary keys: tier1_* (the v1.0 summary, reproduced), tier2_* (catches, lead and chance for the
     Tier 2 events), all_<level>_false_alarm_ratio (alerts on event grids that verify no event of any
     tier), and burden_* over all grids, quiet grids (no event) and quiet grids without a data-quality
     flag: median, 90th percentile and highest alerts per grid-year, and grids over GRID_CAP x budget.
+    op_from="1.0" is the protocol; op_from=version re-derives the operating point over all the release's
+    grids (a sensitivity analysis; still no labels).
     """
     seeds = list(seeds)
-    sw = sweep(alert_fn, seeds)                         # v1.0 grids and events: the v1.0 operating point
+    if op_from == "1.0":
+        sw = sweep(alert_fn, seeds)                     # v1.0 grids and events: the v1.0 operating point
+    else:
+        sw = rates(alert_fn, seeds, data.grids(op_from))
     op = operating_point(sw)
     events = data.event_list(version)
     sets = {"tier1": [e for e in events if e["tier"] == 1], "tier2": [e for e in events if e["tier"] == 2], "all": events}
@@ -256,7 +276,7 @@ def evaluate_release(method: str, alert_fn: Callable, seeds: Iterable[int], vers
                         rows[name] += [dict(seed=k, grid=g, level=lv, threshold=op[lv][0], L=op[lv][1], **r)
                                        for r in _rows(st, g, lv, by[name][g], yrs)]
     setting = {lv: f"threshold {op[lv][0]}, {op[lv][1]} h" for lv in LEVELS}
-    s = {"method": method, "seeds": len(seeds), "version": version}
+    s = {"method": method, "seeds": len(seeds), "version": version, "operating_point_from": op_from}
     out = {}
     for name in sets:
         out[name], t = _verify(method, pd.DataFrame(rows[name]), seeds, setting, chance and name != "all", seed,

@@ -1,0 +1,10 @@
+variant,tau_watch,tau_warning
+v1.0,1.0,1.0
+watch budget 6,0.77,1.0
+watch budget 24,0.69,1.0
+warning budget 1,1.0,0.77
+warning budget 4,1.0,0.7
+watch window 72 h,0.86,1.0
+watch window 336 h,0.88,1.0
+warning after onset 24 h,1.0,0.97
+warning after onset 72 h,1.0,1.0

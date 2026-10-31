@@ -1,0 +1,865 @@
+method,grid,level,rate,flat_flag,shift_flag
+Operator-style rule,aeci,warning,0.74,False,False
+Operator-style rule,aeci,watch,9.06,False,False
+Operator-style rule,ava,warning,1.04,False,False
+Operator-style rule,ava,watch,7.28,False,False
+Operator-style rule,azps,warning,0.3,False,False
+Operator-style rule,azps,watch,12.33,False,False
+Operator-style rule,banc,warning,0.3,False,False
+Operator-style rule,banc,watch,7.43,False,False
+Operator-style rule,bpat,warning,0.3,False,False
+Operator-style rule,bpat,watch,11.59,False,False
+Operator-style rule,ca,warning,0.0,False,False
+Operator-style rule,ca,watch,9.66,False,False
+Operator-style rule,chpd,warning,1.93,False,True
+Operator-style rule,chpd,watch,12.93,False,True
+Operator-style rule,cple,warning,1.04,False,False
+Operator-style rule,cple,watch,10.1,False,False
+Operator-style rule,cplw,warning,0.89,False,False
+Operator-style rule,cplw,watch,9.66,False,False
+Operator-style rule,dopd,warning,1.49,False,False
+Operator-style rule,dopd,watch,12.04,False,False
+Operator-style rule,duk,warning,1.04,False,False
+Operator-style rule,duk,watch,9.96,False,False
+Operator-style rule,epe,warning,0.3,False,False
+Operator-style rule,epe,watch,9.21,False,False
+Operator-style rule,fmpp,warning,1.19,False,False
+Operator-style rule,fmpp,watch,13.37,False,False
+Operator-style rule,fpc,warning,1.93,False,False
+Operator-style rule,fpc,watch,10.85,False,False
+Operator-style rule,fpl,warning,0.15,False,False
+Operator-style rule,fpl,watch,6.09,False,False
+Operator-style rule,gcpd,warning,1.49,False,False
+Operator-style rule,gcpd,watch,9.21,False,False
+Operator-style rule,iid,warning,0.74,True,False
+Operator-style rule,iid,watch,9.51,True,False
+Operator-style rule,ipco,warning,1.34,False,False
+Operator-style rule,ipco,watch,12.33,False,False
+Operator-style rule,isne,warning,0.0,False,False
+Operator-style rule,isne,watch,1.93,False,False
+Operator-style rule,ldwp,warning,0.59,True,False
+Operator-style rule,ldwp,watch,11.74,True,False
+Operator-style rule,lgee,warning,2.23,False,False
+Operator-style rule,lgee,watch,14.71,False,False
+Operator-style rule,miso,warning,1.93,False,False
+Operator-style rule,miso,watch,12.33,False,False
+Operator-style rule,nevp,warning,1.34,False,False
+Operator-style rule,nevp,watch,10.55,False,False
+Operator-style rule,nwmt,warning,1.78,False,False
+Operator-style rule,nwmt,watch,7.73,False,False
+Operator-style rule,nyis,warning,0.3,False,False
+Operator-style rule,nyis,watch,11.0,False,False
+Operator-style rule,pace,warning,0.3,False,False
+Operator-style rule,pace,watch,11.44,False,False
+Operator-style rule,pacw,warning,0.89,False,False
+Operator-style rule,pacw,watch,11.14,False,False
+Operator-style rule,pge,warning,0.74,False,False
+Operator-style rule,pge,watch,8.02,False,False
+Operator-style rule,pjm,warning,0.0,False,False
+Operator-style rule,pjm,watch,5.2,False,False
+Operator-style rule,pnm,warning,1.04,False,False
+Operator-style rule,pnm,watch,14.12,False,False
+Operator-style rule,psco,warning,0.45,False,False
+Operator-style rule,psco,watch,21.7,False,False
+Operator-style rule,sc,warning,1.34,False,False
+Operator-style rule,sc,watch,9.51,False,False
+Operator-style rule,sceg,warning,0.0,False,False
+Operator-style rule,sceg,watch,1.49,False,False
+Operator-style rule,scl,warning,0.74,False,False
+Operator-style rule,scl,watch,13.23,False,False
+Operator-style rule,soco,warning,0.0,False,False
+Operator-style rule,soco,watch,1.63,False,False
+Operator-style rule,spa,warning,0.3,False,False
+Operator-style rule,spa,watch,2.98,False,False
+Operator-style rule,spp,warning,1.34,True,False
+Operator-style rule,spp,watch,12.48,True,False
+Operator-style rule,srp,warning,0.45,False,False
+Operator-style rule,srp,watch,6.84,False,False
+Operator-style rule,tal,warning,0.15,False,False
+Operator-style rule,tal,watch,8.77,False,False
+Operator-style rule,tec,warning,0.74,False,False
+Operator-style rule,tec,watch,8.77,False,False
+Operator-style rule,tepc,warning,2.23,False,False
+Operator-style rule,tepc,watch,15.16,False,False
+Operator-style rule,tidc,warning,0.59,False,False
+Operator-style rule,tidc,watch,12.63,False,False
+Operator-style rule,tpwr,warning,0.74,False,False
+Operator-style rule,tpwr,watch,5.8,False,False
+Operator-style rule,tva,warning,0.89,False,False
+Operator-style rule,tva,watch,10.55,False,False
+Operator-style rule,tx,warning,1.49,False,False
+Operator-style rule,tx,watch,11.0,False,False
+Operator-style rule,wacm,warning,6.1,False,True
+Operator-style rule,wacm,watch,25.83,False,True
+Operator-style rule,walc,warning,1.19,False,False
+Operator-style rule,walc,watch,10.55,False,False
+Operator-style rule,wauw,warning,0.96,False,False
+Operator-style rule,wauw,watch,8.66,False,False
+Seasonal z-score,aeci,warning,0.89,False,False
+Seasonal z-score,aeci,watch,9.21,False,False
+Seasonal z-score,ava,warning,1.49,False,False
+Seasonal z-score,ava,watch,8.17,False,False
+Seasonal z-score,azps,warning,0.0,False,False
+Seasonal z-score,azps,watch,8.02,False,False
+Seasonal z-score,banc,warning,1.04,False,False
+Seasonal z-score,banc,watch,8.77,False,False
+Seasonal z-score,bpat,warning,3.27,False,False
+Seasonal z-score,bpat,watch,11.29,False,False
+Seasonal z-score,ca,warning,1.34,False,False
+Seasonal z-score,ca,watch,5.94,False,False
+Seasonal z-score,chpd,warning,0.3,False,True
+Seasonal z-score,chpd,watch,6.98,False,True
+Seasonal z-score,cple,warning,2.08,False,False
+Seasonal z-score,cple,watch,11.59,False,False
+Seasonal z-score,cplw,warning,2.23,False,False
+Seasonal z-score,cplw,watch,12.04,False,False
+Seasonal z-score,dopd,warning,0.89,False,False
+Seasonal z-score,dopd,watch,8.02,False,False
+Seasonal z-score,duk,warning,1.63,False,False
+Seasonal z-score,duk,watch,9.21,False,False
+Seasonal z-score,epe,warning,1.49,False,False
+Seasonal z-score,epe,watch,13.23,False,False
+Seasonal z-score,fmpp,warning,2.23,False,False
+Seasonal z-score,fmpp,watch,10.1,False,False
+Seasonal z-score,fpc,warning,5.35,False,False
+Seasonal z-score,fpc,watch,21.1,False,False
+Seasonal z-score,fpl,warning,2.23,False,False
+Seasonal z-score,fpl,watch,15.75,False,False
+Seasonal z-score,gcpd,warning,1.78,False,False
+Seasonal z-score,gcpd,watch,10.55,False,False
+Seasonal z-score,iid,warning,1.64,True,False
+Seasonal z-score,iid,watch,9.22,True,False
+Seasonal z-score,ipco,warning,0.59,False,False
+Seasonal z-score,ipco,watch,7.13,False,False
+Seasonal z-score,isne,warning,1.34,False,False
+Seasonal z-score,isne,watch,6.98,False,False
+Seasonal z-score,ldwp,warning,1.78,True,False
+Seasonal z-score,ldwp,watch,10.4,True,False
+Seasonal z-score,lgee,warning,1.19,False,False
+Seasonal z-score,lgee,watch,11.0,False,False
+Seasonal z-score,miso,warning,2.38,False,False
+Seasonal z-score,miso,watch,12.04,False,False
+Seasonal z-score,nevp,warning,1.78,False,False
+Seasonal z-score,nevp,watch,12.04,False,False
+Seasonal z-score,nwmt,warning,1.78,False,False
+Seasonal z-score,nwmt,watch,9.66,False,False
+Seasonal z-score,nyis,warning,2.38,False,False
+Seasonal z-score,nyis,watch,10.85,False,False
+Seasonal z-score,pace,warning,0.45,False,False
+Seasonal z-score,pace,watch,7.58,False,False
+Seasonal z-score,pacw,warning,1.93,False,False
+Seasonal z-score,pacw,watch,13.08,False,False
+Seasonal z-score,pge,warning,2.23,False,False
+Seasonal z-score,pge,watch,13.23,False,False
+Seasonal z-score,pjm,warning,2.53,False,False
+Seasonal z-score,pjm,watch,10.55,False,False
+Seasonal z-score,pnm,warning,0.45,False,False
+Seasonal z-score,pnm,watch,5.5,False,False
+Seasonal z-score,psco,warning,1.34,False,False
+Seasonal z-score,psco,watch,9.96,False,False
+Seasonal z-score,sc,warning,1.78,False,False
+Seasonal z-score,sc,watch,9.36,False,False
+Seasonal z-score,sceg,warning,1.78,False,False
+Seasonal z-score,sceg,watch,6.84,False,False
+Seasonal z-score,scl,warning,1.63,False,False
+Seasonal z-score,scl,watch,10.25,False,False
+Seasonal z-score,soco,warning,2.53,False,False
+Seasonal z-score,soco,watch,11.74,False,False
+Seasonal z-score,spa,warning,0.75,False,False
+Seasonal z-score,spa,watch,9.55,False,False
+Seasonal z-score,spp,warning,2.53,True,False
+Seasonal z-score,spp,watch,12.33,True,False
+Seasonal z-score,srp,warning,1.19,False,False
+Seasonal z-score,srp,watch,8.17,False,False
+Seasonal z-score,tal,warning,1.63,False,False
+Seasonal z-score,tal,watch,6.98,False,False
+Seasonal z-score,tec,warning,2.23,False,False
+Seasonal z-score,tec,watch,16.05,False,False
+Seasonal z-score,tepc,warning,0.74,False,False
+Seasonal z-score,tepc,watch,9.66,False,False
+Seasonal z-score,tidc,warning,1.04,False,False
+Seasonal z-score,tidc,watch,8.92,False,False
+Seasonal z-score,tpwr,warning,2.08,False,False
+Seasonal z-score,tpwr,watch,13.08,False,False
+Seasonal z-score,tva,warning,1.49,False,False
+Seasonal z-score,tva,watch,13.23,False,False
+Seasonal z-score,tx,warning,1.34,False,False
+Seasonal z-score,tx,watch,11.59,False,False
+Seasonal z-score,wacm,warning,0.8,False,True
+Seasonal z-score,wacm,watch,8.99,False,True
+Seasonal z-score,walc,warning,0.45,False,False
+Seasonal z-score,walc,watch,6.84,False,False
+Seasonal z-score,wauw,warning,1.44,False,False
+Seasonal z-score,wauw,watch,14.44,False,False
+Chronos-Bolt (zero-shot),aeci,warning,0.0,False,False
+Chronos-Bolt (zero-shot),aeci,watch,0.3,False,False
+Chronos-Bolt (zero-shot),ava,warning,0.0,False,False
+Chronos-Bolt (zero-shot),ava,watch,0.89,False,False
+Chronos-Bolt (zero-shot),azps,warning,6.39,False,False
+Chronos-Bolt (zero-shot),azps,watch,32.69,False,False
+Chronos-Bolt (zero-shot),banc,warning,1.04,False,False
+Chronos-Bolt (zero-shot),banc,watch,5.8,False,False
+Chronos-Bolt (zero-shot),bpat,warning,0.15,False,False
+Chronos-Bolt (zero-shot),bpat,watch,1.19,False,False
+Chronos-Bolt (zero-shot),ca,warning,0.59,False,False
+Chronos-Bolt (zero-shot),ca,watch,6.98,False,False
+Chronos-Bolt (zero-shot),chpd,warning,0.0,False,True
+Chronos-Bolt (zero-shot),chpd,watch,1.34,False,True
+Chronos-Bolt (zero-shot),cple,warning,0.3,False,False
+Chronos-Bolt (zero-shot),cple,watch,3.71,False,False
+Chronos-Bolt (zero-shot),cplw,warning,0.0,False,False
+Chronos-Bolt (zero-shot),cplw,watch,5.35,False,False
+Chronos-Bolt (zero-shot),dopd,warning,0.0,False,False
+Chronos-Bolt (zero-shot),dopd,watch,0.74,False,False
+Chronos-Bolt (zero-shot),duk,warning,2.23,False,False
+Chronos-Bolt (zero-shot),duk,watch,6.84,False,False
+Chronos-Bolt (zero-shot),epe,warning,1.93,False,False
+Chronos-Bolt (zero-shot),epe,watch,14.86,False,False
+Chronos-Bolt (zero-shot),fmpp,warning,2.53,False,False
+Chronos-Bolt (zero-shot),fmpp,watch,10.4,False,False
+Chronos-Bolt (zero-shot),fpc,warning,2.53,False,False
+Chronos-Bolt (zero-shot),fpc,watch,13.67,False,False
+Chronos-Bolt (zero-shot),fpl,warning,4.31,False,False
+Chronos-Bolt (zero-shot),fpl,watch,10.85,False,False
+Chronos-Bolt (zero-shot),gcpd,warning,0.0,False,False
+Chronos-Bolt (zero-shot),gcpd,watch,0.74,False,False
+Chronos-Bolt (zero-shot),iid,warning,3.57,True,False
+Chronos-Bolt (zero-shot),iid,watch,19.77,True,False
+Chronos-Bolt (zero-shot),ipco,warning,0.15,False,False
+Chronos-Bolt (zero-shot),ipco,watch,4.01,False,False
+Chronos-Bolt (zero-shot),isne,warning,1.19,False,False
+Chronos-Bolt (zero-shot),isne,watch,7.58,False,False
+Chronos-Bolt (zero-shot),ldwp,warning,0.59,True,False
+Chronos-Bolt (zero-shot),ldwp,watch,4.46,True,False
+Chronos-Bolt (zero-shot),lgee,warning,0.59,False,False
+Chronos-Bolt (zero-shot),lgee,watch,6.39,False,False
+Chronos-Bolt (zero-shot),miso,warning,1.49,False,False
+Chronos-Bolt (zero-shot),miso,watch,3.42,False,False
+Chronos-Bolt (zero-shot),nevp,warning,1.49,False,False
+Chronos-Bolt (zero-shot),nevp,watch,20.36,False,False
+Chronos-Bolt (zero-shot),nwmt,warning,0.59,False,False
+Chronos-Bolt (zero-shot),nwmt,watch,10.7,False,False
+Chronos-Bolt (zero-shot),nyis,warning,0.59,False,False
+Chronos-Bolt (zero-shot),nyis,watch,5.65,False,False
+Chronos-Bolt (zero-shot),pace,warning,0.15,False,False
+Chronos-Bolt (zero-shot),pace,watch,5.35,False,False
+Chronos-Bolt (zero-shot),pacw,warning,0.89,False,False
+Chronos-Bolt (zero-shot),pacw,watch,2.82,False,False
+Chronos-Bolt (zero-shot),pge,warning,0.59,False,False
+Chronos-Bolt (zero-shot),pge,watch,9.51,False,False
+Chronos-Bolt (zero-shot),pjm,warning,0.89,False,False
+Chronos-Bolt (zero-shot),pjm,watch,2.23,False,False
+Chronos-Bolt (zero-shot),pnm,warning,0.74,False,False
+Chronos-Bolt (zero-shot),pnm,watch,12.04,False,False
+Chronos-Bolt (zero-shot),psco,warning,2.53,False,False
+Chronos-Bolt (zero-shot),psco,watch,25.26,False,False
+Chronos-Bolt (zero-shot),sc,warning,0.59,False,False
+Chronos-Bolt (zero-shot),sc,watch,2.97,False,False
+Chronos-Bolt (zero-shot),sceg,warning,0.59,False,False
+Chronos-Bolt (zero-shot),sceg,watch,4.46,False,False
+Chronos-Bolt (zero-shot),scl,warning,0.0,False,False
+Chronos-Bolt (zero-shot),scl,watch,1.34,False,False
+Chronos-Bolt (zero-shot),soco,warning,5.2,False,False
+Chronos-Bolt (zero-shot),soco,watch,6.39,False,False
+Chronos-Bolt (zero-shot),spa,warning,0.0,False,False
+Chronos-Bolt (zero-shot),spa,watch,1.34,False,False
+Chronos-Bolt (zero-shot),spp,warning,5.05,True,False
+Chronos-Bolt (zero-shot),spp,watch,10.1,True,False
+Chronos-Bolt (zero-shot),srp,warning,1.19,False,False
+Chronos-Bolt (zero-shot),srp,watch,14.56,False,False
+Chronos-Bolt (zero-shot),tal,warning,0.45,False,False
+Chronos-Bolt (zero-shot),tal,watch,10.55,False,False
+Chronos-Bolt (zero-shot),tec,warning,1.49,False,False
+Chronos-Bolt (zero-shot),tec,watch,11.0,False,False
+Chronos-Bolt (zero-shot),tepc,warning,0.59,False,False
+Chronos-Bolt (zero-shot),tepc,watch,6.09,False,False
+Chronos-Bolt (zero-shot),tidc,warning,0.3,False,False
+Chronos-Bolt (zero-shot),tidc,watch,7.13,False,False
+Chronos-Bolt (zero-shot),tpwr,warning,0.0,False,False
+Chronos-Bolt (zero-shot),tpwr,watch,0.15,False,False
+Chronos-Bolt (zero-shot),tva,warning,2.08,False,False
+Chronos-Bolt (zero-shot),tva,watch,7.73,False,False
+Chronos-Bolt (zero-shot),tx,warning,4.61,False,False
+Chronos-Bolt (zero-shot),tx,watch,12.93,False,False
+Chronos-Bolt (zero-shot),wacm,warning,1.77,False,True
+Chronos-Bolt (zero-shot),wacm,watch,8.02,False,True
+Chronos-Bolt (zero-shot),walc,warning,0.15,False,False
+Chronos-Bolt (zero-shot),walc,watch,8.02,False,False
+Chronos-Bolt (zero-shot),wauw,warning,0.48,False,False
+Chronos-Bolt (zero-shot),wauw,watch,1.28,False,False
+LSTM forecaster,aeci,warning,0.45,False,False
+LSTM forecaster,aeci,watch,2.56,False,False
+LSTM forecaster,ava,warning,0.09,False,False
+LSTM forecaster,ava,watch,4.31,False,False
+LSTM forecaster,azps,warning,10.1,False,False
+LSTM forecaster,azps,watch,44.07,False,False
+LSTM forecaster,banc,warning,12.01,False,False
+LSTM forecaster,banc,watch,34.47,False,False
+LSTM forecaster,bpat,warning,0.06,False,False
+LSTM forecaster,bpat,watch,2.91,False,False
+LSTM forecaster,ca,warning,0.42,False,False
+LSTM forecaster,ca,watch,16.02,False,False
+LSTM forecaster,chpd,warning,1.81,False,True
+LSTM forecaster,chpd,watch,1.84,False,True
+LSTM forecaster,cple,warning,0.36,False,False
+LSTM forecaster,cple,watch,6.15,False,False
+LSTM forecaster,cplw,warning,0.33,False,False
+LSTM forecaster,cplw,watch,9.33,False,False
+LSTM forecaster,dopd,warning,0.27,False,False
+LSTM forecaster,dopd,watch,1.84,False,False
+LSTM forecaster,duk,warning,0.95,False,False
+LSTM forecaster,duk,watch,7.67,False,False
+LSTM forecaster,epe,warning,1.63,False,False
+LSTM forecaster,epe,watch,27.61,False,False
+LSTM forecaster,fmpp,warning,6.63,False,False
+LSTM forecaster,fmpp,watch,26.15,False,False
+LSTM forecaster,fpc,warning,2.35,False,False
+LSTM forecaster,fpc,watch,17.92,False,False
+LSTM forecaster,fpl,warning,1.72,False,False
+LSTM forecaster,fpl,watch,23.18,False,False
+LSTM forecaster,gcpd,warning,0.0,False,False
+LSTM forecaster,gcpd,watch,1.55,False,False
+LSTM forecaster,iid,warning,3.15,True,False
+LSTM forecaster,iid,watch,26.43,True,False
+LSTM forecaster,ipco,warning,1.93,False,False
+LSTM forecaster,ipco,watch,5.77,False,False
+LSTM forecaster,isne,warning,0.36,False,False
+LSTM forecaster,isne,watch,13.37,False,False
+LSTM forecaster,ldwp,warning,2.35,True,False
+LSTM forecaster,ldwp,watch,10.37,True,False
+LSTM forecaster,lgee,warning,1.34,False,False
+LSTM forecaster,lgee,watch,7.07,False,False
+LSTM forecaster,miso,warning,0.65,False,False
+LSTM forecaster,miso,watch,6.27,False,False
+LSTM forecaster,nevp,warning,2.5,False,False
+LSTM forecaster,nevp,watch,29.04,False,False
+LSTM forecaster,nwmt,warning,2.32,False,False
+LSTM forecaster,nwmt,watch,12.81,False,False
+LSTM forecaster,nyis,warning,0.51,False,False
+LSTM forecaster,nyis,watch,10.79,False,False
+LSTM forecaster,pace,warning,0.3,False,False
+LSTM forecaster,pace,watch,11.5,False,False
+LSTM forecaster,pacw,warning,1.99,False,False
+LSTM forecaster,pacw,watch,5.11,False,False
+LSTM forecaster,pge,warning,1.19,False,False
+LSTM forecaster,pge,watch,14.74,False,False
+LSTM forecaster,pjm,warning,2.47,False,False
+LSTM forecaster,pjm,watch,10.67,False,False
+LSTM forecaster,pnm,warning,0.33,False,False
+LSTM forecaster,pnm,watch,16.17,False,False
+LSTM forecaster,psco,warning,9.3,False,False
+LSTM forecaster,psco,watch,44.91,False,False
+LSTM forecaster,sc,warning,0.24,False,False
+LSTM forecaster,sc,watch,5.02,False,False
+LSTM forecaster,sceg,warning,0.21,False,False
+LSTM forecaster,sceg,watch,7.49,False,False
+LSTM forecaster,scl,warning,0.27,False,False
+LSTM forecaster,scl,watch,2.32,False,False
+LSTM forecaster,soco,warning,2.79,False,False
+LSTM forecaster,soco,watch,10.88,False,False
+LSTM forecaster,spa,warning,0.12,False,False
+LSTM forecaster,spa,watch,3.46,False,False
+LSTM forecaster,spp,warning,4.28,True,False
+LSTM forecaster,spp,watch,17.74,True,False
+LSTM forecaster,srp,warning,6.81,False,False
+LSTM forecaster,srp,watch,25.29,False,False
+LSTM forecaster,tal,warning,1.19,False,False
+LSTM forecaster,tal,watch,17.71,False,False
+LSTM forecaster,tec,warning,0.77,False,False
+LSTM forecaster,tec,watch,13.23,False,False
+LSTM forecaster,tepc,warning,0.15,False,False
+LSTM forecaster,tepc,watch,9.54,False,False
+LSTM forecaster,tidc,warning,0.45,False,False
+LSTM forecaster,tidc,watch,9.09,False,False
+LSTM forecaster,tpwr,warning,0.92,False,False
+LSTM forecaster,tpwr,watch,3.39,False,False
+LSTM forecaster,tva,warning,3.6,False,False
+LSTM forecaster,tva,watch,12.57,False,False
+LSTM forecaster,tx,warning,1.37,False,False
+LSTM forecaster,tx,watch,15.1,False,False
+LSTM forecaster,wacm,warning,4.4,False,True
+LSTM forecaster,wacm,watch,15.82,False,True
+LSTM forecaster,walc,warning,0.3,False,False
+LSTM forecaster,walc,watch,8.95,False,False
+LSTM forecaster,wauw,warning,2.05,False,False
+LSTM forecaster,wauw,watch,11.49,False,False
+"HTM (htm-monitor, frozen after 2019)",aeci,warning,0.68,False,False
+"HTM (htm-monitor, frozen after 2019)",aeci,watch,4.46,False,False
+"HTM (htm-monitor, frozen after 2019)",ava,warning,0.33,False,False
+"HTM (htm-monitor, frozen after 2019)",ava,watch,5.97,False,False
+"HTM (htm-monitor, frozen after 2019)",azps,warning,0.15,False,False
+"HTM (htm-monitor, frozen after 2019)",azps,watch,8.05,False,False
+"HTM (htm-monitor, frozen after 2019)",banc,warning,0.0,False,False
+"HTM (htm-monitor, frozen after 2019)",banc,watch,0.0,False,False
+"HTM (htm-monitor, frozen after 2019)",bpat,warning,0.83,False,False
+"HTM (htm-monitor, frozen after 2019)",bpat,watch,7.91,False,False
+"HTM (htm-monitor, frozen after 2019)",ca,warning,0.45,False,False
+"HTM (htm-monitor, frozen after 2019)",ca,watch,6.21,False,False
+"HTM (htm-monitor, frozen after 2019)",chpd,warning,0.27,False,True
+"HTM (htm-monitor, frozen after 2019)",chpd,watch,2.67,False,True
+"HTM (htm-monitor, frozen after 2019)",cple,warning,0.21,False,False
+"HTM (htm-monitor, frozen after 2019)",cple,watch,6.48,False,False
+"HTM (htm-monitor, frozen after 2019)",cplw,warning,0.74,False,False
+"HTM (htm-monitor, frozen after 2019)",cplw,watch,6.92,False,False
+"HTM (htm-monitor, frozen after 2019)",dopd,warning,0.65,False,False
+"HTM (htm-monitor, frozen after 2019)",dopd,watch,3.89,False,False
+"HTM (htm-monitor, frozen after 2019)",duk,warning,0.59,False,False
+"HTM (htm-monitor, frozen after 2019)",duk,watch,10.19,False,False
+"HTM (htm-monitor, frozen after 2019)",epe,warning,0.33,False,False
+"HTM (htm-monitor, frozen after 2019)",epe,watch,13.85,False,False
+"HTM (htm-monitor, frozen after 2019)",fmpp,warning,0.77,False,False
+"HTM (htm-monitor, frozen after 2019)",fmpp,watch,21.46,False,False
+"HTM (htm-monitor, frozen after 2019)",fpc,warning,1.72,False,False
+"HTM (htm-monitor, frozen after 2019)",fpc,watch,20.18,False,False
+"HTM (htm-monitor, frozen after 2019)",fpl,warning,0.59,False,False
+"HTM (htm-monitor, frozen after 2019)",fpl,watch,17.83,False,False
+"HTM (htm-monitor, frozen after 2019)",gcpd,warning,0.56,False,False
+"HTM (htm-monitor, frozen after 2019)",gcpd,watch,4.96,False,False
+"HTM (htm-monitor, frozen after 2019)",iid,warning,0.86,True,False
+"HTM (htm-monitor, frozen after 2019)",iid,watch,9.36,True,False
+"HTM (htm-monitor, frozen after 2019)",ipco,warning,0.74,False,False
+"HTM (htm-monitor, frozen after 2019)",ipco,watch,5.71,False,False
+"HTM (htm-monitor, frozen after 2019)",isne,warning,1.49,False,False
+"HTM (htm-monitor, frozen after 2019)",isne,watch,11.44,False,False
+"HTM (htm-monitor, frozen after 2019)",ldwp,warning,1.46,True,False
+"HTM (htm-monitor, frozen after 2019)",ldwp,watch,11.68,True,False
+"HTM (htm-monitor, frozen after 2019)",lgee,warning,1.61,False,False
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,9.69,False,False
+"HTM (htm-monitor, frozen after 2019)",miso,warning,2.23,False,False
+"HTM (htm-monitor, frozen after 2019)",miso,watch,10.88,False,False
+"HTM (htm-monitor, frozen after 2019)",nevp,warning,0.15,False,False
+"HTM (htm-monitor, frozen after 2019)",nevp,watch,8.44,False,False
+"HTM (htm-monitor, frozen after 2019)",nwmt,warning,0.74,False,False
+"HTM (htm-monitor, frozen after 2019)",nwmt,watch,5.5,False,False
+"HTM (htm-monitor, frozen after 2019)",nyis,warning,0.83,False,False
+"HTM (htm-monitor, frozen after 2019)",nyis,watch,11.56,False,False
+"HTM (htm-monitor, frozen after 2019)",pace,warning,0.09,False,False
+"HTM (htm-monitor, frozen after 2019)",pace,watch,5.23,False,False
+"HTM (htm-monitor, frozen after 2019)",pacw,warning,0.24,False,False
+"HTM (htm-monitor, frozen after 2019)",pacw,watch,4.46,False,False
+"HTM (htm-monitor, frozen after 2019)",pge,warning,0.39,False,False
+"HTM (htm-monitor, frozen after 2019)",pge,watch,5.71,False,False
+"HTM (htm-monitor, frozen after 2019)",pjm,warning,1.28,False,False
+"HTM (htm-monitor, frozen after 2019)",pjm,watch,7.99,False,False
+"HTM (htm-monitor, frozen after 2019)",pnm,warning,0.36,False,False
+"HTM (htm-monitor, frozen after 2019)",pnm,watch,8.65,False,False
+"HTM (htm-monitor, frozen after 2019)",psco,warning,0.45,False,False
+"HTM (htm-monitor, frozen after 2019)",psco,watch,8.38,False,False
+"HTM (htm-monitor, frozen after 2019)",sc,warning,0.3,False,False
+"HTM (htm-monitor, frozen after 2019)",sc,watch,9.03,False,False
+"HTM (htm-monitor, frozen after 2019)",sceg,warning,1.6,False,False
+"HTM (htm-monitor, frozen after 2019)",sceg,watch,7.85,False,False
+"HTM (htm-monitor, frozen after 2019)",scl,warning,0.51,False,False
+"HTM (htm-monitor, frozen after 2019)",scl,watch,7.04,False,False
+"HTM (htm-monitor, frozen after 2019)",soco,warning,1.55,False,False
+"HTM (htm-monitor, frozen after 2019)",soco,watch,11.83,False,False
+"HTM (htm-monitor, frozen after 2019)",spa,warning,0.27,False,False
+"HTM (htm-monitor, frozen after 2019)",spa,watch,4.48,False,False
+"HTM (htm-monitor, frozen after 2019)",spp,warning,1.52,True,False
+"HTM (htm-monitor, frozen after 2019)",spp,watch,6.84,True,False
+"HTM (htm-monitor, frozen after 2019)",srp,warning,0.42,False,False
+"HTM (htm-monitor, frozen after 2019)",srp,watch,7.88,False,False
+"HTM (htm-monitor, frozen after 2019)",tal,warning,0.83,False,False
+"HTM (htm-monitor, frozen after 2019)",tal,watch,11.03,False,False
+"HTM (htm-monitor, frozen after 2019)",tec,warning,0.95,False,False
+"HTM (htm-monitor, frozen after 2019)",tec,watch,14.68,False,False
+"HTM (htm-monitor, frozen after 2019)",tepc,warning,0.24,False,False
+"HTM (htm-monitor, frozen after 2019)",tepc,watch,4.61,False,False
+"HTM (htm-monitor, frozen after 2019)",tidc,warning,0.65,False,False
+"HTM (htm-monitor, frozen after 2019)",tidc,watch,6.6,False,False
+"HTM (htm-monitor, frozen after 2019)",tpwr,warning,0.56,False,False
+"HTM (htm-monitor, frozen after 2019)",tpwr,watch,5.29,False,False
+"HTM (htm-monitor, frozen after 2019)",tva,warning,0.92,False,False
+"HTM (htm-monitor, frozen after 2019)",tva,watch,9.48,False,False
+"HTM (htm-monitor, frozen after 2019)",tx,warning,1.96,False,False
+"HTM (htm-monitor, frozen after 2019)",tx,watch,14.24,False,False
+"HTM (htm-monitor, frozen after 2019)",wacm,warning,0.45,False,True
+"HTM (htm-monitor, frozen after 2019)",wacm,watch,10.98,False,True
+"HTM (htm-monitor, frozen after 2019)",walc,warning,0.27,False,False
+"HTM (htm-monitor, frozen after 2019)",walc,watch,9.42,False,False
+"HTM (htm-monitor, frozen after 2019)",wauw,warning,2.21,False,False
+"HTM (htm-monitor, frozen after 2019)",wauw,watch,10.27,False,False
+Sub-PCA,aeci,warning,1.19,False,False
+Sub-PCA,aeci,watch,12.33,False,False
+Sub-PCA,ava,warning,2.67,False,False
+Sub-PCA,ava,watch,15.45,False,False
+Sub-PCA,azps,warning,8.32,False,False
+Sub-PCA,azps,watch,44.43,False,False
+Sub-PCA,banc,warning,1.49,False,False
+Sub-PCA,banc,watch,12.78,False,False
+Sub-PCA,bpat,warning,2.97,False,False
+Sub-PCA,bpat,watch,11.89,False,False
+Sub-PCA,ca,warning,3.86,False,False
+Sub-PCA,ca,watch,28.98,False,False
+Sub-PCA,chpd,warning,2.82,False,True
+Sub-PCA,chpd,watch,18.87,False,True
+Sub-PCA,cple,warning,1.34,False,False
+Sub-PCA,cple,watch,13.97,False,False
+Sub-PCA,cplw,warning,3.86,False,False
+Sub-PCA,cplw,watch,24.52,False,False
+Sub-PCA,dopd,warning,2.67,False,False
+Sub-PCA,dopd,watch,21.4,False,False
+Sub-PCA,duk,warning,0.89,False,False
+Sub-PCA,duk,watch,9.66,False,False
+Sub-PCA,epe,warning,6.39,False,False
+Sub-PCA,epe,watch,38.78,False,False
+Sub-PCA,fmpp,warning,2.67,False,False
+Sub-PCA,fmpp,watch,11.29,False,False
+Sub-PCA,fpc,warning,2.38,False,False
+Sub-PCA,fpc,watch,17.39,False,False
+Sub-PCA,fpl,warning,2.82,False,False
+Sub-PCA,fpl,watch,8.92,False,False
+Sub-PCA,gcpd,warning,2.38,False,False
+Sub-PCA,gcpd,watch,13.67,False,False
+Sub-PCA,iid,warning,5.95,True,False
+Sub-PCA,iid,watch,42.96,True,False
+Sub-PCA,ipco,warning,3.71,False,False
+Sub-PCA,ipco,watch,23.92,False,False
+Sub-PCA,isne,warning,1.93,False,False
+Sub-PCA,isne,watch,18.43,False,False
+Sub-PCA,ldwp,warning,5.94,True,False
+Sub-PCA,ldwp,watch,22.29,True,False
+Sub-PCA,lgee,warning,2.38,False,False
+Sub-PCA,lgee,watch,16.64,False,False
+Sub-PCA,miso,warning,0.74,False,False
+Sub-PCA,miso,watch,6.98,False,False
+Sub-PCA,nevp,warning,7.88,False,False
+Sub-PCA,nevp,watch,40.42,False,False
+Sub-PCA,nwmt,warning,6.54,False,False
+Sub-PCA,nwmt,watch,37.45,False,False
+Sub-PCA,nyis,warning,1.93,False,False
+Sub-PCA,nyis,watch,16.49,False,False
+Sub-PCA,pace,warning,7.28,False,False
+Sub-PCA,pace,watch,30.46,False,False
+Sub-PCA,pacw,warning,7.28,False,False
+Sub-PCA,pacw,watch,15.31,False,False
+Sub-PCA,pge,warning,11.44,False,False
+Sub-PCA,pge,watch,42.05,False,False
+Sub-PCA,pjm,warning,1.34,False,False
+Sub-PCA,pjm,watch,4.9,False,False
+Sub-PCA,pnm,warning,7.43,False,False
+Sub-PCA,pnm,watch,45.17,False,False
+Sub-PCA,psco,warning,8.02,False,False
+Sub-PCA,psco,watch,44.88,False,False
+Sub-PCA,sc,warning,3.27,False,False
+Sub-PCA,sc,watch,15.9,False,False
+Sub-PCA,sceg,warning,2.97,False,False
+Sub-PCA,sceg,watch,13.67,False,False
+Sub-PCA,scl,warning,4.46,False,False
+Sub-PCA,scl,watch,26.3,False,False
+Sub-PCA,soco,warning,4.31,False,False
+Sub-PCA,soco,watch,10.55,False,False
+Sub-PCA,spa,warning,3.88,False,False
+Sub-PCA,spa,watch,22.08,False,False
+Sub-PCA,spp,warning,3.12,True,False
+Sub-PCA,spp,watch,15.6,True,False
+Sub-PCA,srp,warning,5.35,False,False
+Sub-PCA,srp,watch,16.94,False,False
+Sub-PCA,tal,warning,4.31,False,False
+Sub-PCA,tal,watch,23.63,False,False
+Sub-PCA,tec,warning,3.57,False,False
+Sub-PCA,tec,watch,19.91,False,False
+Sub-PCA,tepc,warning,4.01,False,False
+Sub-PCA,tepc,watch,27.49,False,False
+Sub-PCA,tidc,warning,4.01,False,False
+Sub-PCA,tidc,watch,20.06,False,False
+Sub-PCA,tpwr,warning,2.38,False,False
+Sub-PCA,tpwr,watch,14.71,False,False
+Sub-PCA,tva,warning,1.63,False,False
+Sub-PCA,tva,watch,8.17,False,False
+Sub-PCA,tx,warning,1.34,False,False
+Sub-PCA,tx,watch,8.47,False,False
+Sub-PCA,wacm,warning,5.46,False,True
+Sub-PCA,wacm,watch,18.61,False,True
+Sub-PCA,walc,warning,5.2,False,False
+Sub-PCA,walc,watch,22.59,False,False
+Sub-PCA,wauw,warning,3.05,False,False
+Sub-PCA,wauw,watch,12.2,False,False
+Gradient-boosted forecaster,aeci,warning,0.98,False,False
+Gradient-boosted forecaster,aeci,watch,5.77,False,False
+Gradient-boosted forecaster,ava,warning,0.45,False,False
+Gradient-boosted forecaster,ava,watch,3.98,False,False
+Gradient-boosted forecaster,azps,warning,1.66,False,False
+Gradient-boosted forecaster,azps,watch,23.03,False,False
+Gradient-boosted forecaster,banc,warning,0.71,False,False
+Gradient-boosted forecaster,banc,watch,14.92,False,False
+Gradient-boosted forecaster,bpat,warning,0.65,False,False
+Gradient-boosted forecaster,bpat,watch,3.86,False,False
+Gradient-boosted forecaster,ca,warning,0.06,False,False
+Gradient-boosted forecaster,ca,watch,11.65,False,False
+Gradient-boosted forecaster,chpd,warning,0.74,False,True
+Gradient-boosted forecaster,chpd,watch,3.51,False,True
+Gradient-boosted forecaster,cple,warning,0.24,False,False
+Gradient-boosted forecaster,cple,watch,8.35,False,False
+Gradient-boosted forecaster,cplw,warning,1.25,False,False
+Gradient-boosted forecaster,cplw,watch,6.33,False,False
+Gradient-boosted forecaster,dopd,warning,0.59,False,False
+Gradient-boosted forecaster,dopd,watch,3.6,False,False
+Gradient-boosted forecaster,duk,warning,1.07,False,False
+Gradient-boosted forecaster,duk,watch,11.0,False,False
+Gradient-boosted forecaster,epe,warning,0.36,False,False
+Gradient-boosted forecaster,epe,watch,16.61,False,False
+Gradient-boosted forecaster,fmpp,warning,2.32,False,False
+Gradient-boosted forecaster,fmpp,watch,22.2,False,False
+Gradient-boosted forecaster,fpc,warning,1.34,False,False
+Gradient-boosted forecaster,fpc,watch,17.56,False,False
+Gradient-boosted forecaster,fpl,warning,0.74,False,False
+Gradient-boosted forecaster,fpl,watch,18.31,False,False
+Gradient-boosted forecaster,gcpd,warning,0.3,False,False
+Gradient-boosted forecaster,gcpd,watch,3.03,False,False
+Gradient-boosted forecaster,iid,warning,0.48,True,False
+Gradient-boosted forecaster,iid,watch,16.56,True,False
+Gradient-boosted forecaster,ipco,warning,0.3,False,False
+Gradient-boosted forecaster,ipco,watch,4.43,False,False
+Gradient-boosted forecaster,isne,warning,1.04,False,False
+Gradient-boosted forecaster,isne,watch,14.24,False,False
+Gradient-boosted forecaster,ldwp,warning,1.37,True,False
+Gradient-boosted forecaster,ldwp,watch,8.71,True,False
+Gradient-boosted forecaster,lgee,warning,1.28,False,False
+Gradient-boosted forecaster,lgee,watch,10.7,False,False
+Gradient-boosted forecaster,miso,warning,3.48,False,False
+Gradient-boosted forecaster,miso,watch,9.87,False,False
+Gradient-boosted forecaster,nevp,warning,0.15,False,False
+Gradient-boosted forecaster,nevp,watch,13.79,False,False
+Gradient-boosted forecaster,nwmt,warning,0.62,False,False
+Gradient-boosted forecaster,nwmt,watch,7.04,False,False
+Gradient-boosted forecaster,nyis,warning,0.48,False,False
+Gradient-boosted forecaster,nyis,watch,12.1,False,False
+Gradient-boosted forecaster,pace,warning,0.06,False,False
+Gradient-boosted forecaster,pace,watch,7.49,False,False
+Gradient-boosted forecaster,pacw,warning,1.46,False,False
+Gradient-boosted forecaster,pacw,watch,5.5,False,False
+Gradient-boosted forecaster,pge,warning,0.24,False,False
+Gradient-boosted forecaster,pge,watch,8.11,False,False
+Gradient-boosted forecaster,pjm,warning,0.3,False,False
+Gradient-boosted forecaster,pjm,watch,9.48,False,False
+Gradient-boosted forecaster,pnm,warning,0.59,False,False
+Gradient-boosted forecaster,pnm,watch,12.69,False,False
+Gradient-boosted forecaster,psco,warning,3.54,False,False
+Gradient-boosted forecaster,psco,watch,32.1,False,False
+Gradient-boosted forecaster,sc,warning,0.74,False,False
+Gradient-boosted forecaster,sc,watch,7.49,False,False
+Gradient-boosted forecaster,sceg,warning,0.39,False,False
+Gradient-boosted forecaster,sceg,watch,4.84,False,False
+Gradient-boosted forecaster,scl,warning,0.15,False,False
+Gradient-boosted forecaster,scl,watch,2.08,False,False
+Gradient-boosted forecaster,soco,warning,1.07,False,False
+Gradient-boosted forecaster,soco,watch,12.87,False,False
+Gradient-boosted forecaster,spa,warning,0.66,False,False
+Gradient-boosted forecaster,spa,watch,4.39,False,False
+Gradient-boosted forecaster,spp,warning,1.55,True,False
+Gradient-boosted forecaster,spp,watch,14.41,True,False
+Gradient-boosted forecaster,srp,warning,1.31,False,False
+Gradient-boosted forecaster,srp,watch,15.6,False,False
+Gradient-boosted forecaster,tal,warning,0.53,False,False
+Gradient-boosted forecaster,tal,watch,15.1,False,False
+Gradient-boosted forecaster,tec,warning,0.59,False,False
+Gradient-boosted forecaster,tec,watch,15.6,False,False
+Gradient-boosted forecaster,tepc,warning,0.3,False,False
+Gradient-boosted forecaster,tepc,watch,6.87,False,False
+Gradient-boosted forecaster,tidc,warning,0.0,False,False
+Gradient-boosted forecaster,tidc,watch,5.62,False,False
+Gradient-boosted forecaster,tpwr,warning,1.55,False,False
+Gradient-boosted forecaster,tpwr,watch,5.38,False,False
+Gradient-boosted forecaster,tva,warning,2.08,False,False
+Gradient-boosted forecaster,tva,watch,14.98,False,False
+Gradient-boosted forecaster,tx,warning,1.52,False,False
+Gradient-boosted forecaster,tx,watch,16.64,False,False
+Gradient-boosted forecaster,wacm,warning,3.88,False,True
+Gradient-boosted forecaster,wacm,watch,11.04,False,True
+Gradient-boosted forecaster,walc,warning,0.18,False,False
+Gradient-boosted forecaster,walc,watch,5.68,False,False
+Gradient-boosted forecaster,wauw,warning,2.21,False,False
+Gradient-boosted forecaster,wauw,watch,8.63,False,False
+PatchTST forecaster,aeci,warning,0.12,False,False
+PatchTST forecaster,aeci,watch,1.22,False,False
+PatchTST forecaster,ava,warning,0.18,False,False
+PatchTST forecaster,ava,watch,1.31,False,False
+PatchTST forecaster,azps,warning,5.17,False,False
+PatchTST forecaster,azps,watch,34.3,False,False
+PatchTST forecaster,banc,warning,3.69,False,False
+PatchTST forecaster,banc,watch,19.02,False,False
+PatchTST forecaster,bpat,warning,0.27,False,False
+PatchTST forecaster,bpat,watch,1.75,False,False
+PatchTST forecaster,ca,warning,2.44,False,False
+PatchTST forecaster,ca,watch,11.8,False,False
+PatchTST forecaster,chpd,warning,0.06,False,True
+PatchTST forecaster,chpd,watch,1.28,False,True
+PatchTST forecaster,cple,warning,0.74,False,False
+PatchTST forecaster,cple,watch,4.87,False,False
+PatchTST forecaster,cplw,warning,0.8,False,False
+PatchTST forecaster,cplw,watch,6.78,False,False
+PatchTST forecaster,dopd,warning,0.03,False,False
+PatchTST forecaster,dopd,watch,1.13,False,False
+PatchTST forecaster,duk,warning,0.83,False,False
+PatchTST forecaster,duk,watch,3.8,False,False
+PatchTST forecaster,epe,warning,1.25,False,False
+PatchTST forecaster,epe,watch,15.39,False,False
+PatchTST forecaster,fmpp,warning,2.2,False,False
+PatchTST forecaster,fmpp,watch,11.59,False,False
+PatchTST forecaster,fpc,warning,2.02,False,False
+PatchTST forecaster,fpc,watch,11.14,False,False
+PatchTST forecaster,fpl,warning,5.29,False,False
+PatchTST forecaster,fpl,watch,12.96,False,False
+PatchTST forecaster,gcpd,warning,0.0,False,False
+PatchTST forecaster,gcpd,watch,0.71,False,False
+PatchTST forecaster,iid,warning,5.17,True,False
+PatchTST forecaster,iid,watch,22.56,True,False
+PatchTST forecaster,ipco,warning,0.39,False,False
+PatchTST forecaster,ipco,watch,2.82,False,False
+PatchTST forecaster,isne,warning,1.1,False,False
+PatchTST forecaster,isne,watch,6.42,False,False
+PatchTST forecaster,ldwp,warning,3.06,True,False
+PatchTST forecaster,ldwp,watch,6.95,True,False
+PatchTST forecaster,lgee,warning,0.92,False,False
+PatchTST forecaster,lgee,watch,5.59,False,False
+PatchTST forecaster,miso,warning,1.01,False,False
+PatchTST forecaster,miso,watch,3.54,False,False
+PatchTST forecaster,nevp,warning,2.94,False,False
+PatchTST forecaster,nevp,watch,20.95,False,False
+PatchTST forecaster,nwmt,warning,1.55,False,False
+PatchTST forecaster,nwmt,watch,10.37,False,False
+PatchTST forecaster,nyis,warning,2.5,False,False
+PatchTST forecaster,nyis,watch,8.26,False,False
+PatchTST forecaster,pace,warning,0.33,False,False
+PatchTST forecaster,pace,watch,6.42,False,False
+PatchTST forecaster,pacw,warning,1.22,False,False
+PatchTST forecaster,pacw,watch,3.98,False,False
+PatchTST forecaster,pge,warning,0.95,False,False
+PatchTST forecaster,pge,watch,8.83,False,False
+PatchTST forecaster,pjm,warning,1.25,False,False
+PatchTST forecaster,pjm,watch,6.15,False,False
+PatchTST forecaster,pnm,warning,0.65,False,False
+PatchTST forecaster,pnm,watch,10.16,False,False
+PatchTST forecaster,psco,warning,3.63,False,False
+PatchTST forecaster,psco,watch,27.91,False,False
+PatchTST forecaster,sc,warning,1.93,False,False
+PatchTST forecaster,sc,watch,4.19,False,False
+PatchTST forecaster,sceg,warning,0.42,False,False
+PatchTST forecaster,sceg,watch,2.76,False,False
+PatchTST forecaster,scl,warning,0.03,False,False
+PatchTST forecaster,scl,watch,2.32,False,False
+PatchTST forecaster,soco,warning,3.45,False,False
+PatchTST forecaster,soco,watch,6.51,False,False
+PatchTST forecaster,spa,warning,0.18,False,False
+PatchTST forecaster,spa,watch,2.0,False,False
+PatchTST forecaster,spp,warning,7.25,True,False
+PatchTST forecaster,spp,watch,12.84,True,False
+PatchTST forecaster,srp,warning,3.09,False,False
+PatchTST forecaster,srp,watch,16.38,False,False
+PatchTST forecaster,tal,warning,1.72,False,False
+PatchTST forecaster,tal,watch,10.91,False,False
+PatchTST forecaster,tec,warning,1.37,False,False
+PatchTST forecaster,tec,watch,9.33,False,False
+PatchTST forecaster,tepc,warning,0.65,False,False
+PatchTST forecaster,tepc,watch,5.65,False,False
+PatchTST forecaster,tidc,warning,0.21,False,False
+PatchTST forecaster,tidc,watch,7.37,False,False
+PatchTST forecaster,tpwr,warning,0.0,False,False
+PatchTST forecaster,tpwr,watch,0.59,False,False
+PatchTST forecaster,tva,warning,3.27,False,False
+PatchTST forecaster,tva,watch,10.31,False,False
+PatchTST forecaster,tx,warning,2.91,False,False
+PatchTST forecaster,tx,watch,8.71,False,False
+PatchTST forecaster,wacm,warning,4.85,False,True
+PatchTST forecaster,wacm,watch,11.52,False,True
+PatchTST forecaster,walc,warning,0.15,False,False
+PatchTST forecaster,walc,watch,5.38,False,False
+PatchTST forecaster,wauw,warning,1.67,False,False
+PatchTST forecaster,wauw,watch,8.15,False,False
+Random scores,aeci,warning,0.59,False,False
+Random scores,aeci,watch,4.01,False,False
+Random scores,ava,warning,0.71,False,False
+Random scores,ava,watch,4.7,False,False
+Random scores,azps,warning,0.45,False,False
+Random scores,azps,watch,3.98,False,False
+Random scores,banc,warning,0.59,False,False
+Random scores,banc,watch,4.13,False,False
+Random scores,bpat,warning,0.65,False,False
+Random scores,bpat,watch,3.86,False,False
+Random scores,ca,warning,0.48,False,False
+Random scores,ca,watch,4.16,False,False
+Random scores,chpd,warning,0.53,False,True
+Random scores,chpd,watch,4.04,False,True
+Random scores,cple,warning,0.62,False,False
+Random scores,cple,watch,3.86,False,False
+Random scores,cplw,warning,0.71,False,False
+Random scores,cplw,watch,4.25,False,False
+Random scores,dopd,warning,0.45,False,False
+Random scores,dopd,watch,4.16,False,False
+Random scores,duk,warning,0.48,False,False
+Random scores,duk,watch,3.95,False,False
+Random scores,epe,warning,0.56,False,False
+Random scores,epe,watch,4.55,False,False
+Random scores,fmpp,warning,0.59,False,False
+Random scores,fmpp,watch,4.52,False,False
+Random scores,fpc,warning,0.92,False,False
+Random scores,fpc,watch,4.49,False,False
+Random scores,fpl,warning,0.71,False,False
+Random scores,fpl,watch,4.22,False,False
+Random scores,gcpd,warning,0.65,False,False
+Random scores,gcpd,watch,3.0,False,False
+Random scores,iid,warning,0.51,True,False
+Random scores,iid,watch,3.75,True,False
+Random scores,ipco,warning,0.53,False,False
+Random scores,ipco,watch,3.98,False,False
+Random scores,isne,warning,0.95,False,False
+Random scores,isne,watch,3.89,False,False
+Random scores,ldwp,warning,0.65,True,False
+Random scores,ldwp,watch,4.01,True,False
+Random scores,lgee,warning,0.77,False,False
+Random scores,lgee,watch,4.19,False,False
+Random scores,miso,warning,0.62,False,False
+Random scores,miso,watch,4.52,False,False
+Random scores,nevp,warning,0.86,False,False
+Random scores,nevp,watch,3.83,False,False
+Random scores,nwmt,warning,0.56,False,False
+Random scores,nwmt,watch,4.31,False,False
+Random scores,nyis,warning,0.92,False,False
+Random scores,nyis,watch,4.84,False,False
+Random scores,pace,warning,0.42,False,False
+Random scores,pace,watch,3.57,False,False
+Random scores,pacw,warning,0.74,False,False
+Random scores,pacw,watch,4.81,False,False
+Random scores,pge,warning,0.45,False,False
+Random scores,pge,watch,4.1,False,False
+Random scores,pjm,warning,0.51,False,False
+Random scores,pjm,watch,4.31,False,False
+Random scores,pnm,warning,0.68,False,False
+Random scores,pnm,watch,3.86,False,False
+Random scores,psco,warning,0.68,False,False
+Random scores,psco,watch,4.73,False,False
+Random scores,sc,warning,0.56,False,False
+Random scores,sc,watch,3.54,False,False
+Random scores,sceg,warning,0.51,False,False
+Random scores,sceg,watch,3.8,False,False
+Random scores,scl,warning,0.51,False,False
+Random scores,scl,watch,4.13,False,False
+Random scores,soco,warning,0.62,False,False
+Random scores,soco,watch,4.04,False,False
+Random scores,spa,warning,0.48,False,False
+Random scores,spa,watch,4.09,False,False
+Random scores,spp,warning,0.74,True,False
+Random scores,spp,watch,4.7,True,False
+Random scores,srp,warning,0.53,False,False
+Random scores,srp,watch,3.71,False,False
+Random scores,tal,warning,0.77,False,False
+Random scores,tal,watch,5.02,False,False
+Random scores,tec,warning,0.59,False,False
+Random scores,tec,watch,4.16,False,False
+Random scores,tepc,warning,0.42,False,False
+Random scores,tepc,watch,4.13,False,False
+Random scores,tidc,warning,0.59,False,False
+Random scores,tidc,watch,3.74,False,False
+Random scores,tpwr,warning,0.45,False,False
+Random scores,tpwr,watch,3.89,False,False
+Random scores,tva,warning,0.92,False,False
+Random scores,tva,watch,3.89,False,False
+Random scores,tx,warning,0.48,False,False
+Random scores,tx,watch,4.7,False,False
+Random scores,wacm,warning,0.45,False,True
+Random scores,wacm,watch,4.65,False,True
+Random scores,walc,warning,0.51,False,False
+Random scores,walc,watch,4.49,False,False
+Random scores,wauw,warning,0.83,False,False
+Random scores,wauw,watch,4.65,False,False

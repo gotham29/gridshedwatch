@@ -1,0 +1,181 @@
+method,event,level,caught,lead_h
+Operator-style rule,ca,warning,0.0,
+Operator-style rule,ca,watch,0.0,
+Operator-style rule,ciso_2022-09-06,warning,0.0,
+Operator-style rule,ciso_2022-09-06,watch,0.0,
+Operator-style rule,cple,warning,0.0,
+Operator-style rule,cple,watch,0.0,
+Operator-style rule,duk,warning,0.0,
+Operator-style rule,duk,watch,1.0,8.233333333333333
+Operator-style rule,lgee,warning,0.0,
+Operator-style rule,lgee,watch,1.0,6.6
+Operator-style rule,miso,warning,0.0,
+Operator-style rule,miso,watch,1.0,84.66666666666667
+Operator-style rule,nevp_2020-08-18,warning,0.0,
+Operator-style rule,nevp_2020-08-18,watch,1.0,73.5
+Operator-style rule,spp,warning,1.0,160.13333333333333
+Operator-style rule,spp,watch,1.0,134.13333333333333
+Operator-style rule,tva,warning,0.0,
+Operator-style rule,tva,watch,0.0,
+Operator-style rule,tx,warning,1.0,129.33333333333334
+Operator-style rule,tx,watch,1.0,138.33333333333334
+Seasonal z-score,ca,warning,0.0,
+Seasonal z-score,ca,watch,0.0,
+Seasonal z-score,ciso_2022-09-06,warning,0.0,
+Seasonal z-score,ciso_2022-09-06,watch,1.0,47.28333333333333
+Seasonal z-score,cple,warning,0.0,
+Seasonal z-score,cple,watch,0.0,
+Seasonal z-score,duk,warning,1.0,3.2333333333333334
+Seasonal z-score,duk,watch,1.0,9.233333333333333
+Seasonal z-score,lgee,warning,1.0,
+Seasonal z-score,lgee,watch,1.0,6.6
+Seasonal z-score,miso,warning,1.0,60.666666666666664
+Seasonal z-score,miso,watch,1.0,116.66666666666667
+Seasonal z-score,nevp_2020-08-18,warning,0.0,
+Seasonal z-score,nevp_2020-08-18,watch,0.0,
+Seasonal z-score,spp,warning,1.0,10.133333333333333
+Seasonal z-score,spp,watch,1.0,159.13333333333333
+Seasonal z-score,tva,warning,1.0,
+Seasonal z-score,tva,watch,0.0,
+Seasonal z-score,tx,warning,1.0,98.33333333333333
+Seasonal z-score,tx,watch,1.0,105.33333333333333
+Chronos-Bolt (zero-shot),ca,warning,0.0,
+Chronos-Bolt (zero-shot),ca,watch,0.0,
+Chronos-Bolt (zero-shot),ciso_2022-09-06,warning,0.0,
+Chronos-Bolt (zero-shot),ciso_2022-09-06,watch,0.0,
+Chronos-Bolt (zero-shot),cple,warning,0.0,
+Chronos-Bolt (zero-shot),cple,watch,0.0,
+Chronos-Bolt (zero-shot),duk,warning,1.0,
+Chronos-Bolt (zero-shot),duk,watch,0.0,
+Chronos-Bolt (zero-shot),lgee,warning,0.0,
+Chronos-Bolt (zero-shot),lgee,watch,1.0,8.6
+Chronos-Bolt (zero-shot),miso,warning,0.0,
+Chronos-Bolt (zero-shot),miso,watch,0.0,
+Chronos-Bolt (zero-shot),nevp_2020-08-18,warning,0.0,
+Chronos-Bolt (zero-shot),nevp_2020-08-18,watch,0.0,
+Chronos-Bolt (zero-shot),spp,warning,0.0,
+Chronos-Bolt (zero-shot),spp,watch,0.0,
+Chronos-Bolt (zero-shot),tva,warning,1.0,
+Chronos-Bolt (zero-shot),tva,watch,0.0,
+Chronos-Bolt (zero-shot),tx,warning,1.0,
+Chronos-Bolt (zero-shot),tx,watch,0.0,
+LSTM forecaster,ca,warning,0.0,
+LSTM forecaster,ca,watch,0.0,
+LSTM forecaster,ciso_2022-09-06,warning,0.0,
+LSTM forecaster,ciso_2022-09-06,watch,0.0,
+LSTM forecaster,cple,warning,0.2,
+LSTM forecaster,cple,watch,1.0,5.416666666666667
+LSTM forecaster,duk,warning,0.8,
+LSTM forecaster,duk,watch,1.0,4.233333333333333
+LSTM forecaster,lgee,warning,0.8,
+LSTM forecaster,lgee,watch,1.0,8.6
+LSTM forecaster,miso,warning,0.0,
+LSTM forecaster,miso,watch,1.0,7.666666666666667
+LSTM forecaster,nevp_2020-08-18,warning,0.0,
+LSTM forecaster,nevp_2020-08-18,watch,0.0,
+LSTM forecaster,spp,warning,1.0,4.633333333333334
+LSTM forecaster,spp,watch,0.4,40.13333333333334
+LSTM forecaster,tva,warning,1.0,
+LSTM forecaster,tva,watch,1.0,2.2
+LSTM forecaster,tx,warning,1.0,8.333333333333334
+LSTM forecaster,tx,watch,1.0,84.33333333333333
+"HTM (htm-monitor, frozen after 2019)",ca,warning,0.0,
+"HTM (htm-monitor, frozen after 2019)",ca,watch,0.0,
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,warning,0.2,102.28333333333333
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,1.0,111.28333333333333
+"HTM (htm-monitor, frozen after 2019)",cple,warning,1.0,
+"HTM (htm-monitor, frozen after 2019)",cple,watch,0.4,7.916666666666666
+"HTM (htm-monitor, frozen after 2019)",duk,warning,1.0,
+"HTM (htm-monitor, frozen after 2019)",duk,watch,1.0,9.233333333333333
+"HTM (htm-monitor, frozen after 2019)",lgee,warning,1.0,
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,1.0,6.6
+"HTM (htm-monitor, frozen after 2019)",miso,warning,0.6,75.66666666666667
+"HTM (htm-monitor, frozen after 2019)",miso,watch,0.6,86.66666666666667
+"HTM (htm-monitor, frozen after 2019)",nevp_2020-08-18,warning,0.0,
+"HTM (htm-monitor, frozen after 2019)",nevp_2020-08-18,watch,0.4,92.0
+"HTM (htm-monitor, frozen after 2019)",spp,warning,1.0,143.13333333333333
+"HTM (htm-monitor, frozen after 2019)",spp,watch,0.8,141.13333333333333
+"HTM (htm-monitor, frozen after 2019)",tva,warning,1.0,
+"HTM (htm-monitor, frozen after 2019)",tva,watch,0.6,41.2
+"HTM (htm-monitor, frozen after 2019)",tx,warning,1.0,60.33333333333333
+"HTM (htm-monitor, frozen after 2019)",tx,watch,1.0,80.33333333333333
+Sub-PCA,ca,warning,0.0,
+Sub-PCA,ca,watch,0.0,
+Sub-PCA,ciso_2022-09-06,warning,0.0,
+Sub-PCA,ciso_2022-09-06,watch,0.0,
+Sub-PCA,cple,warning,0.0,
+Sub-PCA,cple,watch,0.0,
+Sub-PCA,duk,warning,0.0,
+Sub-PCA,duk,watch,1.0,6.233333333333333
+Sub-PCA,lgee,warning,1.0,
+Sub-PCA,lgee,watch,1.0,137.6
+Sub-PCA,miso,warning,0.0,
+Sub-PCA,miso,watch,0.0,
+Sub-PCA,nevp_2020-08-18,warning,1.0,
+Sub-PCA,nevp_2020-08-18,watch,1.0,45.5
+Sub-PCA,spp,warning,0.0,
+Sub-PCA,spp,watch,0.0,
+Sub-PCA,tva,warning,1.0,
+Sub-PCA,tva,watch,0.0,
+Sub-PCA,tx,warning,1.0,
+Sub-PCA,tx,watch,0.0,
+Gradient-boosted forecaster,ca,warning,0.0,
+Gradient-boosted forecaster,ca,watch,0.0,
+Gradient-boosted forecaster,ciso_2022-09-06,warning,0.0,
+Gradient-boosted forecaster,ciso_2022-09-06,watch,0.0,
+Gradient-boosted forecaster,cple,warning,1.0,
+Gradient-boosted forecaster,cple,watch,1.0,10.416666666666666
+Gradient-boosted forecaster,duk,warning,1.0,
+Gradient-boosted forecaster,duk,watch,1.0,10.233333333333333
+Gradient-boosted forecaster,lgee,warning,1.0,
+Gradient-boosted forecaster,lgee,watch,1.0,10.6
+Gradient-boosted forecaster,miso,warning,1.0,48.666666666666664
+Gradient-boosted forecaster,miso,watch,1.0,34.666666666666664
+Gradient-boosted forecaster,nevp_2020-08-18,warning,0.0,
+Gradient-boosted forecaster,nevp_2020-08-18,watch,0.0,
+Gradient-boosted forecaster,spp,warning,1.0,65.13333333333334
+Gradient-boosted forecaster,spp,watch,1.0,16.133333333333333
+Gradient-boosted forecaster,tva,warning,1.0,
+Gradient-boosted forecaster,tva,watch,1.0,5.2
+Gradient-boosted forecaster,tx,warning,1.0,43.333333333333336
+Gradient-boosted forecaster,tx,watch,1.0,133.33333333333334
+PatchTST forecaster,ca,warning,0.8,25.633333333333333
+PatchTST forecaster,ca,watch,0.6,24.633333333333333
+PatchTST forecaster,ciso_2022-09-06,warning,0.0,
+PatchTST forecaster,ciso_2022-09-06,watch,0.0,
+PatchTST forecaster,cple,warning,1.0,5.416666666666667
+PatchTST forecaster,cple,watch,1.0,6.416666666666667
+PatchTST forecaster,duk,warning,1.0,4.233333333333333
+PatchTST forecaster,duk,watch,1.0,6.233333333333333
+PatchTST forecaster,lgee,warning,1.0,8.6
+PatchTST forecaster,lgee,watch,1.0,8.6
+PatchTST forecaster,miso,warning,0.0,
+PatchTST forecaster,miso,watch,0.0,
+PatchTST forecaster,nevp_2020-08-18,warning,0.0,
+PatchTST forecaster,nevp_2020-08-18,watch,0.0,
+PatchTST forecaster,spp,warning,0.2,
+PatchTST forecaster,spp,watch,0.6,157.13333333333333
+PatchTST forecaster,tva,warning,1.0,2.2
+PatchTST forecaster,tva,watch,1.0,1.2
+PatchTST forecaster,tx,warning,1.0,75.33333333333333
+PatchTST forecaster,tx,watch,0.2,81.33333333333333
+Random scores,ca,warning,0.0,
+Random scores,ca,watch,0.0,
+Random scores,ciso_2022-09-06,warning,0.0,
+Random scores,ciso_2022-09-06,watch,0.0,
+Random scores,cple,warning,0.0,
+Random scores,cple,watch,0.0,
+Random scores,duk,warning,0.0,
+Random scores,duk,watch,0.0,
+Random scores,lgee,warning,0.0,
+Random scores,lgee,watch,0.0,
+Random scores,miso,warning,0.2,31.666666666666668
+Random scores,miso,watch,0.2,34.666666666666664
+Random scores,nevp_2020-08-18,warning,0.0,
+Random scores,nevp_2020-08-18,watch,0.0,
+Random scores,spp,warning,0.0,
+Random scores,spp,watch,0.0,
+Random scores,tva,warning,0.0,
+Random scores,tva,watch,0.2,40.2
+Random scores,tx,warning,0.0,
+Random scores,tx,watch,0.0,

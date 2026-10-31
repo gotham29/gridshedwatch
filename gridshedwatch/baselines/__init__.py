@@ -23,6 +23,7 @@ METHODS = {
     "random": ("Random scores", "random_scores", range(5)),
 }
 LABEL = {m: v[0] for m, v in METHODS.items()}
+HTM_V2 = "HTM (htm-monitor, frozen after 2019)"     # HTM's entry from v2.0 on (docs/protocol_v2.md)
 V1_METHODS = ["oprule", "zscore", "chronos", "lstm", "htm"]     # the published v1.0 table
 
 

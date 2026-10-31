@@ -27,9 +27,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from gridshedwatch import benchmark, data, submission  # noqa: E402
-from gridshedwatch.baselines import LABEL, METHODS, oprule, zscore  # noqa: E402
-
-HTM_V2 = "HTM (htm-monitor, frozen after 2019)"
+from gridshedwatch.baselines import HTM_V2, LABEL, METHODS, oprule, zscore  # noqa: E402
 
 
 def entries(version: str, htm: Path, methods: list):

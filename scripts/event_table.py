@@ -7,6 +7,9 @@ level and onset, cause, impact, response and sources. The paper's table comes fr
 (scripts/score_release.py): for each event, demand and its day-ahead forecast around onset, the
 windows in which a watch or a warning counts, and every method's verified alerts.
 
+It also writes docs/events.csv, the scored events of the release in one table (the Croissant
+metadata's event record set).
+
 Usage: python scripts/event_table.py [--out docs/event_table.md] [--figure [PATH]] [--version 2.0]
 """
 import argparse
@@ -129,6 +132,10 @@ def main():
                    f"{impact(r['impact'])}.{note} | {'; '.join(r['response'])} | {srcs} |")
     a.out.write_text("\n".join(out) + "\n")
     print(f"{len(rows)} events -> {a.out}")
+    ev = pd.DataFrame([dict(id=e["id"], tier=e["tier"], grid=e["grid"], eia930_respondent=e["eia930_respondent"],
+                            onset_utc=e["onset_utc"], onset_basis=e["onset_basis"], split=e["split"],
+                            since=e["since"]) for e in data.event_list(a.version)])
+    ev.to_csv(a.out.parent / "events.csv", index=False)
 
 
 if __name__ == "__main__":

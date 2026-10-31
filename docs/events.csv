@@ -1,0 +1,11 @@
+id,tier,grid,eia930_respondent,onset_utc,onset_basis,split,since
+tx,1,tx,ERCO,2021-02-15 07:20,"EEA 3 declared, rotating outages",development,1.0
+ca,1,ca,CISO,2020-08-15 01:38,Stage 3 Emergency declared,development,1.0
+tva,1,tva,TVA,2022-12-23 11:12,EEA 3 declared (source gives Eastern time),development,1.0
+spp,1,spp,SWPP,2021-02-15 16:08,EEA 3 declared,held-out,1.0
+miso,1,miso,MISO,2021-02-17 00:40,Max Gen Event Step 5 (EEA 3) declared for MISO South; 700 MW load reduction for capacity shortage (Feb 15-16 transmission-emergency sheds excluded by rule),held-out,1.0
+duk,1,duk,DUK,2022-12-24 11:14,Fallback: first load-shed directive (EEA 3 time not published),held-out,1.0
+cple,1,cple,CPLE,2022-12-24 11:25,Fallback: first load-shed request (EEA 3 time not published),held-out,1.0
+lgee,1,lgee,LGEE,2022-12-23 18:36,EEA 3 declared,held-out,1.0
+nevp_2020-08-18,2,nevp,NEVP,2020-08-18 22:30,EEA 3 declared,held-out,2.0
+ciso_2022-09-06,2,ca,CISO,2022-09-07 00:17,EEA 3 declared,held-out,2.0

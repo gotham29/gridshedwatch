@@ -62,3 +62,10 @@ official Tier 1 row.
 
 - 2026-10-29: while testing the scoring code, the seasonal z-score was scored on v2.0 before this
   file was committed. Nothing in this protocol was changed after it.
+- 2026-10-30 (a note, not a change): reference scores come from two platforms. LSTM, Chronos and
+  v1.0 HTM keep their published v1.0 scores (Linux) on v1.0's grids; every other reference score
+  (the new grids for all methods, and all grids for the gradient-boosted, PatchTST, Sub-PCA and
+  random baselines) was computed on macOS, and HTM v2.0 in Docker (Linux). Platform effect,
+  checked on v1.0's events with LSTM and PatchTST computed both ways: per-hour scores differ
+  (different trained weights) but event-level results match (LSTM identical; PatchTST at the same
+  operating points, 5.8 vs 6.0 warnings caught, inside its seed range of 5-7).

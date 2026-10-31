@@ -46,6 +46,7 @@ def from_scores(scores: Dict[int, Dict[str, pd.DataFrame]]) -> Callable:
         if len(p) != len(tb):
             raise ValueError(f"{grid}: {len(p)} score rows, timebase has {len(tb)}")
         return rules.alerts_fast(p, tb["in_warmup"].to_numpy(), level, threshold, persistence)
+    fn.scores = scores                                  # kept for diagnostics (which signals fired)
     return fn
 
 

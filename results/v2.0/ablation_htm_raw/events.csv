@@ -1,0 +1,21 @@
+method,event,level,caught,lead_h
+"HTM (htm-monitor, frozen after 2019)",ca,warning,1.0,143.63333333333333
+"HTM (htm-monitor, frozen after 2019)",ca,watch,1.0,26.633333333333333
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,warning,1.0,96.28333333333333
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,0.6,95.28333333333333
+"HTM (htm-monitor, frozen after 2019)",cple,warning,0.8,
+"HTM (htm-monitor, frozen after 2019)",cple,watch,1.0,7.416666666666667
+"HTM (htm-monitor, frozen after 2019)",duk,warning,1.0,
+"HTM (htm-monitor, frozen after 2019)",duk,watch,1.0,8.233333333333333
+"HTM (htm-monitor, frozen after 2019)",lgee,warning,1.0,
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,1.0,5.6
+"HTM (htm-monitor, frozen after 2019)",miso,warning,0.2,47.666666666666664
+"HTM (htm-monitor, frozen after 2019)",miso,watch,0.6,36.666666666666664
+"HTM (htm-monitor, frozen after 2019)",nevp_2020-08-18,warning,0.0,
+"HTM (htm-monitor, frozen after 2019)",nevp_2020-08-18,watch,0.0,
+"HTM (htm-monitor, frozen after 2019)",spp,warning,1.0,118.63333333333334
+"HTM (htm-monitor, frozen after 2019)",spp,watch,1.0,133.13333333333333
+"HTM (htm-monitor, frozen after 2019)",tva,warning,1.0,
+"HTM (htm-monitor, frozen after 2019)",tva,watch,0.0,
+"HTM (htm-monitor, frozen after 2019)",tx,warning,1.0,43.333333333333336
+"HTM (htm-monitor, frozen after 2019)",tx,watch,1.0,72.33333333333333

@@ -1,0 +1,398 @@
+method,event,level,seed,start,h_from_onset,signals
+Operator-style rule,tx,watch,0,2021-02-09 13:00:00,-138,
+Operator-style rule,tx,watch,0,2021-02-10 13:00:00,-114,
+Operator-style rule,tx,warning,0,2021-02-09 22:00:00,-129,
+Operator-style rule,tx,warning,0,2021-02-10 23:00:00,-104,
+Operator-style rule,tx,warning,0,2021-02-11 22:00:00,-81,
+Operator-style rule,spp,watch,0,2021-02-10 02:00:00,-134,
+Operator-style rule,spp,watch,0,2021-02-12 11:00:00,-77,
+Operator-style rule,spp,watch,0,2021-02-13 00:00:00,-64,
+Operator-style rule,spp,warning,0,2021-02-09 00:00:00,-160,
+Operator-style rule,miso,watch,0,2021-02-13 12:00:00,-85,
+Operator-style rule,miso,watch,0,2021-02-13 21:00:00,-76,
+Operator-style rule,duk,watch,0,2022-12-24 03:00:00,-8,
+Operator-style rule,lgee,watch,0,2022-12-23 12:00:00,-7,
+Operator-style rule,nevp_2020-08-18,watch,0,2020-08-15 21:00:00,-74,
+Seasonal z-score,tx,watch,0,2021-02-10 22:00:00,-105,forecast_error+demand_anom+net_generation_anom
+Seasonal z-score,tx,warning,0,2021-02-11 05:00:00,-98,forecast_error+demand_anom+net_generation_anom
+Seasonal z-score,tx,warning,0,2021-02-11 18:00:00,-85,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Seasonal z-score,tva,warning,0,2022-12-23 21:00:00,10,demand_anom+imbalance_anom
+Seasonal z-score,spp,watch,0,2021-02-09 01:00:00,-159,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Seasonal z-score,spp,watch,0,2021-02-10 03:00:00,-133,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Seasonal z-score,spp,watch,0,2021-02-11 05:00:00,-107,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Seasonal z-score,spp,watch,0,2021-02-12 05:00:00,-83,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Seasonal z-score,spp,watch,0,2021-02-14 21:00:00,-19,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Seasonal z-score,spp,warning,0,2021-02-15 06:00:00,-10,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Seasonal z-score,miso,watch,0,2021-02-12 04:00:00,-117,forecast_error+demand_anom+net_generation_anom
+Seasonal z-score,miso,watch,0,2021-02-12 22:00:00,-99,forecast_error+demand_anom+net_generation_anom
+Seasonal z-score,miso,watch,0,2021-02-16 00:00:00,-25,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Seasonal z-score,miso,warning,0,2021-02-14 12:00:00,-61,forecast_error+demand_anom+net_generation_anom
+Seasonal z-score,duk,watch,0,2022-12-24 02:00:00,-9,forecast_error+demand_anom+net_generation_anom
+Seasonal z-score,duk,warning,0,2022-12-24 08:00:00,-3,forecast_error+demand_anom+net_generation_anom
+Seasonal z-score,duk,warning,0,2022-12-25 13:00:00,26,demand_anom+net_generation_anom
+Seasonal z-score,lgee,watch,0,2022-12-23 12:00:00,-7,forecast_error+demand_anom+net_generation_anom
+Seasonal z-score,lgee,warning,0,2022-12-24 05:00:00,10,imbalance+demand_anom+imbalance_anom
+Seasonal z-score,ciso_2022-09-06,watch,0,2022-09-05 01:00:00,-47,demand_anom+net_generation_anom+imbalance_anom
+Chronos-Bolt (zero-shot),tx,warning,0,2021-02-15 13:00:00,6,forecast_error+demand_anom+net_generation_anom
+Chronos-Bolt (zero-shot),tx,warning,0,2021-02-15 23:00:00,16,forecast_error+demand_anom+net_generation_anom
+Chronos-Bolt (zero-shot),tx,warning,0,2021-02-16 22:00:00,39,forecast_error
+Chronos-Bolt (zero-shot),tva,warning,0,2022-12-23 16:00:00,5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Chronos-Bolt (zero-shot),duk,warning,0,2022-12-24 13:00:00,2,forecast_error+demand_anom+net_generation_anom
+Chronos-Bolt (zero-shot),lgee,watch,0,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,0,2021-02-11 19:00:00,-84,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,tx,watch,0,2021-02-15 01:00:00,-6,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,tx,warning,0,2021-02-14 23:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,watch,0,2022-12-23 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,warning,0,2022-12-23 21:00:00,10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,watch,0,2021-02-13 00:00:00,-64,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,watch,0,2021-02-14 23:00:00,-17,imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,warning,0,2021-02-15 11:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,warning,0,2021-02-16 22:00:00,30,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,miso,watch,0,2021-02-15 17:00:00,-32,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,miso,watch,0,2021-02-16 17:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,duk,watch,0,2022-12-24 07:00:00,-4,forecast_error+imbalance+demand_anom+net_generation_anom
+LSTM forecaster,duk,warning,0,2022-12-24 13:00:00,2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,cple,watch,0,2022-12-24 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,watch,0,2022-12-23 12:00:00,-7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,warning,0,2022-12-24 00:00:00,5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,1,2021-02-15 01:00:00,-6,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,tx,warning,1,2021-02-15 05:00:00,-2,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,watch,1,2022-12-23 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,warning,1,2022-12-23 21:00:00,10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,warning,1,2021-02-15 23:00:00,7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,miso,watch,1,2021-02-16 17:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,duk,watch,1,2022-12-24 07:00:00,-4,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,cple,watch,1,2022-12-24 07:00:00,-4,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,watch,1,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,2,2021-02-11 19:00:00,-84,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,2,2021-02-15 01:00:00,-6,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,tx,warning,2,2021-02-14 23:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,watch,2,2022-12-23 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,warning,2,2022-12-23 19:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,watch,2,2021-02-15 00:00:00,-16,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,warning,2,2021-02-15 12:00:00,-4,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,warning,2,2021-02-16 22:00:00,30,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,miso,watch,2,2021-02-16 17:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,duk,watch,2,2022-12-24 07:00:00,-4,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,duk,warning,2,2022-12-24 19:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,cple,watch,2,2022-12-24 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,watch,2,2022-12-22 08:00:00,-35,imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,watch,2,2022-12-23 12:00:00,-7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,warning,2,2022-12-24 00:00:00,5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,3,2021-02-11 19:00:00,-84,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,3,2021-02-12 23:00:00,-56,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,3,2021-02-15 01:00:00,-6,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,tx,warning,3,2021-02-14 23:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,watch,3,2022-12-23 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,warning,3,2022-12-23 19:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,warning,3,2021-02-15 23:00:00,7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,warning,3,2021-02-16 22:00:00,30,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,miso,watch,3,2021-02-16 17:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,duk,watch,3,2022-12-24 07:00:00,-4,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,duk,warning,3,2022-12-24 13:00:00,2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,cple,watch,3,2022-12-24 02:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,cple,warning,3,2022-12-24 14:00:00,3,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,watch,3,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,warning,3,2022-12-24 07:00:00,12,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,4,2021-02-11 19:00:00,-84,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,4,2021-02-12 19:00:00,-60,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,watch,4,2021-02-15 01:00:00,-6,forecast_error+demand_anom+net_generation_anom
+LSTM forecaster,tx,warning,4,2021-02-12 23:00:00,-56,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tx,warning,4,2021-02-15 05:00:00,-2,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,watch,4,2022-12-23 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,tva,warning,4,2022-12-23 21:00:00,10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,spp,warning,4,2021-02-15 23:00:00,7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,miso,watch,4,2021-02-16 17:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,duk,watch,4,2022-12-24 03:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom
+LSTM forecaster,duk,warning,4,2022-12-24 13:00:00,2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,cple,watch,4,2022-12-24 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,watch,4,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+LSTM forecaster,lgee,warning,4,2022-12-23 21:00:00,2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,0,2021-02-09 21:00:00,-130,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,0,2021-02-13 16:00:00,-39,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,0,2021-02-14 20:00:00,-11,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,warning,0,2021-02-15 10:00:00,3,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tva,watch,0,2022-12-17 15:00:00,-140,forecast_error+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tva,warning,0,2022-12-24 07:00:00,20,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,0,2021-02-09 02:00:00,-158,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,0,2021-02-15 05:00:00,-11,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,0,2021-02-09 17:00:00,-143,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,0,2021-02-15 19:00:00,3,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",miso,watch,0,2021-02-13 06:00:00,-91,forecast_error+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",miso,watch,0,2021-02-14 09:00:00,-64,forecast_error+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",miso,warning,0,2021-02-13 02:00:00,-95,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",miso,warning,0,2021-02-14 21:00:00,-52,forecast_error+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",duk,watch,0,2022-12-24 02:00:00,-9,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",duk,warning,0,2022-12-24 17:00:00,6,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",cple,watch,0,2022-12-24 05:00:00,-6,demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",cple,warning,0,2022-12-24 19:00:00,8,demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,0,2022-12-23 13:00:00,-6,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,warning,0,2022-12-24 03:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,1,2021-02-12 23:00:00,-56,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,1,2021-02-13 16:00:00,-39,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,1,2021-02-14 20:00:00,-11,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,1,2021-02-15 07:00:00,0,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,warning,1,2021-02-15 10:00:00,3,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tva,warning,1,2022-12-24 12:00:00,25,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,1,2021-02-10 12:00:00,-124,demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,1,2021-02-11 16:00:00,-96,imbalance+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,1,2021-02-15 05:00:00,-11,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,1,2021-02-10 12:00:00,-124,demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,1,2021-02-15 20:00:00,4,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",miso,watch,1,2021-02-14 18:00:00,-55,forecast_error+demand_anom
+"HTM (htm-monitor, frozen after 2019)",miso,warning,1,2021-02-15 09:00:00,-40,forecast_error+demand_anom
+"HTM (htm-monitor, frozen after 2019)",duk,watch,1,2022-12-24 02:00:00,-9,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",duk,warning,1,2022-12-24 17:00:00,6,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",cple,warning,1,2022-12-24 19:00:00,8,demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,1,2022-12-23 17:00:00,-2,forecast_error+imbalance+demand_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,warning,1,2022-12-24 08:00:00,13,forecast_error+imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,2,2021-02-11 23:00:00,-80,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,2,2021-02-12 23:00:00,-56,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,2,2021-02-13 16:00:00,-39,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,2,2021-02-14 20:00:00,-11,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,warning,2,2021-02-13 07:00:00,-48,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,warning,2,2021-02-15 07:00:00,0,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tva,warning,2,2022-12-24 04:00:00,17,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,2,2021-02-15 04:00:00,-12,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,2,2021-02-15 11:00:00,-5,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,2,2021-02-15 19:00:00,3,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",miso,watch,2,2021-02-13 10:00:00,-87,forecast_error+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",miso,warning,2,2021-02-13 21:00:00,-76,forecast_error+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",miso,warning,2,2021-02-14 21:00:00,-52,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",duk,watch,2,2022-12-18 19:00:00,-136,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",duk,watch,2,2022-12-24 02:00:00,-9,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",duk,warning,2,2022-12-24 16:00:00,5,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",cple,warning,2,2022-12-24 19:00:00,8,imbalance+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,2,2022-12-23 10:00:00,-9,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,warning,2,2022-12-24 00:00:00,5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,3,2021-02-10 07:00:00,-120,forecast_error+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,3,2021-02-11 01:00:00,-102,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,3,2021-02-11 06:00:00,-97,forecast_error+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,3,2021-02-12 03:00:00,-76,forecast_error+imbalance+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,3,2021-02-13 04:00:00,-51,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,3,2021-02-13 16:00:00,-39,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,3,2021-02-14 20:00:00,-11,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,warning,3,2021-02-12 07:00:00,-72,forecast_error+imbalance+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,warning,3,2021-02-13 19:00:00,-36,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,warning,3,2021-02-15 11:00:00,4,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tva,watch,3,2022-12-21 18:00:00,-41,imbalance+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tva,watch,3,2022-12-23 11:00:00,0,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tva,warning,3,2022-12-24 02:00:00,15,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,3,2021-02-16 01:00:00,9,forecast_error+imbalance+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",duk,watch,3,2022-12-18 18:00:00,-137,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",duk,watch,3,2022-12-24 05:00:00,-6,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",duk,warning,3,2022-12-24 20:00:00,9,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",cple,watch,3,2022-12-24 02:00:00,-9,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",cple,warning,3,2022-12-24 17:00:00,6,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,3,2022-12-20 14:00:00,-77,net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,3,2022-12-23 14:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,warning,3,2022-12-24 04:00:00,9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,4,2021-02-13 18:00:00,-37,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,watch,4,2021-02-14 20:00:00,-11,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tx,warning,4,2021-02-15 11:00:00,4,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",tva,watch,4,2022-12-21 18:00:00,-41,imbalance+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",tva,warning,4,2022-12-24 04:00:00,17,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,4,2021-02-09 02:00:00,-158,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,4,2021-02-11 09:00:00,-103,imbalance+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,4,2021-02-15 05:00:00,-11,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,watch,4,2021-02-15 11:00:00,-5,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,4,2021-02-09 17:00:00,-143,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,4,2021-02-11 20:00:00,-92,imbalance+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",spp,warning,4,2021-02-15 19:00:00,3,imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",duk,watch,4,2022-12-24 05:00:00,-6,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",duk,warning,4,2022-12-24 15:00:00,4,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",cple,warning,4,2022-12-24 22:00:00,11,imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,watch,4,2022-12-23 12:00:00,-7,forecast_error+imbalance+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",lgee,warning,4,2022-12-24 03:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,0,2022-09-05 04:00:00,-44,demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,0,2022-09-06 09:00:00,-15,forecast_error+imbalance+demand_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",nevp_2020-08-18,watch,0,2020-08-15 03:00:00,-92,imbalance+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,1,2022-09-01 08:00:00,-136,forecast_error+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,2,2022-09-02 09:00:00,-111,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,2,2022-09-03 00:00:00,-96,imbalance+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,3,2022-08-31 02:00:00,-166,imbalance+net_generation_anom+imbalance_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,3,2022-09-02 09:00:00,-111,forecast_error+demand_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,watch,4,2022-09-02 09:00:00,-111,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",ciso_2022-09-06,warning,4,2022-09-02 18:00:00,-102,forecast_error+demand_anom+net_generation_anom
+"HTM (htm-monitor, frozen after 2019)",nevp_2020-08-18,watch,4,2020-08-15 02:00:00,-92,imbalance+demand_anom+net_generation_anom
+Sub-PCA,tx,warning,0,2021-02-15 21:00:00,14,forecast_error+demand_anom+net_generation_anom
+Sub-PCA,tva,warning,0,2022-12-24 08:00:00,21,forecast_error+imbalance+net_generation_anom+imbalance_anom
+Sub-PCA,duk,watch,0,2022-12-24 05:00:00,-6,forecast_error+demand_anom+net_generation_anom
+Sub-PCA,lgee,watch,0,2022-12-18 01:00:00,-138,imbalance+net_generation_anom+imbalance_anom
+Sub-PCA,lgee,watch,0,2022-12-22 16:00:00,-27,imbalance+net_generation_anom+imbalance_anom
+Sub-PCA,lgee,watch,0,2022-12-23 12:00:00,-7,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Sub-PCA,lgee,warning,0,2022-12-24 04:00:00,9,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Sub-PCA,nevp_2020-08-18,watch,0,2020-08-17 01:00:00,-46,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Sub-PCA,nevp_2020-08-18,warning,0,2020-08-20 18:00:00,44,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,0,2021-02-11 18:00:00,-85,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,0,2021-02-12 20:00:00,-59,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,0,2021-02-13 10:00:00,-45,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,warning,0,2021-02-13 12:00:00,-43,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tva,watch,0,2022-12-23 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tva,warning,0,2022-12-24 02:00:00,15,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,watch,0,2021-02-15 00:00:00,-16,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,0,2021-02-15 19:00:00,3,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,0,2021-02-17 10:00:00,42,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,watch,0,2021-02-15 14:00:00,-35,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,miso,watch,0,2021-02-16 15:00:00,-10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,warning,0,2021-02-15 00:00:00,-49,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,duk,watch,0,2022-12-24 00:00:00,-11,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,duk,warning,0,2022-12-24 20:00:00,9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,watch,0,2022-12-24 01:00:00,-10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,warning,0,2022-12-24 21:00:00,10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,watch,0,2022-12-23 08:00:00,-11,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,warning,0,2022-12-24 04:00:00,9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,1,2021-02-09 18:00:00,-133,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,1,2021-02-11 18:00:00,-85,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,1,2021-02-12 20:00:00,-59,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,1,2021-02-13 10:00:00,-45,forecast_error+imbalance+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,warning,1,2021-02-13 12:00:00,-43,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tva,watch,1,2022-12-23 07:00:00,-4,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tva,warning,1,2022-12-24 03:00:00,16,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,watch,1,2021-02-15 00:00:00,-16,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,watch,1,2021-02-15 07:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,1,2021-02-15 19:00:00,3,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,1,2021-02-17 10:00:00,42,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,watch,1,2021-02-15 14:00:00,-35,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,miso,watch,1,2021-02-16 15:00:00,-10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,warning,1,2021-02-15 00:00:00,-49,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,duk,watch,1,2022-12-24 01:00:00,-10,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,duk,warning,1,2022-12-24 19:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,watch,1,2022-12-24 01:00:00,-10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,warning,1,2022-12-24 21:00:00,10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,watch,1,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,warning,1,2022-12-24 04:00:00,9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,2,2021-02-09 18:00:00,-133,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,2,2021-02-11 18:00:00,-85,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,2,2021-02-12 19:00:00,-60,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,2,2021-02-13 10:00:00,-45,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,2,2021-02-13 15:00:00,-40,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,warning,2,2021-02-13 12:00:00,-43,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tva,watch,2,2022-12-23 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tva,warning,2,2022-12-24 02:00:00,15,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,watch,2,2021-02-15 00:00:00,-16,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,2,2021-02-15 19:00:00,3,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,2,2021-02-17 10:00:00,42,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,watch,2,2021-02-15 14:00:00,-35,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,miso,watch,2,2021-02-16 15:00:00,-10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,warning,2,2021-02-15 06:00:00,-43,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,duk,watch,2,2022-12-24 01:00:00,-10,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,duk,warning,2,2022-12-24 19:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,watch,2,2022-12-24 04:00:00,-7,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,cple,warning,2,2022-12-25 00:00:00,13,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,watch,2,2022-12-23 08:00:00,-11,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,warning,2,2022-12-24 04:00:00,9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,3,2021-02-09 18:00:00,-133,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,3,2021-02-11 18:00:00,-85,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,3,2021-02-12 20:00:00,-59,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,3,2021-02-13 10:00:00,-45,forecast_error+imbalance+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,warning,3,2021-02-13 12:00:00,-43,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tva,watch,3,2022-12-23 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tva,warning,3,2022-12-24 02:00:00,15,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,watch,3,2021-02-14 05:00:00,-35,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,watch,3,2021-02-15 01:00:00,-15,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,3,2021-02-15 19:00:00,3,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,3,2021-02-17 10:00:00,42,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,watch,3,2021-02-15 10:00:00,-39,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,warning,3,2021-02-15 00:00:00,-49,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,duk,watch,3,2022-12-24 01:00:00,-10,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,duk,warning,3,2022-12-24 19:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,watch,3,2022-12-18 18:00:00,-137,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,watch,3,2022-12-24 01:00:00,-10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,warning,3,2022-12-24 21:00:00,10,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,watch,3,2022-12-23 08:00:00,-11,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,warning,3,2022-12-24 04:00:00,9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,4,2021-02-09 18:00:00,-133,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,4,2021-02-11 18:00:00,-85,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,watch,4,2021-02-12 19:00:00,-60,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tx,watch,4,2021-02-13 10:00:00,-45,forecast_error+imbalance+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tx,warning,4,2021-02-13 10:00:00,-45,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,tva,watch,4,2022-12-23 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom
+Gradient-boosted forecaster,tva,warning,4,2022-12-24 02:00:00,15,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,watch,4,2021-02-15 01:00:00,-15,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,4,2021-02-12 23:00:00,-65,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,4,2021-02-15 18:00:00,2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,spp,warning,4,2021-02-17 10:00:00,42,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,watch,4,2021-02-14 09:00:00,-64,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,miso,watch,4,2021-02-15 14:00:00,-35,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,miso,warning,4,2021-02-15 00:00:00,-49,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,duk,watch,4,2022-12-24 01:00:00,-10,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,duk,warning,4,2022-12-24 19:00:00,8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,cple,watch,4,2022-12-24 04:00:00,-7,forecast_error+demand_anom+net_generation_anom
+Gradient-boosted forecaster,cple,warning,4,2022-12-25 00:00:00,13,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,watch,4,2022-12-23 08:00:00,-11,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Gradient-boosted forecaster,lgee,warning,4,2022-12-24 04:00:00,9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,warning,0,2021-02-15 13:00:00,6,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,warning,0,2021-02-16 04:00:00,21,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,tx,warning,0,2021-02-16 13:00:00,30,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,ca,watch,0,2020-08-14 01:00:00,-25,imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,ca,warning,0,2020-08-13 23:00:00,-27,demand_anom+net_generation_anom
+PatchTST forecaster,tva,watch,0,2022-12-23 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tva,warning,0,2022-12-23 10:00:00,-1,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tva,warning,0,2022-12-24 15:00:00,28,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,spp,watch,0,2021-02-11 01:00:00,-111,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,duk,watch,0,2022-12-24 01:00:00,-10,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,duk,warning,0,2022-12-24 03:00:00,-8,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,cple,watch,0,2022-12-24 04:00:00,-7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,cple,warning,0,2022-12-24 04:00:00,-7,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,lgee,watch,0,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,lgee,warning,0,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,warning,1,2021-02-11 18:00:00,-85,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,warning,1,2021-02-15 14:00:00,7,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,tx,warning,1,2021-02-16 02:00:00,19,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,tx,warning,1,2021-02-17 04:00:00,45,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,ca,watch,1,2020-08-14 04:00:00,-22,imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tva,watch,1,2022-12-23 10:00:00,-1,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tva,warning,1,2022-12-23 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,spp,watch,1,2021-02-09 03:00:00,-157,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,spp,watch,1,2021-02-10 23:00:00,-113,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,duk,watch,1,2022-12-24 05:00:00,-6,forecast_error+imbalance+demand_anom+net_generation_anom
+PatchTST forecaster,duk,warning,1,2022-12-24 07:00:00,-4,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,cple,watch,1,2022-12-24 05:00:00,-6,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,cple,warning,1,2022-12-24 07:00:00,-4,forecast_error+imbalance+demand_anom+net_generation_anom
+PatchTST forecaster,lgee,watch,1,2022-12-23 11:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,lgee,warning,1,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,watch,2,2021-02-11 22:00:00,-81,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,watch,2,2021-02-14 22:00:00,-9,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,tx,warning,2,2021-02-15 11:00:00,4,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,tx,warning,2,2021-02-16 13:00:00,30,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,ca,warning,2,2020-08-14 00:00:00,-26,demand_anom+net_generation_anom
+PatchTST forecaster,tva,watch,2,2022-12-23 10:00:00,-1,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tva,warning,2,2022-12-23 08:00:00,-3,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,spp,watch,2,2021-02-08 23:00:00,-161,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,spp,warning,2,2021-02-16 20:00:00,28,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,duk,watch,2,2022-12-23 20:00:00,-15,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,duk,warning,2,2022-12-24 07:00:00,-4,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,duk,warning,2,2022-12-24 23:00:00,12,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,cple,watch,2,2022-12-24 05:00:00,-6,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,cple,warning,2,2022-12-24 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom
+PatchTST forecaster,lgee,watch,2,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,lgee,warning,2,2022-12-23 12:00:00,-7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,warning,3,2021-02-15 12:00:00,5,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,tx,warning,3,2021-02-16 13:00:00,30,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,ca,warning,3,2020-08-14 00:00:00,-26,demand_anom+net_generation_anom
+PatchTST forecaster,tva,watch,3,2022-12-23 10:00:00,-1,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tva,warning,3,2022-12-23 09:00:00,-2,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tva,warning,3,2022-12-24 15:00:00,28,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,duk,watch,3,2022-12-24 09:00:00,-2,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,duk,warning,3,2022-12-24 07:00:00,-4,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,cple,watch,3,2022-12-24 04:00:00,-7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,cple,warning,3,2022-12-24 04:00:00,-7,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,lgee,watch,3,2022-12-23 11:00:00,-8,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,lgee,warning,3,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,warning,4,2021-02-12 14:00:00,-65,forecast_error+imbalance_anom
+PatchTST forecaster,tx,warning,4,2021-02-15 11:00:00,4,forecast_error+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tx,warning,4,2021-02-16 22:00:00,39,forecast_error
+PatchTST forecaster,ca,watch,4,2020-08-14 01:00:00,-25,imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,ca,warning,4,2020-08-14 00:00:00,-26,imbalance+demand_anom+net_generation_anom
+PatchTST forecaster,tva,watch,4,2022-12-23 10:00:00,-1,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,tva,warning,4,2022-12-23 10:00:00,-1,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,duk,watch,4,2022-12-24 09:00:00,-2,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,duk,warning,4,2022-12-24 07:00:00,-4,forecast_error+demand_anom+net_generation_anom
+PatchTST forecaster,cple,watch,4,2022-12-24 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,cple,warning,4,2022-12-24 06:00:00,-5,forecast_error+imbalance+demand_anom+net_generation_anom
+PatchTST forecaster,lgee,watch,4,2022-12-23 10:00:00,-9,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+PatchTST forecaster,lgee,warning,4,2022-12-23 12:00:00,-7,forecast_error+imbalance+demand_anom+net_generation_anom+imbalance_anom
+Random scores,tva,watch,2,2022-12-21 19:00:00,-40,demand_anom+net_generation_anom+imbalance_anom
+Random scores,miso,watch,4,2021-02-15 14:00:00,-35,imbalance+demand_anom+net_generation_anom+imbalance_anom
+Random scores,miso,warning,4,2021-02-15 17:00:00,-32,imbalance+demand_anom+net_generation_anom+imbalance_anom

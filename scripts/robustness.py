@@ -11,7 +11,11 @@
 Each method's alert sweep is computed once; other windows re-verify the same alert start times.
 Needs the reference scores (scripts/fetch_reference.py, scripts/make_scores.py) and scipy.
 
-Usage: python scripts/robustness.py [--out results/v1.0/robustness]
+On a later release (--version 2.0) only B runs, on all its events, as docs/protocol_v2.md fixes it:
+each variant's operating point still comes from v1.0's grids, HTM's entry is htm-monitor frozen after
+2019 (reference_scores/htm_frozen), and Tier 2 catches are also reported separately.
+
+Usage: python scripts/robustness.py [--version 1.0] [--out results/v<version>/robustness]
 """
 import argparse
 import sys
@@ -46,27 +50,28 @@ NEMENYI_Q = {2: 1.960, 3: 2.343, 4: 2.569, 5: 2.728, 6: 2.850, 7: 2.949, 8: 3.03
 DRAWS = 10_000
 
 
-def entries():
-    """(key, label, alert function, seeds) for every method, plus each seeded method's ensemble and plain mean."""
-    out = []
+def entries(version="1.0"):
+    """(key, label, alert function, seeds) for every method, plus each seeded method's ensemble and plain
+    mean, with scores for the release's event grids (v1.0's grids are all among them)."""
+    grids = data.event_grids(version)
     for m in METHODS:
         if m == "oprule":
-            out.append((m, LABEL[m], oprule.alerts, [0]))
+            yield m, LABEL[m], oprule.alerts, [0]
             continue
         if m == "zscore":
-            sc = {0: {g: zscore.scores(g) for g in data.grids()}}
+            sc = {0: {g: zscore.scores(g) for g in grids}}
         else:
-            sc = submission.load(ROOT / "reference_scores" / m)
-        out.append((m, LABEL[m], benchmark.from_scores(sc), sorted(sc)))
+            folder = "htm_frozen" if m == "htm" and version != "1.0" else m
+            sc = submission.load(ROOT / "reference_scores" / folder, version, grids)
+        yield m, LABEL[m], benchmark.from_scores(sc), sorted(sc)
         if m in ENSEMBLE:
             mean = {g: {c: np.mean([sc[k][g][c].to_numpy() for k in sc], axis=0) for c in submission.COLUMNS}
-                    for g in data.grids()}
-            ens = {0: {g: pd.DataFrame({c: to_p(v) for c, v in mean[g].items()}) for g in data.grids()}}
-            out.append((f"{m}_ens", f"{LABEL[m]} (5-seed ensemble)", benchmark.from_scores(ens), [0]))
+                    for g in grids}
+            ens = {0: {g: pd.DataFrame({c: to_p(v) for c, v in mean[g].items()}) for g in grids}}
+            yield f"{m}_ens", f"{LABEL[m]} (5-seed ensemble)", benchmark.from_scores(ens), [0]
             # check, not in the plan: the plain mean, without re-ranking (HTM's scores are not percentiles)
-            raw = {0: {g: pd.DataFrame(mean[g]) for g in data.grids()}}
-            out.append((f"{m}_mean", f"{LABEL[m]} (5-seed mean, check)", benchmark.from_scores(raw), [0]))
-    return out
+            raw = {0: {g: pd.DataFrame(mean[g]) for g in grids}}
+            yield f"{m}_mean", f"{LABEL[m]} (5-seed mean, check)", benchmark.from_scores(raw), [0]
 
 
 def reverify(sw, window):
@@ -77,7 +82,7 @@ def reverify(sw, window):
     cols = []
     for r in sw.itertuples():
         st = [pd.Timestamp(s) for s in str(r.starts).split("|") if s and s != "nan"]
-        cols.append(benchmark._row(st, r.grid, r.level, r.years, pd.Timestamp(r.onset), window=w))   # v1.0: one event per grid
+        cols.append(benchmark._row(st, r.grid, r.level, r.years, pd.Timestamp(r.onset), window=w))   # one row per event
     return sw.assign(**pd.DataFrame(cols, index=sw.index)[["n_verified", "caught", "lead_h"]])
 
 
@@ -87,8 +92,8 @@ def at_point(sw, op):
 
 
 def per_event(rows):
-    """Share of seeds that caught each event, per level: DataFrame grid x level."""
-    return rows.groupby(["grid", "level"]).caught.mean().unstack("level")
+    """Share of seeds that caught each event, per level: DataFrame event x level (v1.0: event id = grid id)."""
+    return rows.groupby(["event", "level"]).caught.mean().unstack("level")
 
 
 def significance(caught, labels):
@@ -148,26 +153,34 @@ def cd_plot(ranks, cd, title, path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", type=Path, default=ROOT / "results" / "v1.0" / "robustness")
+    ap.add_argument("--version", default="1.0")
+    ap.add_argument("--out", type=Path)
     a = ap.parse_args()
+    a.out = a.out or ROOT / "results" / f"v{a.version}" / "robustness"
     a.out.mkdir(parents=True, exist_ok=True)
+    events = data.event_list(a.version)
+    tier2 = [e["id"] for e in events if e["tier"] == 2]
+    v1_grids = data.grids("1.0")
     storm = {g: e["storm"] for g, e in data.events().items()}
     labels, sens, proto, storms, ev = {}, [], [], [], {}
-    for key, label, fn, seeds in entries():
+    for key, label, fn, seeds in entries(a.version):
         print(label, flush=True)
         labels[key] = label
-        sw = benchmark.sweep(fn, seeds)
+        sw = benchmark.sweep(fn, seeds, events=events)
         for name, (budget, window) in VARIANTS.items():
             s = reverify(sw, window)
-            op = benchmark.operating_point(s, {**BUDGET, **budget})
+            op = benchmark.operating_point(s[s.grid.isin(v1_grids)], {**BUDGET, **budget})   # v1.0's grids
             rows = at_point(s, op)
             pe = per_event(rows)
             if name == "v1.0":
                 ev[key] = pe
             sens.append(dict(variant=name, method=label, watches=round(pe["watch"].sum(), 1),
                              warnings=round(pe["warning"].sum(), 1),
+                             **{f"{COL[lv]}_tier2": round(pe.loc[tier2, lv].sum(), 1) for lv in LEVELS if tier2},
                              watch_setting=f"{op['watch'][0]}, {op['watch'][1]} h",
                              warning_setting=f"{op['warning'][0]}, {op['warning'][1]} h"))
+        if a.version != "1.0":
+            continue
         x = sw[(sw.level == "watch") & np.isclose(sw.threshold, SHARED[0]) & (sw.L == SHARED[1])]
         proto.append(dict(method=label, shared_caught=round(x.groupby("grid").caught.mean().sum(), 1),
                           shared_alerts_per_grid_year=round(float(x.groupby("seed").apply(
@@ -186,6 +199,9 @@ def main():
                                        for lv in LEVELS}))
     sens.to_csv(a.out / "sensitivity.csv", index=False)
     pd.DataFrame(tau).to_csv(a.out / "sensitivity_tau.csv", index=False)
+    if a.version != "1.0":                                         # protocol_v2: only B on a release
+        print(pd.DataFrame(tau).to_string(index=False))
+        return
 
     proto = pd.DataFrame(proto)
     proto = proto[proto.method.isin(main_labels)].merge(

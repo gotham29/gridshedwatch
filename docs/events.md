@@ -109,3 +109,23 @@ history, including the rounds that did not pass, is in htm-monitor's
 Each new load shed that meets the rule is added in a new version and scored with the rules
 frozen in v1.0. Candidate next tiers: EEA 3 declarations without load shed, and grids outside
 the US with public hourly data.
+
+## Onsets checked against DOE OE-417
+
+Each onset compared with the start time of the matching DOE OE-417 incident report (annual
+summaries 2020-2022, local time). Seven of ten events have a report; five agree within 10 minutes.
+Where a report starts earlier, it covers the whole incident, not the emergency declaration.
+
+| Event | Onset (local) | OE-417 start (local) | Difference | Note |
+|---|---|---|---|---|
+| Uri, ERCOT | 2021-02-15 01:20 | 2021-02-15 01:23 | +3 min | ERCOT load-shed report |
+| Aug 2020 heat, CAISO | 2020-08-14 18:38 | 18:36 (PG&E), 18:45 (SCE) | -2 / +7 min | utilities' shed reports |
+| Uri, SPP | 2021-02-15 10:08 | 2021-02-14 20:00 | -14 h | report covers the incident from the evening before; onset is SPP's EEA 3 |
+| Uri, MISO South | 2021-02-16 19:40 | 2021-02-16 19:43 | +3 min | 700 MW report |
+| Elliott, TVA | 2022-12-23 06:12 | 2022-12-22 09:04 | -21 h | report covers the whole incident (3,200 MW) |
+| Elliott, LG&E and KU | 2022-12-23 13:36 | none | | no report of its own; TVA's report lists Kentucky |
+| Elliott, Duke Carolinas | 2022-12-24 06:14 | 2022-12-24 04:45 | -89 min | onset is the fallback (first load-shed directive); no method's alert starts within 2 h of onset, so no result changes |
+| Elliott, Duke Progress | 2022-12-24 06:25 | 2022-12-24 06:35 | +10 min | 960 MW report |
+| Aug 2020 heat, NV Energy (Tier 2) | 2020-08-18 15:30 | 2020-08-18 14:00 | -90 min | report records the public appeal from 14:00; EEA 3 at 15:30 (Nevada PUC) |
+| Sept 2022 heat, CAISO (Tier 2) | 2022-09-06 17:17 | none | | no report (see docs/tier2_candidates.yaml) |
+

@@ -17,6 +17,7 @@ lstm = ["torch>=2.0"]
 gbm = ["lightgbm>=4"]
 subpca = ["scikit-learn>=1.2"]
 chronos = ["torch>=2.0", "chronos-forecasting>=1.4"]
+analysis = ["scipy>=1.9", "matplotlib>=3.5"]     # scripts/robustness.py, scripts/event_table.py --figure
 test = ["pytest>=7"]
 
 [project.scripts]

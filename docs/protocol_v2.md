@@ -69,3 +69,8 @@ official Tier 1 row.
   checked on v1.0's events with LSTM and PatchTST computed both ways: per-hour scores differ
   (different trained weights) but event-level results match (LSTM identical; PatchTST at the same
   operating points, 5.8 vs 6.0 warnings caught, inside its seed range of 5-7).
+- 2026-10-31: the paper presents one benchmark with all 10 events and 48 grids, not v1.0 and v2.0
+  separately. HTM's single entry is the frozen one (the v1.0 online row becomes an ablation), and the
+  v1.0 paper's rigor analyses (significance, protocol comparison, by storm, ensembles) are rerun on
+  the 10 events with `scripts/robustness.py --version 2.0`. Scoring rules, operating points and every
+  other method's results are unchanged. Decided after the v2.0 results were seen.

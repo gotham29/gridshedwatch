@@ -1,9 +1,10 @@
-# GridShedWatch v1.0: datasheet
+# GridShedWatch: datasheet
 
 Following the questions of *Datasheets for Datasets* (Gebru et al., 2021), for the benchmark as
 a whole: the event list, the data snapshot, the operator-notice timelines and the scoring.
-Details are in [events.md](events.md) and [scoring.md](scoring.md); this page points to them
-rather than repeating them.
+Details are in [events.md](events.md), [scoring.md](scoring.md) and
+[protocol_v2.md](protocol_v2.md); this page points to them rather than repeating them. It describes
+the current release (v2.0); v1.0 (8 events, 8 grids) stays reproducible from its tag.
 
 ## Motivation
 
@@ -12,34 +13,43 @@ rather than repeating them.
   events, data and metric, usually per hour on simulated grids or a single storm, so none can
   be compared. GridShedWatch fixes the events, the data, the alert budget and the scoring.
 - **Who created it?** Sam Heiserman (independent; htm-monitor / DataGrip LLC). One of the
-  five reference methods (HTM, via htm-monitor) is the author's own; it is scored by the same
+  reference methods (HTM, via htm-monitor) is the author's own; it is scored by the same
   path as the others, and the benchmark code does not depend on it.
 - **Funding:** none.
 
 ## Composition
 
-- **Events (`gridshedwatch/events.yaml`):** 8 instances, one per affected grid: every
-  operator-initiated firm load shed caused by insufficient supply in North America, Jan 2020
-  to Sep 2026, of at least 250 MW at its worst, in a balancing authority that reports to
-  EIA-930. Each has an onset time with its basis and source, the size of the shed, and a split
-  (3 development, 5 held-out). The list is complete under the rule, checked against NERC's
-  annual *State of Reliability* load-shed tables; exclusions and why are listed in events.md.
-- **Data (`gridshedwatch/snapshot_v1.0/`):** hourly demand (D), day-ahead demand forecast (DF)
-  and net generation (NG) from EIA-930 for the 8 balancing authorities, Jan 2019 to Oct 2026,
-  UTC, about 5.6 MB compressed, with SHA-256 checksums. The five signals every method sees are
-  derived from it by one rule (`gridshedwatch/data.py`).
+- **Events (`gridshedwatch/events.yaml`; one table in `docs/events.csv`):** 10 instances in two
+  tiers. Tier 1 (8): every operator-initiated firm load shed caused by insufficient supply in
+  North America, Jan 2020 to Sep 2026, of at least 250 MW at its worst, in a balancing authority
+  that reports to EIA-930; complete under the rule, checked against NERC's annual *State of
+  Reliability* load-shed tables. Tier 2 (2): EEA 3 emergencies (NERC definition) for lack of
+  supply, with a documented emergency action and no firm load shed, each confirmed by two
+  independent sources; every candidate checked is in `docs/tier2_candidates.yaml`. Each event
+  has an onset time with its basis and source, its impact, and a split (3 development, 7
+  held-out). Exclusions and why are listed in events.md.
+- **Grids and data (`gridshedwatch/snapshot_v1.0/`, `snapshot_v2.0/`):** hourly demand (D),
+  day-ahead demand forecast (DF) and net generation (NG) from EIA-930 for 48 balancing
+  authorities, Jan 2019 to Oct 2026, UTC, with SHA-256 checksums: the 9 with events and 39
+  with none, which measure false alarms where nothing happened. A grid is included if it has at
+  least 90% coverage in 2019 and in 2020-2026; flat-demand and forecast-reporting flags
+  (`snapshot_v2.0/quality.csv`) are reported, never used to drop a grid. The five signals every
+  method sees are derived by one rule (`gridshedwatch/data.py`). Croissant metadata with
+  Responsible AI fields: `croissant.json`.
 - **Operator notices (`gridshedwatch/operator_notices.yaml`):** every notice found from each
   operator in the week before its event, with time (UTC; marked when only the day is
   published), audience (public or industry) and sources. They form the status-quo row.
-- **Reference results (`results/v1.0/`):** per-event and summary results for five methods, and
-  their alerts in the alerts-track format. Reference scores for the LSTM, Chronos and HTM are a
-  release asset (about 100 MB).
+- **Reference results (`results/v2.0/`):** summary, per-event, alert-burden and per-alert
+  results for nine reference methods, with robustness analyses and the HTM ablation. Reference
+  scores are a release asset.
 - **Labels:** the onset times are the only labels. There are no per-hour labels.
 - **Missing data:** hours without all of D, DF and NG, and hours failing a bad-data filter set
   from 2019 (values at or below zero, or above twice the 2019 99.9th percentile), are dropped
   before signals are built; the remaining hours form each grid's timeline.
-- **Is it a sample?** No: it is every event meeting the rule in the period. It is small (8
-  events, 7 from two storms), which limits what any comparison can show; see *Known biases*.
+- **Is it a sample?** No: it is every event meeting the rules in the period that public records
+  can name. Tier 1 is complete; Tier 2 is limited by public records, which rarely name the
+  balancing authority behind an EEA 3 (events.md). It is small (10 events, 7 from two winter
+  storms), which limits what any comparison can show; see *Known biases*.
 - **Personal or sensitive data:** none. All data are aggregate grid totals and public notices.
 
 ## Collection
@@ -68,19 +78,24 @@ rather than repeating them.
 - **Intended:** comparing methods that warn of supply-shortfall load sheds from public grid
   data, at matched alert budgets; testing whether a method's warnings come early enough to
   matter; adding new methods through either track (scores or alerts).
-- **Not intended:** estimating a method's detection rate in operation (8 events is a case
+- **Not intended:** estimating a method's detection rate in operation (10 events is a case
   series, not a sample of future emergencies); evaluating detection of transmission or
   distribution failures (excluded by design); ranking methods on differences of about one
   event; replacing operators' own situational awareness, which uses far more data.
 - **Known biases and limits:**
-  - Seven of eight events come from two winter storms; heat-driven and other shortfalls are
-    underrepresented. The held-out events share storms with two development events.
+  - Seven of ten events come from two winter storms; the three heat-wave events (one Tier 1,
+    two Tier 2) are the only others. The held-out Tier 1 events share storms with two
+    development events.
+  - Tier 2 depends on public records naming who declared an EEA 3, so it likely misses
+    declarations by smaller Western balancing authorities.
   - Three events were used to design the shared alert rules; results on them are not
     independent tests.
   - The signals are balancing-authority totals: an event in a small part of a very large
     balancing authority (MISO South within MISO) is diluted.
   - The replay treats each hourly value as available at its time stamp; live EIA-930 data
     arrive with a short delay.
+  - Pretrained models (Chronos-Bolt) may have seen public EIA-930 data; both Tier 2 events
+    predate its release, so neither tests contamination.
   - The status-quo row covers public notices only; operators' notices to the industry and their
     false alarms in ordinary years are not compiled.
 

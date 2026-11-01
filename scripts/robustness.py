@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""Rigor analyses on the v1.0 events, fixed before running (plan in the paper's appendix):
+"""Rigor analyses on a release's events, fixed before running (plan in the paper's appendix):
 
   A. significance   Friedman test over methods (events as blocks), Nemenyi critical difference,
                     and each method against the best one: paired bootstrap and exact sign test
   B. sensitivity    rankings at other alert budgets and window lengths, one setting at a time
   C. protocol       every method at the earlier shared setting (threshold 0.995, 3 h) vs matched budget
-  D. by storm       events caught per storm (Uri, Elliott, the California heat wave)
+  D. by storm       events caught per storm or heat wave (each event's documented cause)
   E. ensembles      seeded methods scored once on the causal percentile of their 5 seeds' mean score
 
 Each method's alert sweep is computed once; other windows re-verify the same alert start times.
 Needs the reference scores (scripts/fetch_reference.py, scripts/make_scores.py) and scipy.
 
-On a later release (--version 2.0) only B runs, on all its events, as docs/protocol_v2.md fixes it:
-each variant's operating point still comes from v1.0's grids, HTM's entry is htm-monitor frozen after
-2019 (reference_scores/htm_frozen), and Tier 2 catches are also reported separately.
+On a later release (--version 2.0) every analysis runs on all its events (docs/protocol_v2.md): each
+operating point still comes from the grids with Tier 1 events, HTM's entry is htm-monitor frozen
+after 2019 (reference_scores/htm_frozen), and Tier 2 catches are also reported separately.
 
 Usage: python scripts/robustness.py [--version 1.0] [--out results/v<version>/robustness]
 """
@@ -28,7 +28,7 @@ from scipy import stats
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from gridshedwatch import benchmark, data, submission  # noqa: E402
-from gridshedwatch.baselines import LABEL, METHODS, oprule, to_p, zscore  # noqa: E402
+from gridshedwatch.baselines import HTM_V2, LABEL, METHODS, oprule, to_p, zscore  # noqa: E402
 from gridshedwatch.config import BUDGET, WINDOW  # noqa: E402
 
 LEVELS = benchmark.LEVELS
@@ -54,24 +54,25 @@ def entries(version="1.0"):
     """(key, label, alert function, seeds) for every method, plus each seeded method's ensemble and plain
     mean, with scores for the release's event grids (v1.0's grids are all among them)."""
     grids = data.event_grids(version)
+    label = LABEL if version == "1.0" else {**LABEL, "htm": HTM_V2}
     for m in METHODS:
         if m == "oprule":
-            yield m, LABEL[m], oprule.alerts, [0]
+            yield m, label[m], oprule.alerts, [0]
             continue
         if m == "zscore":
             sc = {0: {g: zscore.scores(g) for g in grids}}
         else:
             folder = "htm_frozen" if m == "htm" and version != "1.0" else m
             sc = submission.load(ROOT / "reference_scores" / folder, version, grids)
-        yield m, LABEL[m], benchmark.from_scores(sc), sorted(sc)
+        yield m, label[m], benchmark.from_scores(sc), sorted(sc)
         if m in ENSEMBLE:
             mean = {g: {c: np.mean([sc[k][g][c].to_numpy() for k in sc], axis=0) for c in submission.COLUMNS}
                     for g in grids}
             ens = {0: {g: pd.DataFrame({c: to_p(v) for c, v in mean[g].items()}) for g in grids}}
-            yield f"{m}_ens", f"{LABEL[m]} (5-seed ensemble)", benchmark.from_scores(ens), [0]
+            yield f"{m}_ens", f"{label[m]} (5-seed ensemble)", benchmark.from_scores(ens), [0]
             # check, not in the plan: the plain mean, without re-ranking (HTM's scores are not percentiles)
             raw = {0: {g: pd.DataFrame(mean[g]) for g in grids}}
-            yield f"{m}_mean", f"{LABEL[m]} (5-seed mean, check)", benchmark.from_scores(raw), [0]
+            yield f"{m}_mean", f"{label[m]} (5-seed mean, check)", benchmark.from_scores(raw), [0]
 
 
 def reverify(sw, window):
@@ -161,7 +162,7 @@ def main():
     events = data.event_list(a.version)
     tier2 = [e["id"] for e in events if e["tier"] == 2]
     v1_grids = data.grids("1.0")
-    storm = {g: e["storm"] for g, e in data.events().items()}
+    storm = {e["id"]: e.get("storm") or e["event"] for e in events}
     labels, sens, proto, storms, ev = {}, [], [], [], {}
     for key, label, fn, seeds in entries(a.version):
         print(label, flush=True)
@@ -179,14 +180,13 @@ def main():
                              **{f"{COL[lv]}_tier2": round(pe.loc[tier2, lv].sum(), 1) for lv in LEVELS if tier2},
                              watch_setting=f"{op['watch'][0]}, {op['watch'][1]} h",
                              warning_setting=f"{op['warning'][0]}, {op['warning'][1]} h"))
-        if a.version != "1.0":
-            continue
         x = sw[(sw.level == "watch") & np.isclose(sw.threshold, SHARED[0]) & (sw.L == SHARED[1])]
-        proto.append(dict(method=label, shared_caught=round(x.groupby("grid").caught.mean().sum(), 1),
-                          shared_alerts_per_grid_year=round(float(x.groupby("seed").apply(
+        g = x.drop_duplicates(["seed", "grid"])                    # alerts once per grid, not per event
+        proto.append(dict(method=label, shared_caught=round(x.groupby("event").caught.mean().sum(), 1),
+                          shared_alerts_per_grid_year=round(float(g.groupby("seed").apply(
                               lambda y: y.n_alerts.sum() / y.years.sum()).mean()), 1)))
-        for g, r in ev[key].iterrows():
-            storms.append(dict(method=label, storm=storm[g], grid=g, watch=r["watch"], warning=r["warning"]))
+        for e, r in ev[key].iterrows():
+            storms.append(dict(method=label, storm=storm[e], event=e, watch=r["watch"], warning=r["warning"]))
 
     main_methods = list(METHODS)                                   # tests and ranks on the nine methods only
     main_labels = [labels[m] for m in main_methods]
@@ -199,9 +199,6 @@ def main():
                                        for lv in LEVELS}))
     sens.to_csv(a.out / "sensitivity.csv", index=False)
     pd.DataFrame(tau).to_csv(a.out / "sensitivity_tau.csv", index=False)
-    if a.version != "1.0":                                         # protocol_v2: only B on a release
-        print(pd.DataFrame(tau).to_string(index=False))
-        return
 
     proto = pd.DataFrame(proto)
     proto = proto[proto.method.isin(main_labels)].merge(
@@ -220,7 +217,7 @@ def main():
         sig.append(pair)
         pd.Series(summ).to_csv(a.out / f"friedman_{lv}.csv", header=False)
         ranks.rename("average_rank").to_csv(a.out / f"ranks_{lv}.csv")
-        title = f"{'Watches' if lv == 'watch' else 'Warnings'}: average rank over the 8 events (Friedman p = {summ['friedman_p']})"
+        title = f"{'Watches' if lv == 'watch' else 'Warnings'}: average rank over the {len(events)} events (Friedman p = {summ['friedman_p']})"
         cd_plot(ranks, summ["critical_difference"], title, a.out / f"cd_{lv}.png")
         print(lv, summ, flush=True)
     pd.concat(sig).to_csv(a.out / "pairwise.csv", index=False)

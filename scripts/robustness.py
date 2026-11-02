@@ -6,7 +6,8 @@
   B. sensitivity    rankings at other alert budgets and window lengths, one setting at a time
   C. protocol       every method at the earlier shared setting (threshold 0.995, 3 h) vs matched budget
   D. by storm       events caught per storm or heat wave (each event's documented cause)
-  E. ensembles      seeded methods scored once on the causal percentile of their 5 seeds' mean score
+  E. ensembles      seeded methods scored once on the causal percentile of their 5 seeds' mean score,
+                    with how far seeds agree (seed_agreement.csv; --only-agreement computes just that)
 
 Each method's alert sweep is computed once; other windows re-verify the same alert start times.
 Needs the reference scores (scripts/fetch_reference.py, scripts/make_scores.py) and scipy.
@@ -92,6 +93,25 @@ def at_point(sw, op):
                       for lv in LEVELS])
 
 
+def seed_agreement(version, q=0.99):
+    """How far a seeded method's seeds agree, per grid with an event and signal, averaged over seed pairs:
+    correlation of scores, and overlap (Jaccard) of the hours scored at q or above (post-warm-up)."""
+    out = []
+    grids = data.event_grids(version)
+    for m in ENSEMBLE:
+        folder = "htm_frozen" if m == "htm" and version != "1.0" else m
+        sc = submission.load(ROOT / "reference_scores" / folder, version, grids)
+        for g in grids:
+            live = data.timebase(g)["in_warmup"].to_numpy() == 0
+            for c in submission.COLUMNS:
+                x = {k: sc[k][g][c].to_numpy(float)[live] for k in sc}
+                for i, j in [(i, j) for i in x for j in x if i < j]:
+                    a, b = x[i] >= q, x[j] >= q
+                    out.append(dict(method=m, grid=g, signal=c, corr=np.corrcoef(x[i], x[j])[0, 1],
+                                    jaccard=(a & b).sum() / max((a | b).sum(), 1)))
+    return pd.DataFrame(out).groupby("method")[["corr", "jaccard"]].mean().round(2)
+
+
 def per_event(rows):
     """Share of seeds that caught each event, per level: DataFrame event x level (v1.0: event id = grid id)."""
     return rows.groupby(["event", "level"]).caught.mean().unstack("level")
@@ -156,9 +176,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--version", default="1.0")
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--only-agreement", action="store_true")
     a = ap.parse_args()
     a.out = a.out or ROOT / "results" / f"v{a.version}" / "robustness"
     a.out.mkdir(parents=True, exist_ok=True)
+    agree = seed_agreement(a.version)
+    agree.to_csv(a.out / "seed_agreement.csv")
+    print(agree.to_string())
+    if a.only_agreement:
+        return
     events = data.event_list(a.version)
     tier2 = [e["id"] for e in events if e["tier"] == 2]
     v1_grids = data.grids("1.0")

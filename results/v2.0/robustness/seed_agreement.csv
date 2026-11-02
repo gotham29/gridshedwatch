@@ -1,0 +1,5 @@
+method,corr,jaccard
+gbm,0.93,0.83
+htm,0.42,0.31
+lstm,0.89,0.76
+patchtst,0.66,0.52

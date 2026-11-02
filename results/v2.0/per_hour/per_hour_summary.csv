@@ -1,0 +1,19 @@
+labels,name,method,AUC-PR,AUC-ROC,VUS-PR,VUS-ROC,Standard-F1,PA-F1,Event-based-F1,R-based-F1,Affiliation-F
+event,Chronos-Bolt (zero-shot),chronos,0.0100,0.7607,0.0104,0.8177,0.0402,0.0365,0.0116,0.0079,0.6684
+event,Gradient-boosted forecaster,gbm,0.0381,0.8679,0.0393,0.9035,0.0965,0.0299,0.0185,0.0055,0.6713
+event,"HTM (htm-monitor, frozen after 2019)",htm,0.0024,0.6655,0.0030,0.7244,0.0091,0.0127,0.0055,0.0063,0.6810
+event,LSTM forecaster,lstm,0.0231,0.7601,0.0208,0.8129,0.0606,0.0341,0.0124,0.0055,0.6715
+event,Operator-style rule,oprule,0.0018,0.4569,0.0024,0.5022,0.0081,0.0545,0.0069,0.0401,0.7036
+event,PatchTST forecaster,patchtst,0.0154,0.7623,0.0156,0.8176,0.0523,0.0342,0.0117,0.0062,0.6693
+event,Random scores,random,0.0010,0.4944,0.0012,0.5513,0.0057,0.0882,0.0036,0.0044,0.6696
+event,Sub-PCA,subpca,0.0429,0.8826,0.0405,0.9054,0.0911,0.0295,0.0177,0.0055,0.6688
+event,Seasonal z-score,zscore,0.0141,0.8586,0.0173,0.8829,0.0340,0.0451,0.0212,0.0070,0.6772
+lead,Chronos-Bolt (zero-shot),chronos,0.0062,0.5980,0.0069,0.6217,0.0254,0.1171,0.0173,0.0201,0.6684
+lead,Gradient-boosted forecaster,gbm,0.0273,0.6648,0.0285,0.6879,0.0800,0.0978,0.0296,0.0155,0.6714
+lead,"HTM (htm-monitor, frozen after 2019)",htm,0.0071,0.6460,0.0077,0.6666,0.0228,0.0433,0.0165,0.0176,0.6810
+lead,LSTM forecaster,lstm,0.0065,0.6139,0.0078,0.6369,0.0273,0.1100,0.0171,0.0153,0.6715
+lead,Operator-style rule,oprule,0.0295,0.6149,0.0230,0.6354,0.0701,0.2422,0.0555,0.0304,0.7039
+lead,PatchTST forecaster,patchtst,0.0073,0.6137,0.0084,0.6370,0.0330,0.1102,0.0182,0.0160,0.6692
+lead,Random scores,random,0.0035,0.4982,0.0034,0.5158,0.0100,0.3644,0.0096,0.0116,0.6696
+lead,Sub-PCA,subpca,0.0113,0.6675,0.0128,0.6866,0.0373,0.0961,0.0225,0.0176,0.6688
+lead,Seasonal z-score,zscore,0.0320,0.7165,0.0342,0.7335,0.0711,0.1425,0.0440,0.0215,0.6774

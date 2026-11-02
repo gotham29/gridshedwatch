@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Score the v1.0 reference methods with the usual per-hour anomaly-detection metrics and compare
+"""Score a release's reference methods with the usual per-hour anomaly-detection metrics and compare
 the ranking with GridShedWatch's event-level ranking.
 
 Metrics come from TSB-AD's own implementation (pip install TSB-AD --no-deps; it needs only numpy
@@ -11,12 +11,14 @@ Per-hour score of a method = the largest of its five per-signal scores at that h
 rule has no per-signal scores, so its score is the causal percentile of percent forecast error
 (the quantity its rule thresholds). A random method draws uniform scores (5 seeds).
 
-Labels, two variants:
+Labels, two variants (every event on a grid is labeled):
   event:   the 48 hours from onset (the emergency itself, as a per-hour benchmark would label it)
   lead:    the 168 hours before onset (the window in which a watch counts)
-Metrics are computed per grid (post-warm-up hours only), averaged over seeds, then over grids.
+Metrics are computed per grid with an event (post-warm-up hours only), averaged over seeds, then over
+grids. On a later release HTM's entry is htm-monitor frozen after 2019 (reference_scores/htm_frozen),
+and per_hour_tau.csv gives each metric's Kendall tau with events caught (results/v<version>/summary.csv).
 
-Usage: python scripts/per_hour_metrics.py [--jobs 2] [--out results/v1.0/per_hour]
+Usage: python scripts/per_hour_metrics.py [--version 1.0] [--jobs 2] [--out results/v<version>/per_hour]
 """
 import argparse
 import json
@@ -31,7 +33,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from gridshedwatch import data, submission  # noqa: E402
-from gridshedwatch.baselines import LABEL, to_p, zscore  # noqa: E402
+from gridshedwatch.baselines import HTM_V2, LABEL, to_p, zscore  # noqa: E402
 
 H = pd.Timedelta(hours=1)
 LABELS = {"event": (0, 48), "lead": (-168, 0)}          # hours relative to onset, [lo, hi)
@@ -46,7 +48,7 @@ def oprule_score(grid):
     return to_p(x)
 
 
-def scores_for(method, grid):
+def scores_for(method, grid, version="1.0"):
     """{seed: per-hour score on the timebase}."""
     if method == "oprule":
         return {0: oprule_score(grid)}
@@ -55,40 +57,47 @@ def scores_for(method, grid):
     if method == "random":
         n = len(data.timebase(grid))
         return {k: np.random.default_rng(1000 + k).random(n) for k in RANDOM_SEEDS}
-    sc = submission.load(ROOT / "reference_scores" / method)
+    folder = "htm_frozen" if method == "htm" and version != "1.0" else method
+    sc = submission.load(ROOT / "reference_scores" / folder, version, [grid])
     return {k: sc[k][grid].to_numpy().max(axis=1) for k in sc}
 
 
-def labels(grid, variant):
+def labels(grid, variant, version="1.0"):
     tb = data.timebase(grid)
-    d = (tb["timestamp"] - data.onset(grid)) / H
     lo, hi = LABELS[variant]
-    return ((d >= lo) & (d < hi)).to_numpy(int)
+    y = np.zeros(len(tb), int)
+    for e in data.event_list(version):
+        if e["grid"] == grid:
+            d = (tb["timestamp"] - e["onset"]) / H
+            y |= ((d >= lo) & (d < hi)).to_numpy(int)
+    return y
 
 
 def job(args):
-    method, grid, variant, seed, score = args
+    method, grid, variant, seed, score, version = args
     from TSB_AD.evaluation.metrics import get_metrics
     live = data.timebase(grid)["in_warmup"].to_numpy() == 0
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        m = get_metrics(np.asarray(score, float)[live], labels(grid, variant)[live], slidingWindow=WINDOW)
+        m = get_metrics(np.asarray(score, float)[live], labels(grid, variant, version)[live], slidingWindow=WINDOW)
     return dict(method=method, grid=grid, labels=variant, seed=seed, **{k: float(v) for k, v in m.items()})
 
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--version", default="1.0")
     ap.add_argument("--jobs", type=int, default=2)
-    ap.add_argument("--out", type=Path, default=ROOT / "results" / "v1.0" / "per_hour")
+    ap.add_argument("--out", type=Path)
     ap.add_argument("--method", nargs="+", default=["oprule", "zscore", "chronos", "subpca", "gbm", "patchtst", "lstm", "htm",
                                                     "random"])
     a = ap.parse_args()
+    a.out = a.out or ROOT / "results" / f"v{a.version}" / "per_hour"
     a.out.mkdir(parents=True, exist_ok=True)
     done_file = a.out / "per_hour_raw.jsonl"           # one line per finished task, so a stopped run resumes
     rows = [json.loads(x) for x in done_file.read_text().splitlines()] if done_file.exists() else []
     done = {(r["method"], r["grid"], r["labels"], r["seed"]) for r in rows}
-    tasks = [(m, g, v, k, s) for m in a.method for g in data.grids() for k, s in scores_for(m, g).items()
-             for v in LABELS if (m, g, v, k) not in done]
+    tasks = [(m, g, v, k, s, a.version) for m in a.method for g in data.event_grids(a.version)
+             for k, s in scores_for(m, g, a.version).items() for v in LABELS if (m, g, v, k) not in done]
     with ProcessPoolExecutor(a.jobs) as ex, done_file.open("a") as fh:
         for i, r in enumerate(ex.map(job, tasks, chunksize=1)):
             rows.append(r)
@@ -100,9 +109,20 @@ def main():
     metrics = [c for c in raw.columns if c not in ("method", "grid", "labels", "seed")]
     per_grid = raw.groupby(["labels", "method", "grid"])[metrics].mean()
     summary = per_grid.groupby(["labels", "method"]).mean().reset_index()
-    summary.insert(1, "name", summary.method.map(LABEL))
+    summary.insert(1, "name", summary.method.map(LABEL if a.version == "1.0" else {**LABEL, "htm": HTM_V2}))
     summary.to_csv(a.out / "per_hour_summary.csv", index=False, float_format="%.4f")
     print(summary.to_string(index=False))
+    release = ROOT / "results" / f"v{a.version}" / "summary.csv"
+    if release.exists():                                 # rank agreement with event-level scoring
+        from scipy.stats import kendalltau
+        ev = pd.read_csv(release).set_index("method")
+        tau = []
+        for (lab, lv) in [(lab, lv) for lab in LABELS for lv in ("watch", "warning")]:
+            x = summary[summary.labels == lab].set_index("name")
+            caught = (ev[f"tier1_{lv}_caught_all"] + ev[f"tier2_{lv}_caught_all"]).loc[x.index]
+            tau.append(dict(labels=lab, level=lv, **{m: round(kendalltau(x[m], caught).statistic, 2) for m in metrics}))
+        pd.DataFrame(tau).to_csv(a.out / "per_hour_tau.csv", index=False)
+        print(pd.DataFrame(tau).to_string(index=False))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,10 @@
+,average_rank
+Operator-style rule,6.25
+Seasonal z-score,4.25
+Chronos-Bolt (zero-shot),5.8
+LSTM forecaster,5.1
+"HTM (htm-monitor, frozen after 2019)",3.45
+Sub-PCA,5.35
+Gradient-boosted forecaster,3.75
+PatchTST forecaster,4.15
+Random scores,6.9

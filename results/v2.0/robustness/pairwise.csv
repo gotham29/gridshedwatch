@@ -1,0 +1,17 @@
+level,method,vs,diff,diff_ci,share_boot_le_0,events_better,events_worse,sign_test_p,rank_gap,beyond_cd,events_needed_80pct_power
+watch,Operator-style rule,Gradient-boosted forecaster,1.0,-2.0 to 4.0,0.386,2,1,1.0,0.55,False,253
+watch,Seasonal z-score,Gradient-boosted forecaster,1.0,-2.0 to 4.0,0.3822,2,1,1.0,0.6,False,253
+watch,Chronos-Bolt (zero-shot),Gradient-boosted forecaster,6.0,3.0 to 9.0,0.0001,6,0,0.0312,3.15,False,6
+watch,LSTM forecaster,Gradient-boosted forecaster,0.6,0.0 to 1.8,0.3451,1,0,1.0,0.4,False,79
+watch,"HTM (htm-monitor, frozen after 2019)",Gradient-boosted forecaster,0.2,-2.8 to 2.6,0.4449,4,2,0.6875,0.05,False,4086
+watch,Sub-PCA,Gradient-boosted forecaster,4.0,0.0 to 8.0,0.0541,5,1,0.2188,2.2,False,24
+watch,PatchTST forecaster,Gradient-boosted forecaster,1.6,-1.0 to 4.4,0.1202,3,1,0.625,0.7,False,65
+watch,Random scores,Gradient-boosted forecaster,6.6,3.8 to 9.0,0.0001,7,0,0.0156,3.15,False,4
+warning,Operator-style rule,Gradient-boosted forecaster,5.0,2.0 to 8.0,0.0006,5,0,0.0625,2.5,False,9
+warning,Seasonal z-score,Gradient-boosted forecaster,1.0,0.0 to 3.0,0.3535,1,0,1.0,0.5,False,79
+warning,Chronos-Bolt (zero-shot),Gradient-boosted forecaster,4.0,1.0 to 7.0,0.0066,4,0,0.125,2.05,False,14
+warning,LSTM forecaster,Gradient-boosted forecaster,2.2,0.2 to 4.6,0.0055,4,0,0.125,1.35,False,23
+warning,"HTM (htm-monitor, frozen after 2019)",Gradient-boosted forecaster,0.2,-0.6 to 1.2,0.452,1,1,1.0,-0.3,False,427
+warning,Sub-PCA,Gradient-boosted forecaster,3.0,-1.0 to 7.0,0.109,4,1,0.375,1.6,False,40
+warning,PatchTST forecaster,Gradient-boosted forecaster,1.0,-1.6 to 4.0,0.283,2,1,1.0,0.4,False,190
+warning,Random scores,Gradient-boosted forecaster,6.8,3.8 to 9.4,0.0001,7,0,0.0156,3.15,False,4

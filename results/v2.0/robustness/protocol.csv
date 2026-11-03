@@ -1,0 +1,10 @@
+method,shared_caught,shared_alerts_per_grid_year,matched_budget_caught,shared_rank,matched_rank
+Operator-style rule,4.0,8.6,6.0,2,4
+Seasonal z-score,3.0,0.9,6.0,4,4
+Chronos-Bolt (zero-shot),0.0,0.6,1.0,6,8
+LSTM forecaster,0.0,0.6,6.4,6,3
+"HTM (htm-monitor, frozen after 2019)",6.8,9.2,6.8,1,2
+Sub-PCA,0.0,1.8,3.0,6,7
+Gradient-boosted forecaster,3.2,1.4,7.0,3,1
+PatchTST forecaster,2.2,0.7,5.4,5,6
+Random scores,0.0,0.0,0.4,6,9

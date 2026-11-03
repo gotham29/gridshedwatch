@@ -1,0 +1,20 @@
+,watch,watch,watch,watch,warning,warning,warning,warning
+storm,Aug 2020 heat wave,Elliott,Sept 2022 heat wave,Uri,Aug 2020 heat wave,Elliott,Sept 2022 heat wave,Uri
+method,,,,,,,,
+Chronos-Bolt (zero-shot),0.0,1.0,0.0,0.0,0.0,2.0,0.0,1.0
+Gradient-boosted forecaster,0.0,4.0,0.0,3.0,0.0,4.0,0.0,3.0
+Gradient-boosted forecaster (5-seed ensemble),0.0,4.0,0.0,3.0,0.0,4.0,0.0,2.0
+"Gradient-boosted forecaster (5-seed mean, check)",0.0,4.0,0.0,3.0,0.0,4.0,0.0,2.0
+"HTM (htm-monitor, frozen after 2019)",0.4,3.0,1.0,2.4,0.0,4.0,0.2,2.6
+"HTM (htm-monitor, frozen after 2019) (5-seed ensemble)",0.0,3.0,0.0,2.0,0.0,4.0,0.0,2.0
+"HTM (htm-monitor, frozen after 2019) (5-seed mean, check)",1.0,3.0,0.0,2.0,0.0,4.0,0.0,2.0
+LSTM forecaster,0.0,4.0,0.0,2.4,0.0,2.8,0.0,2.0
+LSTM forecaster (5-seed ensemble),0.0,4.0,0.0,3.0,0.0,4.0,0.0,2.0
+"LSTM forecaster (5-seed mean, check)",0.0,4.0,0.0,2.0,0.0,4.0,0.0,2.0
+Operator-style rule,1.0,2.0,0.0,3.0,0.0,0.0,0.0,2.0
+PatchTST forecaster,0.6,4.0,0.0,0.8,0.8,4.0,0.0,1.2
+PatchTST forecaster (5-seed ensemble),1.0,4.0,0.0,1.0,1.0,4.0,0.0,2.0
+"PatchTST forecaster (5-seed mean, check)",0.0,4.0,0.0,1.0,1.0,4.0,0.0,1.0
+Random scores,0.0,0.2,0.0,0.2,0.0,0.0,0.0,0.2
+Seasonal z-score,0.0,2.0,1.0,3.0,0.0,3.0,0.0,3.0
+Sub-PCA,1.0,2.0,0.0,0.0,1.0,2.0,0.0,1.0

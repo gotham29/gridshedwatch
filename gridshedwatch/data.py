@@ -188,3 +188,21 @@ def bounds_2019(grid: str, frozen: bool = True) -> dict:
     cal = calibration(grid)
     return {f: (round(float(cal[f].dropna().quantile(0.001)), 2), round(float(cal[f].dropna().quantile(0.999)), 2))
             for f in SIGNALS}
+
+
+@lru_cache(maxsize=None)
+def near_misses() -> tuple:
+    """Near-misses (events.yaml, near_miss): id, grid, time (Timestamp). Never scored as events."""
+    raw = yaml.safe_load((PACKAGE / "events.yaml").read_text()).get("near_miss") or {}
+    return tuple(dict(v, id=k, grid=v["grid_id"], time=pd.Timestamp(v["time_utc"])) for k, v in raw.items())
+
+
+@lru_cache(maxsize=None)
+def calibration_split(version: str = "2.0") -> tuple:
+    """Quiet grids split in two by the SHA-256 of their EIA-930 code (docs/protocol_v3.md, item 1):
+    (calibration half, evaluation half). The operating point sees only the calibration half."""
+    import hashlib
+    quiet = [g for g in grids(version) if g not in set(event_grids(version))]
+    key = lambda g: hashlib.sha256(grid_table()[g]["eia930_respondent"].encode()).hexdigest()
+    q = sorted(quiet, key=key)
+    return tuple(sorted(q[: len(q) // 2])), tuple(sorted(q[len(q) // 2:]))

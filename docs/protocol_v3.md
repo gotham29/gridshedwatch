@@ -85,4 +85,7 @@ shared rules and the operating point in (1), and output a causal percentile in [
 
 ## Deviations
 
-(none yet)
+- 2026-11-03, before any v3.0 scoring (clarifications, found while writing the code): (a) item 5's whole
+  years run from 1 to 5, not 6, because alerts wrap modulo 6 years and a 6-year shift would leave them
+  in place; (b) item 1's calibration split is computed by `data.calibration_split()` and written to
+  `results/v3.0/calibration_grids.csv` rather than listed in `grids.yaml`.

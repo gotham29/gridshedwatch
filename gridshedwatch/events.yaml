@@ -49,6 +49,7 @@ events:
     event: heatwave_aug2020
     onset_local: 2020-08-14 18:38
     onset_utc: 2020-08-15 01:38
+    oe417_start_utc: 2020-08-15 01:36   # earlier than onset (docs/events.md); onset sensitivity only
     onset_basis: Stage 3 Emergency declared
     max_shed_mw: 1000
     source: CAISO Final Root Cause Analysis, Mid-August 2020
@@ -83,6 +84,7 @@ events:
     event: elliott_dec2022
     onset_local: 2022-12-23 06:12
     onset_utc: 2022-12-23 11:12
+    oe417_start_utc: 2022-12-22 14:04   # earlier than onset (docs/events.md); onset sensitivity only
     onset_basis: EEA 3 declared (source gives Eastern time)
     max_shed_mw: 3000
     source: FERC-NERC Elliott inquiry, p. 10
@@ -117,6 +119,7 @@ events:
     event: uri_feb2021
     onset_local: 2021-02-15 10:08
     onset_utc: 2021-02-15 16:08
+    oe417_start_utc: 2021-02-15 02:00   # earlier than onset (docs/events.md); onset sensitivity only
     onset_basis: EEA 3 declared
     max_shed_mw: 2718
     source: SPP; FERC-NERC Uri report
@@ -185,6 +188,7 @@ events:
     event: elliott_dec2022
     onset_local: 2022-12-24 06:14
     onset_utc: 2022-12-24 11:14
+    oe417_start_utc: 2022-12-24 09:45   # earlier than onset (docs/events.md); onset sensitivity only
     onset_basis: 'Fallback: first load-shed directive (EEA 3 time not published)'
     max_shed_mw: 1000
     source: Duke Energy timeline
@@ -295,6 +299,7 @@ tier2:
     event: Aug 2020 heat wave
     onset_local: 2020-08-18 15:30
     onset_utc: 2020-08-18 22:30
+    oe417_start_utc: 2020-08-18 21:00   # earlier than onset (docs/events.md); onset sensitivity only
     onset_basis: EEA 3 declared
     split: held-out
     since: '2.0'
@@ -356,3 +361,46 @@ tier2:
         publisher: Public Advocates Office (CPUC)
         url: https://www.publicadvocates.cpuc.ca.gov/-/media/cal-advocates-website/files/press-room/reports-and-analyses/220922-caladvocates-sept-22-heat-wave-analysis---full.pdf
     record: docs/tier2_candidates.yaml#ciso_2022-09-06
+
+# Near-misses (docs/protocol_v3.md, item 8): documented emergencies on the benchmark's grids that fall
+# short of the event rule (a supply-caused firm load shed below 250 MW, or an EEA 2 or higher for lack
+# of supply). Never events and never caught; an alert that would verify one is neither verified nor
+# false. time_utc is the declaration or shed start; approx: true where only the day is published.
+near_miss:
+  epe_2020-08-13:
+    grid_id: epe
+    time_utc: 2020-08-13 19:51
+    what: 218 MW firm load shed, 1:51-4:27 PM MDT
+    source: DOE OE-417, 2020 (docs/events.md, exclusions)
+  iid_2020-09-05:
+    grid_id: iid
+    time_utc: 2020-09-06 00:25
+    what: 100 MW firm load shed, 5:25-8:55 PM PDT
+    source: DOE OE-417, 2020 (docs/events.md, exclusions)
+  ciso_2022-09-05:
+    grid_id: ca
+    time_utc: 2022-09-06 01:30
+    what: EEA 2, 6:30 PM PDT
+    source: CAISO, Grid emergencies history report (docs/tier2_candidates.yaml)
+  erco_2023-09-06:
+    grid_id: tx
+    time_utc: 2023-09-07 00:00
+    approx: true
+    what: EEA 2, evening of Sept 6 (CDT)
+    source: ERCOT, "ERCOT has initiated Energy Emergency Alert Level 2" (docs/tier2_candidates.yaml)
+  miso_2023-08-24:
+    grid_id: miso
+    time_utc: 2023-08-24 17:00
+    what: Max Gen Event Step 2a (EEA 2), declared 8 AM to take effect at noon EST
+    source: Potomac Economics, MISO IMM Quarterly Report, Summer 2023
+  miso_2026-01-24:
+    grid_id: miso
+    time_utc: 2026-01-24 09:36
+    what: Max Gen Event Step 2a then 2c (EEA 2), from 4:36 AM EST, Winter Storm Fern
+    source: MISO update to the Missouri PSC, 2026-02-19
+  swpp_2026-07-20:
+    grid_id: spp
+    time_utc: 2026-07-20 17:00
+    approx: true
+    what: grid emergency; DOE Order 202-26-36 issued this day (EEA level to confirm)
+    source: DOE, Federal Power Act 202(c) Order No. 202-26-36

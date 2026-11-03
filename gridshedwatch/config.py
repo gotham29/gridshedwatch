@@ -64,3 +64,12 @@ PERSISTENCE = {"watch": (3, 4, 6, 8, 12), "warning": (6, 9, 12, 18, 24)}
 
 BOOTSTRAP_DRAWS = 10_000
 CHANCE_SHIFTS = 2_000
+
+# v3.0 scoring (docs/protocol_v3.md)
+V3_PERSISTENCE = {"watch": 3, "warning": 6}                       # fixed; the threshold meets the budget
+V3_CURVE = {"watch": (3.0, 6.0, 12.0, 24.0, 48.0), "warning": (0.5, 1.0, 2.0, 4.0, 8.0)}
+V3_SCAN = (0.5, 0.7, 0.8, 0.9, 0.95, 0.97, 0.98, 0.99, 0.993, 0.995, 0.997, 0.998, 0.999, 0.9995, 0.9999)
+V3_BISECT = 8                                                      # bisection steps after the scan
+SEASON_SHIFT_YEARS = (1, 5)                                        # whole years, wrapped modulo 6 years
+SEASON_SHIFT_DAYS = 15                                             # plus a uniform offset of up to this
+LATENCY_H = (1, 6, 24)

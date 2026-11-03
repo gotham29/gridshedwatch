@@ -119,3 +119,14 @@ def alerts_fast(p: pd.DataFrame, warmup: np.ndarray, level: str, threshold: floa
     out = np.zeros(len(p), dtype=int)
     out[live] = (_run_length(system_hot) >= int(persistence)).astype(int)
     return out
+
+
+def alerts_simple(p: pd.DataFrame, warmup: np.ndarray, signals, threshold: float, persistence: int) -> np.ndarray:
+    """Alternative rule for the v3.0 ablation: an hour is hot when any of `signals` is at or above the
+    threshold; an alert is on after `persistence` hot hours in a row. No groups, no coincidence."""
+    live = np.flatnonzero(np.asarray(warmup) == 0)
+    hot = np.logical_or.reduce([(p[f"p_{s}"] if f"p_{s}" in p else p[s]).to_numpy(float)[live] >= threshold
+                                for s in signals])
+    out = np.zeros(len(p), dtype=int)
+    out[live] = (_run_length(hot) >= int(persistence)).astype(int)
+    return out

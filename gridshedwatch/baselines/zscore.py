@@ -10,13 +10,17 @@ from . import to_p
 WINDOW_H = 720
 
 
-def robust_z(x: np.ndarray, W: int = WINDOW_H) -> np.ndarray:
+def robust_dev(x: np.ndarray, W: int = WINDOW_H) -> np.ndarray:
+    """Signed deviation from the median of the past W hours, in robust standard deviations."""
     s = pd.Series(x)
     past = s.shift(1)
     med = past.rolling(W, min_periods=24).median()
     mad = (past - med).abs().rolling(W, min_periods=24).median()
-    z = (s - med).abs() / (1.4826 * mad.replace(0, np.nan))
-    return z.fillna(0).to_numpy()
+    return ((s - med) / (1.4826 * mad.replace(0, np.nan))).fillna(0).to_numpy()
+
+
+def robust_z(x: np.ndarray, W: int = WINDOW_H) -> np.ndarray:
+    return np.abs(robust_dev(x, W))
 
 
 def scores(grid: str) -> pd.DataFrame:

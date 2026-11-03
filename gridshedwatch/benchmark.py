@@ -328,3 +328,150 @@ def status_quo() -> dict:
     return {"method": "Operators (public notices)", "watch_caught_all": float(sum(caught.values())),
             "watch_caught_held_out": float(sum(v for g, v in caught.items() if ev[g]["split"] == "held-out")),
             "watch_median_lead_h": round(float(np.median(leads)), 0) if leads else np.nan, "by_grid": caught}
+
+
+# ---------------------------------------------------------------- v3.0 (docs/protocol_v3.md)
+
+def from_scores_simple(scores: Dict[int, Dict[str, pd.DataFrame]], signals) -> Callable:
+    """Like from_scores, through rules.alerts_simple (the v3.0 alert-rule ablation)."""
+    def fn(grid, level, threshold, persistence, seed):
+        return rules.alerts_simple(scores[seed][grid], data.timebase(grid)["in_warmup"].to_numpy(),
+                                   signals, threshold, persistence)
+    fn.scores = scores
+    return fn
+
+
+def starts_at(alert_fn: Callable, seeds, grids, level: str, threshold: float, persistence: int) -> dict:
+    """Alert episode start times {(seed, grid): [Timestamp]} at one setting."""
+    out = {}
+    for k in seeds:
+        for g in grids:
+            tb = data.timebase(g)
+            out[(k, g)] = rules.episodes(alert_fn(g, level, threshold, persistence, k), tb["timestamp"],
+                                         tb["in_warmup"].to_numpy())
+    return out
+
+
+def median_rate(st: dict, grids) -> float:
+    """Median over grids of alerts per grid-year (mean over seeds)."""
+    r = pd.Series({kg: len(v) / data.scored_years(kg[1]) for kg, v in st.items()})
+    return float(r.groupby(level=1).mean().reindex(list(grids)).median())
+
+
+class Calibrator:
+    """Label-free operating point (protocol v3.0, item 1): persistence fixed per level, threshold set
+    so that the median calibration grid alerts at the budget. A scan of config.V3_SCAN brackets the
+    budget, then bisection; rates are cached, so several budgets (the curves) share the scan. Alert
+    counts can fall again at very low thresholds (episodes merge), so the bracket is the highest
+    scanned threshold at or above the budget. A method that cannot reach the budget is set at its
+    highest-rate threshold and flagged."""
+
+    def __init__(self, alert_fn: Callable, seeds, grids, level: str, persistence: int = None):
+        from .config import V3_PERSISTENCE
+        self.fn, self.seeds, self.grids, self.level = alert_fn, list(seeds), list(grids), level
+        self.L = persistence or V3_PERSISTENCE[level]
+        self.cache = {}
+
+    def rate(self, thr: float) -> float:
+        if thr not in self.cache:
+            self.cache[thr] = median_rate(starts_at(self.fn, self.seeds, self.grids, self.level, thr, self.L), self.grids)
+        return self.cache[thr]
+
+    def __call__(self, budget: float) -> dict:
+        from .config import V3_BISECT, V3_SCAN
+        scan = [(t, self.rate(t)) for t in V3_SCAN]
+        above = [t for t, r in scan if r >= budget]
+        if not above:
+            t, r = max(scan, key=lambda x: x[1])
+            return dict(threshold=t, persistence=self.L, calib_rate=r, reached=False)
+        lo = max(above)
+        hi = min([t for t, _ in scan if t > lo], default=None)
+        best = (lo, self.rate(lo))
+        if hi is not None:
+            for _ in range(V3_BISECT):
+                mid = (lo + hi) / 2
+                r = self.rate(mid)
+                if abs(r - budget) < abs(best[1] - budget):
+                    best = (mid, r)
+                lo, hi = (mid, hi) if r >= budget else (lo, mid)
+            if abs(self.rate(hi) - budget) < abs(best[1] - budget):
+                best = (hi, self.rate(hi))
+        return dict(threshold=float(best[0]), persistence=self.L, calib_rate=best[1], reached=True)
+
+
+def verify_v3(st: dict, level: str, events, near=(), shift_h: float = 0, onset_field: str = None):
+    """Per-event and per-grid verification of alert starts {(seed, grid): [Timestamp]}.
+
+    Event rows (one per seed x event): caught (watch: an alert before onset; warning: an alert in the
+    window), caught_pre (an alert before onset), lead_h (from the first alert before onset).
+    Grid rows (one per seed x grid): n_alerts, n_verified (verify any event of the grid), n_masked
+    (verify a near-miss of the grid and no event), years. shift_h delays every alert (latency);
+    onset_field replaces each event's onset by the earlier of it and that field, when present."""
+    by_ev, by_nm = _by_grid(events), {}
+    for n in near:
+        by_nm.setdefault(n["grid"], []).append(n)
+    ev_rows, grid_rows = [], []
+    for (k, g), starts in st.items():
+        s = [t + shift_h * H for t in starts]
+        ver = set()
+        for e in by_ev.get(g, []):
+            on = e["onset"]
+            if onset_field and e.get(onset_field):
+                on = min(on, pd.Timestamp(e[onset_field]))
+            v = verified(s, on, level)
+            ver |= set(v)
+            pre = [t for t in v if t < on]
+            ev_rows.append(dict(seed=k, grid=g, event=e["id"], tier=e["tier"], split=e.get("split"),
+                                storm=e.get("storm", e["id"]), caught=bool(pre) if level == "watch" else bool(v),
+                                caught_pre=bool(pre), lead_h=(on - min(pre)) / H if pre else np.nan))
+        nm = {t for n in by_nm.get(g, []) for t in verified(s, n["time"], level)} - ver
+        grid_rows.append(dict(seed=k, grid=g, n_alerts=len(s), n_verified=len(ver), n_masked=len(nm),
+                              years=data.scored_years(g)))
+    return pd.DataFrame(ev_rows), pd.DataFrame(grid_rows)
+
+
+def chance_v3(st: dict, level: str, events, rng, mode: str = "season", shifts: int = None) -> dict:
+    """Chance baseline: the method's own alerts on each grid, shifted together, `shifts` times.
+    mode "season" (v3.0): by a whole number of years (config.SEASON_SHIFT_YEARS) plus a uniform offset
+    of up to SEASON_SHIFT_DAYS, wrapped modulo 6 years, so season, rate and clustering are kept.
+    mode "any" (v2.0): to a uniformly random time in the scored period.
+    Returns per-shift catches (mean over seeds) for `caught` and `caught_pre`, and pre-onset leads."""
+    from .config import SEASON_SHIFT_DAYS, SEASON_SHIFT_YEARS
+    shifts = shifts or CHANCE_SHIFTS
+    Y = 8760.0
+    by_ev = _by_grid(events)
+    seeds = sorted({k for k, _ in st})
+    tot, tot_pre, leads = np.zeros(shifts), np.zeros(shifts), []
+    before, after = WINDOW[level]
+    for g, evs in by_ev.items():
+        tb = data.timebase(g)
+        t0 = tb.loc[tb.in_warmup == 0, "timestamp"].iloc[0]
+        T = (tb["timestamp"].iloc[-1] - t0) / H
+        if mode == "season":
+            off = Y * rng.integers(SEASON_SHIFT_YEARS[0], SEASON_SHIFT_YEARS[1] + 1, shifts) \
+                + rng.uniform(-24 * SEASON_SHIFT_DAYS, 24 * SEASON_SHIFT_DAYS, shifts)
+            period = 6 * Y
+        else:
+            off, period = rng.uniform(0, T, shifts), T
+        for k in seeds:
+            s = np.array([(t - t0) / H for t in st.get((k, g), [])])
+            if not len(s):
+                continue
+            x = (s[None, :] + off[:, None]) % period
+            for e in evs:
+                d = (e["onset"] - t0) / H - x                  # hours before onset
+                pre = (d > 0) & (d <= before)
+                win = pre | ((d <= 0) & (d >= -after)) if after else pre
+                c_pre = pre.any(axis=1)
+                tot_pre += c_pre / len(seeds)
+                tot += (c_pre if level == "watch" else win.any(axis=1)) / len(seeds)
+                ld = np.where(pre, d, -np.inf).max(axis=1)
+                leads.extend(ld[np.isfinite(ld)].tolist())
+    return dict(caught=tot, caught_pre=tot_pre, leads=np.array(leads))
+
+
+def clopper_pearson(x: int, n: int, a: float = 0.05) -> tuple:
+    from scipy.stats import beta
+    lo = 0.0 if x == 0 else float(beta.ppf(a / 2, x, n - x + 1))
+    hi = 1.0 if x == n else float(beta.ppf(1 - a / 2, x + 1, n - x))
+    return lo, hi

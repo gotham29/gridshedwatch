@@ -10,6 +10,7 @@ import bisect
 import importlib
 
 import numpy as np
+import pandas as pd
 
 METHODS = {
     "oprule": ("Operator-style rule", None, [0]),
@@ -21,6 +22,8 @@ METHODS = {
     "gbm": ("Gradient-boosted forecaster", "gbm", range(5)),
     "patchtst": ("PatchTST forecaster", "patchtst", range(5)),
     "random": ("Random scores", "random_scores", range(5)),
+    "cusum": ("CUSUM", "cusum", [0]),                              # added in v3.0 (docs/protocol_v3.md)
+    "csd": ("Critical slowing down", "csd", [0]),
 }
 LABEL = {m: v[0] for m, v in METHODS.items()}
 HTM_V2 = "HTM (htm-monitor, frozen after 2019)"     # HTM's entry from v2.0 on (docs/protocol_v2.md)
@@ -43,3 +46,15 @@ def to_p(score: np.ndarray) -> np.ndarray:
         p[t] = bisect.bisect_right(seen, s) / len(seen) if seen else 0.0
         bisect.insort(seen, s)
     return p
+
+
+def likelihood(p: np.ndarray, hist: int = 8640, short: int = 10, learn: int = 288) -> np.ndarray:
+    """Anomaly-likelihood transform (Ahmad et al., 2017), Numenta's defaults: how unusual the mean of
+    the last `short` scores is against the mean and spread of the past `hist`. Causal; for the v3.0
+    ablation that applies it to every method's scores."""
+    from scipy.special import ndtr
+    s = pd.Series(np.asarray(p, float))
+    past = s.shift(1)
+    mu, sd = past.rolling(hist, min_periods=learn).mean(), past.rolling(hist, min_periods=learn).std()
+    z = (s.rolling(short, min_periods=1).mean() - mu) / sd.clip(lower=1e-6)
+    return np.nan_to_num(ndtr(z.to_numpy()), nan=0.5)

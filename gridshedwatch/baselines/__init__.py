@@ -48,19 +48,35 @@ def to_p(score: np.ndarray) -> np.ndarray:
     return p
 
 
-def likelihood(p: np.ndarray, learn: int = 60, samples: int = 20, hist: int = 300, every: int = 10,
-               short: int = 3) -> np.ndarray:
-    """Anomaly-likelihood transform (Ahmad et al., 2017) with htm-monitor's settings, in hours (not
-    Numenta's defaults, which assume 5-minute data): after a learning period of `learn` and `samples`
-    estimation steps, a normal is fit to the `short`-step moving average of the past `hist` scores and
-    re-fit every `every` steps; likelihood = its CDF at the current moving average (0.5 before that).
-    For the v3.0 ablation that passes every method's scores through it."""
-    from scipy.special import ndtr
-    a = pd.Series(np.asarray(p, float)).rolling(short, min_periods=1).mean()
-    past = a.shift(1)
-    mu, sd = past.rolling(hist, min_periods=1).mean(), past.rolling(hist, min_periods=1).std()
-    fit = np.arange(len(a)) // every * every                       # re-fit every `every` steps
-    mu, sd = mu.to_numpy()[fit], np.sqrt(np.maximum(np.nan_to_num(sd.to_numpy()[fit] ** 2), 1.5e-5))
-    out = ndtr((a.to_numpy() - mu) / sd)
-    out[: learn + samples] = 0.5
-    return np.nan_to_num(out, nan=0.5)
+def likelihood(score: np.ndarray, value: np.ndarray = None, learn: int = 60, samples: int = 20, hist: int = 300,
+               every: int = 10, avg: int = 3) -> np.ndarray:
+    """Anomaly likelihood (Ahmad et al., 2017) as htm-monitor computes it, with htm-monitor's settings
+    in hours (not Numenta's defaults, which assume 5-minute data). Vectorized; checked against
+    htm-monitor's own output (identical on every hour of ERCOT's five signals, 2019-2026).
+
+    0.5 for the first learn + samples steps. Then, every `every` steps, a normal is fit to the
+    `avg`-step moving average of the previous `hist` scores (the first `learn` skipped while they are
+    in the window; mean at least 0.03, variance at least 0.0003), or a null distribution if `value`
+    barely varied over the window. Likelihood = 1 - the two-sided tail probability of the current
+    moving average; a tail below 1e-5 right after another is raised to 1e-3 (Numenta's filter)."""
+    from scipy.special import erfc
+    x = np.asarray(score, float)
+    n, prob = len(x), learn + samples
+    out = np.full(n, 0.5)
+    if n <= prob:
+        return out
+    a = pd.Series(x).rolling(avg, min_periods=1).mean().to_numpy()
+    mean, sd = np.full(n, 0.5), np.full(n, 1e3)
+    for t in range(prob, n, every):
+        lo = max(0, t - hist)
+        h = pd.Series(x[lo:t]).rolling(avg, min_periods=1).mean().to_numpy()
+        skip = min(t, max(0, learn - lo))
+        m, v = 0.5, 1e6
+        if len(h) > skip and not (value is not None and np.var(np.asarray(value, float)[lo:t][skip:]) < 1.5e-5):
+            m, v = max(h[skip:].mean(), 0.03), max(h[skip:].var(), 0.0003)
+        mean[t:t + every], sd[t:t + every] = m, np.sqrt(v)
+    tail = lambda y: 0.5 * erfc(np.abs(y - mean) / sd / 1.4142)
+    cur, prev = tail(a), tail(np.r_[a[0], a[:-1]])
+    cur = np.where((cur <= 1e-5) & (prev <= 1e-5), 1e-3, cur)
+    out[prob:] = 1.0 - cur[prob:]
+    return out

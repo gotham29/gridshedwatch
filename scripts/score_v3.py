@@ -132,9 +132,13 @@ def ablate(m, fn, seeds, sc, out, names):
     have = set(sc[seeds[0]])
     evg, evalq = [g for g in data.event_grids(V) if g in have], [g for g in evalq if g in have]
     variants = {n: benchmark.from_scores_simple(sc, sig) for n, sig in VARIANTS.items() if n in names}
-    if "likelihood_transform" in names:
-        lk = {k: {g: df.apply(lambda c: likelihood(c.to_numpy()), axis=0) for g, df in v.items()} for k, v in sc.items()}
+    if "likelihood_transform" in names and m != "htm":       # HTM's entry already is the likelihood
+        X = {g: data.signals(g) for g in sc[seeds[0]]}
+        lk = {k: {g: pd.DataFrame({c: likelihood(df[c].to_numpy(), X[g][c[2:]].to_numpy(float)) for c in df})
+                  for g, df in v.items()} for k, v in sc.items()}
         variants["likelihood_transform"] = benchmark.from_scores(lk)
+    if not variants:
+        return
     rows = []
     for name, f in variants.items():
         for lv in LEVELS:

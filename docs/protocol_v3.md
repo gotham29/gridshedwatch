@@ -89,3 +89,7 @@ shared rules and the operating point in (1), and output a causal percentile in [
   years run from 1 to 5, not 6, because alerts wrap modulo 6 years and a 6-year shift would leave them
   in place; (b) item 1's calibration split is computed by `data.calibration_split()` and written to
   `results/v3.0/calibration_grids.csv` rather than listed in `grids.yaml`.
+- 2026-11-03, before any refit forecaster or Chronos-Bolt base was scored (compute): the LSTM and PatchTST
+  refits (about 24 and 14 minutes per grid and seed on a laptop CPU, against 4 and 2.4 frozen) are run
+  with seed 0 only, on the 28 grids the scores need (the 9 event grids and the 19 calibration grids), so
+  they have no evaluation-half burden. The gradient-boosted refit is run as fixed (5 seeds, 48 grids).

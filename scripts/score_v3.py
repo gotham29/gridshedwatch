@@ -26,7 +26,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from gridshedwatch import benchmark, data, submission  # noqa: E402
-from gridshedwatch.baselines import HTM_V2, LABEL, METHODS, likelihood, oprule, scores  # noqa: E402
+from gridshedwatch.baselines import ENTRIES, HTM_V2, LABEL, METHODS, likelihood, oprule, scores  # noqa: E402
 from gridshedwatch.config import BUDGET, GRID_CAP, LATENCY_H, SIGNALS, V3_CURVE, WINDOW  # noqa: E402
 
 V = "2.0"                                     # the data release scored (48 grids, 10 events)
@@ -259,7 +259,7 @@ def stats(primary: list):
     storms = {e["id"]: e.get("storm") for e in data.event_list(V) if e["tier"] == 1}
     fr, pw, loso = [], [], []
     for key in ("watch", "warning_pre", "warning_any"):
-        X = pd.DataFrame({m: per_ev_mat[(m, key)] for m in ms if (m, key) in per_ev_mat and m in METHODS})  # entries only
+        X = pd.DataFrame({m: per_ev_mat[(m, key)] for m in ms if (m, key) in per_ev_mat and m in ENTRIES})  # entries only
         if X.shape[1] < 3:
             continue
         R = np.array([rankdata(-row) for row in X.to_numpy()])

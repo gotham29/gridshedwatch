@@ -26,7 +26,7 @@ def _features(x: pd.Series) -> pd.DataFrame:
     return F
 
 
-def scores(grid: str, seed: int = 0) -> pd.DataFrame:
+def scores(grid: str, seed: int = 0, retrain: bool = False) -> pd.DataFrame:
     import lightgbm as lgb
 
     X = data.signals(grid)
@@ -38,16 +38,30 @@ def scores(grid: str, seed: int = 0) -> pd.DataFrame:
         lo, hi = b[f]
         cal = ((cal_all[f].dropna() - lo) / (hi - lo)).asfreq("h")       # 2019 on a regular clock
         run = pd.Series(np.nan_to_num((X[f].to_numpy(float) - lo) / (hi - lo), nan=0.0), index=ts)
-        Fc = _features(cal).dropna()
-        yc = cal.loc[Fc.index].dropna()
-        Fc = Fc.loc[yc.index]
-        n_val = len(Fc) // 10
-        m = lgb.LGBMRegressor(random_state=SEED_BASE + 1000 * seed, **PARAMS)
-        m.fit(Fc.iloc[:-n_val], yc.iloc[:-n_val], eval_X=Fc.iloc[-n_val:], eval_y=yc.iloc[-n_val:],
-              callbacks=[lgb.early_stopping(20, verbose=False)])
         full = pd.concat([cal, run]).sort_index()
         full = full[~full.index.duplicated(keep="last")].asfreq("h").ffill()   # last value held, as data.signals
         Fr = _features(full).loc[ts]
-        raw = np.abs(m.predict(Fr) - run.to_numpy())
+        gaps = pd.Series((X[f].to_numpy(float) - lo) / (hi - lo), index=ts)   # NaN kept: no training on gaps
+        yrs = sorted(set(ts.year))
+        raw = np.empty(len(ts))
+        for y in (yrs if retrain else [None]):
+            if y is None or y == yrs[0]:
+                Fc = _features(cal).dropna()
+                yc = cal.loc[Fc.index].dropna()
+            else:
+                Fc = _features(full).loc[gaps.index[gaps.index.year == y - 1]].dropna()
+                yc = gaps.loc[Fc.index].dropna()
+            Fc = Fc.loc[yc.index]
+            n_val = len(Fc) // 10
+            m = lgb.LGBMRegressor(random_state=SEED_BASE + 1000 * seed, **PARAMS)
+            m.fit(Fc.iloc[:-n_val], yc.iloc[:-n_val], eval_X=Fc.iloc[-n_val:], eval_y=yc.iloc[-n_val:],
+                  callbacks=[lgb.early_stopping(20, verbose=False)])
+            rows = np.arange(len(ts)) if y is None else np.flatnonzero(ts.year == y)
+            raw[rows] = np.abs(m.predict(Fr.iloc[rows]) - run.to_numpy()[rows])
         out[f"p_{f}"] = np.round(to_p(raw), 6)
     return pd.DataFrame(out)
+
+
+def scores_retrained(grid: str, seed: int = 0) -> pd.DataFrame:
+    """The same model refit on 1 January of each year on the preceding year (docs/protocol_v3.md)."""
+    return scores(grid, seed, retrain=True)

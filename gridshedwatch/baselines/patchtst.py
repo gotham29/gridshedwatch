@@ -15,13 +15,13 @@ import pandas as pd
 
 from .. import data
 from ..config import SIGNALS
-from . import to_p
+from . import finite_windows, to_p, training_sets
 
 L, PATCH, STRIDE = 168, 24, 12
 SEED_BASE = 42
 
 
-def scores(grid: str, seed: int = 0, threads: int = 1) -> pd.DataFrame:
+def scores(grid: str, seed: int = 0, threads: int = 1, retrain: bool = False) -> pd.DataFrame:
     from .lstm import _torch
     torch, nn = _torch()
     torch.set_num_threads(threads)
@@ -83,13 +83,22 @@ def scores(grid: str, seed: int = 0, threads: int = 1) -> pd.DataFrame:
         lo, hi = b[f]
         cal = (cal_all[f].dropna().to_numpy(float) - lo) / (hi - lo)
         run = np.nan_to_num((X[f].to_numpy(float) - lo) / (hi - lo), nan=0.0)
-        torch.manual_seed(SEED_BASE + 1000 * seed)
-        net = fit(Net(), *windows(cal), SEED_BASE + 1000 * seed)
         full = np.concatenate([cal, run])
         Xw, yw = windows(full[len(cal) - L:])
-        net.eval()
-        with torch.no_grad():
-            pred = torch.cat([net(x) for x in Xw.split(4096)])
-        raw = (pred - yw).abs().numpy()
+        gaps = (X[f].to_numpy(float) - lo) / (hi - lo)              # NaN kept: no training on gaps
+        raw = np.empty(len(run))
+        for rows, train in training_sets(X["timestamp"], cal, gaps, retrain):
+            W = torch.tensor(finite_windows(train, L), dtype=torch.float32)
+            torch.manual_seed(SEED_BASE + 1000 * seed)
+            net = fit(Net(), W[:, :L, None] if Xw.dim() == 3 else W[:, :L], W[:, L], SEED_BASE + 1000 * seed)
+            net.eval()
+            with torch.no_grad():
+                pred = torch.cat([net(x) for x in Xw[rows].split(4096)])
+            raw[rows] = (pred - yw[rows]).abs().numpy()
         out[f"p_{f}"] = np.round(to_p(raw), 6)
     return pd.DataFrame(out)
+
+
+def scores_retrained(grid: str, seed: int = 0, threads: int = 1) -> pd.DataFrame:
+    """The same model refit on 1 January of each year on the preceding year (docs/protocol_v3.md)."""
+    return scores(grid, seed, threads, retrain=True)

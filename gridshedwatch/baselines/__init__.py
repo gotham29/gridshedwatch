@@ -24,19 +24,46 @@ METHODS = {
     "random": ("Random scores", "random_scores", range(5)),
     "cusum": ("CUSUM", "cusum", [0]),                              # added in v3.0 (docs/protocol_v3.md)
     "csd": ("Critical slowing down", "csd", [0]),
+    # reported beside the entries, not entries (docs/protocol_v3.md, New reference methods)
+    "gbm_rt": ("Gradient-boosted forecaster (refit yearly)", "gbm:scores_retrained", range(5)),
+    "lstm_rt": ("LSTM forecaster (refit yearly)", "lstm:scores_retrained", range(5)),
+    "patchtst_rt": ("PatchTST forecaster (refit yearly)", "patchtst:scores_retrained", range(5)),
+    "chronos_base": ("Chronos-Bolt base (zero-shot)", "chronos:scores_base", [0]),
 }
+ENTRIES = [m for m in METHODS if not m.endswith("_rt")]          # ranked and tested; *_rt are reported beside
 LABEL = {m: v[0] for m, v in METHODS.items()}
 HTM_V2 = "HTM (htm-monitor, frozen after 2019)"     # HTM's entry from v2.0 on (docs/protocol_v2.md)
 V1_METHODS = ["oprule", "zscore", "chronos", "lstm", "htm"]     # the published v1.0 table
 
 
-def scores(method: str, grid: str, seed: int = 0):
-    """Per-signal scores of a reference method for one grid and seed (computed, not read from disk)."""
-    mod = METHODS[method][1]
-    if mod is None:
+def scores(method: str, grid: str, seed: int = 0, **kw):
+    """Per-signal scores of a reference method for one grid and seed (computed, not read from disk).
+    METHODS gives "module" or "module:function"; extra keyword arguments (e.g. device) go to it."""
+    spec = METHODS[method][1]
+    if spec is None:
         raise ValueError(f"{method} has no scoring module here; its scores come from reference_scores/")
-    fn = importlib.import_module(f"{__name__}.{mod}").scores
-    return fn(grid, seed) if len(METHODS[method][2]) > 1 else fn(grid)     # deterministic methods take no seed
+    mod, _, name = spec.partition(":")
+    fn = getattr(importlib.import_module(f"{__name__}.{mod}"), name or "scores")
+    import inspect
+    kw = {k: v for k, v in kw.items() if k in inspect.signature(fn).parameters}
+    return fn(grid, seed, **kw) if len(METHODS[method][2]) > 1 else fn(grid, **kw)  # deterministic: no seed
+
+
+def training_sets(timestamps, cal: np.ndarray, run: np.ndarray, retrain: bool):
+    """(run rows, training series) pairs. Frozen: all rows from a model fit on 2019 (cal). Refit
+    yearly (docs/protocol_v3.md): each year's rows from a model fit on the preceding calendar year,
+    2019 for the first. run may hold NaN (gaps); training windows with a gap are dropped."""
+    if not retrain:
+        return [(np.arange(len(run)), cal)]
+    yr = pd.DatetimeIndex(timestamps).year.to_numpy()
+    years = sorted(set(yr))
+    return [(np.flatnonzero(yr == y), cal if y == years[0] else run[yr == y - 1]) for y in years]
+
+
+def finite_windows(x: np.ndarray, L: int):
+    """Sliding windows of L inputs plus the next value, keeping only windows without NaN."""
+    W = np.lib.stride_tricks.sliding_window_view(np.asarray(x, float), L + 1)
+    return W[np.isfinite(W).all(axis=1)]
 
 
 def to_p(score: np.ndarray) -> np.ndarray:

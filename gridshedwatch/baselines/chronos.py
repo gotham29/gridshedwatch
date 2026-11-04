@@ -37,3 +37,9 @@ def scores(grid: str, model: str = MODEL, device: str = "cpu", batch: int = 1024
             raw[a:a + batch] = np.abs(W[a:a + batch, CTX] - q[:, 0, 0].numpy())
         out[f"p_{f}"] = np.round(to_p(raw), 6)
     return pd.DataFrame(out)
+
+
+def scores_base(grid: str, device: str = "cpu") -> pd.DataFrame:
+    """Chronos-Bolt base (205M parameters), used exactly as the small model (docs/protocol_v3.md).
+    device="mps" runs it on an Apple-silicon GPU."""
+    return scores(grid, model="amazon/chronos-bolt-base", device=device)

@@ -22,12 +22,14 @@ def main():
     ap.add_argument("--seeds", nargs="+", type=int)
     ap.add_argument("--version", default="1.0", help="the grids this release added (1.0: its 8 grids)")
     ap.add_argument("--out", type=Path, default=ROOT / "reference_scores")
+    ap.add_argument("--grids", nargs="+", help="only these grids (default: the grids the release added)")
+    ap.add_argument("--device", default="cpu", help="torch device for Chronos (cpu, or mps on Apple silicon)")
     a = ap.parse_args()
     for k in a.seeds if a.seeds is not None else METHODS[a.method][2]:
-        for g in [g for g in data.grids(a.version) if data.grid_table()[g]["since"] == a.version]:
+        for g in a.grids or [g for g in data.grids(a.version) if data.grid_table()[g]["since"] == a.version]:
             if (a.out / a.method / f"s{k}" / f"{g}.csv.gz").exists():
                 continue
-            submission.write({k: {g: scores(a.method, g, k)}}, a.out / a.method)
+            submission.write({k: {g: scores(a.method, g, k, device=a.device)}}, a.out / a.method)
             print(a.method, f"s{k}", g, flush=True)
 
 

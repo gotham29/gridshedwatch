@@ -365,7 +365,8 @@ tier2:
 # Near-misses (docs/protocol_v3.md, item 8): documented emergencies on the benchmark's grids that fall
 # short of the event rule (a supply-caused firm load shed below 250 MW, or an EEA 2 or higher for lack
 # of supply). Never events and never caught; an alert that would verify one is neither verified nor
-# false. time_utc is the declaration or shed start; approx: true where only the day is published.
+# false. time_utc is the declaration or shed start. SPP's EEA 3 of 2026-07-20 is not here: it was in
+# SPP West (EIA-930 SWPW), which is not a benchmark grid (docs/tier2_candidates.yaml).
 near_miss:
   epe_2020-08-13:
     grid_id: epe
@@ -384,9 +385,8 @@ near_miss:
     source: CAISO, Grid emergencies history report (docs/tier2_candidates.yaml)
   erco_2023-09-06:
     grid_id: tx
-    time_utc: 2023-09-07 00:00
-    approx: true
-    what: EEA 2, evening of Sept 6 (CDT)
+    time_utc: 2023-09-07 00:25
+    what: EEA 2, 7:25-8:27 PM CDT
     source: ERCOT, "ERCOT has initiated Energy Emergency Alert Level 2" (docs/tier2_candidates.yaml)
   miso_2023-08-24:
     grid_id: miso
@@ -398,9 +398,3 @@ near_miss:
     time_utc: 2026-01-24 09:36
     what: Max Gen Event Step 2a then 2c (EEA 2), from 4:36 AM EST, Winter Storm Fern
     source: MISO update to the Missouri PSC, 2026-02-19
-  swpp_2026-07-20:
-    grid_id: spp
-    time_utc: 2026-07-20 17:00
-    approx: true
-    what: grid emergency; DOE Order 202-26-36 issued this day (EEA level to confirm)
-    source: DOE, Federal Power Act 202(c) Order No. 202-26-36

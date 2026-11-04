@@ -116,7 +116,7 @@ candidates:
     grid: Texas (ERCOT)
     eia930_respondent: ERCO
     date_local: 2023-09-06
-    declared: {level: EEA 2, local: null, utc: null}   # time not in the ERCOT release; to source
+    declared: {level: EEA 2, local: '2023-09-06 19:25 CDT', utc: '2023-09-07 00:25', ended_local: '20:27 CDT (back to EEA 1)'}   # APPA, citing ERCOT
     tests:
       top_level: {pass: false, basis: "Highest level EEA 2; in ERCOT an EEA 3 means controlled outages"}
       material_action: {pass: true, basis: "Reserves below 1,750 MW and declining; demand response deployed; conservation appeal 6-9 p.m. CT"}
@@ -131,7 +131,7 @@ candidates:
 other_leads:
   - {date: 2023-08-24, entity: MISO, level: "Max Gen Event Step 2a (EEA 2), downgraded 19:30 EST", note: "Below EEA 3; exclude unless a later source shows Step 3a or higher", source: "https://cdn.misoenergy.org/20231003%20RSC%20Item%2005%20Overview%20of%20August%2024%20Max%20Gen%20Event630385.pdf"}
   - {date: 2026-01-24, entity: MISO North and Central, level: "Max Gen Event Step 2c (EEA 2); about 2 GW of LMRs deployed; emergency purchases from PJM", note: "Winter Storm Fern. Below EEA 3; exclude", source: "https://cdn.misoenergy.org/20260217%20RSC%20Item%2005%20Winter%20Storm%20Fern%20Report741721.pdf"}
-  - {date: 2026-07-20, entity: SPP, level: "EEA 3 and EEA 2 issued July 20, 2026 (DOE Order 202-26-36: 'SPP has issued EEA Levels 3 and 2 on July 20, 2026'); news: about 18:00 EDT for the western area, lowered within hours", note: "Hot weather. Second source in hand. EIA-930: SPP West reports as SWPW from 2026-04-01 (WACM and WAUW end 2026-04-02), so a western EEA 3 has no 2019 calibration year and under four months of history; exclude for data unless SPP shows it was declared for SPP East (SWPP, full history). Still need SPP's notice for area and time", source: "https://www.energy.gov/documents/doe-order-no-202-26-36"}
+  - {date: 2026-07-20, entity: SPP, level: "EEA 3 and EEA 2 issued July 20, 2026 (DOE Order 202-26-36: 'SPP has issued EEA Levels 3 and 2 on July 20, 2026'); news: about 18:00 EDT for the western area, lowered within hours", note: "Hot weather. Second source in hand. EIA-930: SPP West reports as SWPW from 2026-04-01 (WACM and WAUW end 2026-04-02), so a western EEA 3 has no 2019 calibration year and under four months of history; exclude for data unless SPP shows it was declared for SPP East (SWPP, full history). Press reports (Rocky Mountain Voice, citing SPP's grid-conditions page; RTO Insider) place it in SPP West: EEA 1 at 4:38 PM CT, EEA 3 at 5:07 PM for 53 minutes, no load shed. Excluded: SPP West is not a benchmark grid", source: "https://www.energy.gov/documents/doe-order-no-202-26-36"}
   - {date: 2024-01-13, entity: unnamed RC West balancing authority, level: "EEA 3 08:41-11:24 (Pacific), emergency assistance and demand response, no shed", note: "Pacific Northwest cold; name the balancing authority (RC West request pending)", source: "https://www.caiso.com/documents/wintermarketperformancereportforjan2024.pdf"}
 
 # Aug 2020 heat wave (WECC August 2020 Heatwave Event Analysis Report; WIRAB staff report): 18 EEAs,

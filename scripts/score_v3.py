@@ -41,8 +41,9 @@ def load(m: str, scores_root: Path, htm: Path):
     if m == "oprule":
         return oprule.alerts, [0], None
     d = htm if m == "htm" else scores_root / m
-    if d.exists():
-        sc = submission.load(d, V)
+    if d.exists():                 # an extra folder (e.g. an HTM setup) may hold only some grids
+        have = sorted({f.name.split(".")[0] for f in (d / "s0").iterdir()})
+        sc = submission.load(d, V, grids=[g for g in data.grids(V) if g in have])
     else:
         sc = {k: {g: scores(m, g, k) for g in data.grids(V)} for k in METHODS[m][2]}
     return benchmark.from_scores(sc), sorted(sc), sc
@@ -57,18 +58,27 @@ def caught(ev: pd.DataFrame, col: str = "caught") -> float:
     return float(tier1(ev).groupby("seed")[col].sum().mean())
 
 
-def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True):
+def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True, only: list = None):
+    """Protocol outputs, then ablations. only: rerun just these ablation variants, merged into ablation.csv."""
     out = OUT / "methods" / m
-    if (out / "ablation.csv").exists() or ((out / "sens.csv").exists() and not ablations):
+    if not only and ((out / "ablation.csv").exists() or ((out / "sens.csv").exists() and not ablations)):
         print(m, "done already", flush=True)
         return
     out.mkdir(parents=True, exist_ok=True)
     fn, seeds, sc = load(m, scores_root, htm)
+    if only:
+        return ablate(m, fn, seeds, sc, out, only)
     events, near = data.event_list(V), data.near_misses()
     t1 = [e for e in events if e["tier"] == 1]
     calib, evalq = data.calibration_split(V)
     evg = data.event_grids(V)
     group = {**{g: "event" for g in evg}, **{g: "calibration" for g in calib}, **{g: "evaluation" for g in evalq}}
+    have = set(sc[seeds[0]]) if sc is not None else set(group)
+    missing = [g for g in calib if g not in have]
+    if missing:
+        raise SystemExit(f"{m}: no scores for calibration grids {missing}")
+    group = {g: v for g, v in group.items() if g in have}           # grids without scores are left out
+    evg, evalq = [g for g in evg if g in have], [g for g in evalq if g in have]
     rng = np.random.default_rng(0)
     ops, evs, grs, curves, chance, sens = [], [], [], [], [], []
     for lv in LEVELS:
@@ -110,12 +120,22 @@ def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True):
     pd.DataFrame(chance).to_csv(out / "chance.csv", index=False)
     pd.DataFrame(sens).to_csv(out / "sens.csv", index=False)
     print(m, "protocol done", flush=True)
-    if not ablations or sc is None:
+    if ablations and sc is not None:
+        ablate(m, fn, seeds, sc, out, list(VARIANTS) + ["likelihood_transform"])
+
+
+def ablate(m, fn, seeds, sc, out, names):
+    if sc is None:
         return
+    events, near = data.event_list(V), data.near_misses()
+    calib, evalq = data.calibration_split(V)
+    have = set(sc[seeds[0]])
+    evg, evalq = [g for g in data.event_grids(V) if g in have], [g for g in evalq if g in have]
+    variants = {n: benchmark.from_scores_simple(sc, sig) for n, sig in VARIANTS.items() if n in names}
+    if "likelihood_transform" in names:
+        lk = {k: {g: df.apply(lambda c: likelihood(c.to_numpy()), axis=0) for g, df in v.items()} for k, v in sc.items()}
+        variants["likelihood_transform"] = benchmark.from_scores(lk)
     rows = []
-    lk = {k: {g: df.apply(lambda c: likelihood(c.to_numpy()), axis=0) for g, df in v.items()} for k, v in sc.items()}
-    variants = {name: benchmark.from_scores_simple(sc, sig) for name, sig in VARIANTS.items()}
-    variants["likelihood_transform"] = benchmark.from_scores(lk)
     for name, f in variants.items():
         for lv in LEVELS:
             o = benchmark.Calibrator(f, seeds, calib, lv)(BUDGET[lv])
@@ -123,9 +143,14 @@ def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True):
             ev, gr = benchmark.verify_v3(st, lv, events, near)
             rows.append(dict(variant=name, level=lv, threshold=o["threshold"], caught=caught(ev),
                              caught_pre=caught(ev, "caught_pre"), **far(gr[gr.grid.isin(evg)]),
-                             **burden(gr[gr.grid.isin(evalq)], lv)))
-    pd.DataFrame(rows).to_csv(out / "ablation.csv", index=False)
-    print(m, "ablations done", flush=True)
+                             **(burden(gr[gr.grid.isin(evalq)], lv) if evalq else {})))
+    new = pd.DataFrame(rows)
+    f = out / "ablation.csv"
+    if f.exists():
+        old = pd.read_csv(f)
+        new = pd.concat([old[~old.variant.isin(new.variant.unique())], new], ignore_index=True)
+    new.to_csv(f, index=False)
+    print(m, "ablations done:", ", ".join(variants), flush=True)
 
 
 def far(gr: pd.DataFrame) -> dict:
@@ -230,7 +255,7 @@ def stats(primary: list):
     storms = {e["id"]: e.get("storm") for e in data.event_list(V) if e["tier"] == 1}
     fr, pw, loso = [], [], []
     for key in ("watch", "warning_pre", "warning_any"):
-        X = pd.DataFrame({m: per_ev_mat[(m, key)] for m in ms if (m, key) in per_ev_mat})      # events x methods
+        X = pd.DataFrame({m: per_ev_mat[(m, key)] for m in ms if (m, key) in per_ev_mat and m in METHODS})  # entries only
         if X.shape[1] < 3:
             continue
         R = np.array([rankdata(-row) for row in X.to_numpy()])
@@ -263,16 +288,18 @@ def stats(primary: list):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--method", nargs="+", default=list(METHODS), choices=list(METHODS))
+    ap.add_argument("--method", nargs="+", default=list(METHODS),
+                    help="reference methods, or any folder in --scores (e.g. an extra HTM setup)")
     ap.add_argument("--scores", type=Path, default=ROOT / "reference_scores")
     ap.add_argument("--htm", type=Path, default=ROOT / "reference_scores" / "htm_frozen")
     ap.add_argument("--no-ablations", action="store_true")
     ap.add_argument("--jobs", type=int, default=1)
     ap.add_argument("--stats", action="store_true")
+    ap.add_argument("--variants", nargs="+", help="rerun only these ablation variants (merged into ablation.csv)")
     a = ap.parse_args()
     if a.stats:
         return stats(a.method)
-    args = [(m, a.scores, a.htm, not a.no_ablations) for m in a.method]
+    args = [(m, a.scores, a.htm, not a.no_ablations, a.variants) for m in a.method]
     if a.jobs > 1:
         with ProcessPoolExecutor(a.jobs) as ex:
             list(ex.map(score_method, *zip(*args)))

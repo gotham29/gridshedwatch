@@ -48,13 +48,19 @@ def to_p(score: np.ndarray) -> np.ndarray:
     return p
 
 
-def likelihood(p: np.ndarray, hist: int = 8640, short: int = 10, learn: int = 288) -> np.ndarray:
-    """Anomaly-likelihood transform (Ahmad et al., 2017), Numenta's defaults: how unusual the mean of
-    the last `short` scores is against the mean and spread of the past `hist`. Causal; for the v3.0
-    ablation that applies it to every method's scores."""
+def likelihood(p: np.ndarray, learn: int = 60, samples: int = 20, hist: int = 300, every: int = 10,
+               short: int = 3) -> np.ndarray:
+    """Anomaly-likelihood transform (Ahmad et al., 2017) with htm-monitor's settings, in hours (not
+    Numenta's defaults, which assume 5-minute data): after a learning period of `learn` and `samples`
+    estimation steps, a normal is fit to the `short`-step moving average of the past `hist` scores and
+    re-fit every `every` steps; likelihood = its CDF at the current moving average (0.5 before that).
+    For the v3.0 ablation that passes every method's scores through it."""
     from scipy.special import ndtr
-    s = pd.Series(np.asarray(p, float))
-    past = s.shift(1)
-    mu, sd = past.rolling(hist, min_periods=learn).mean(), past.rolling(hist, min_periods=learn).std()
-    z = (s.rolling(short, min_periods=1).mean() - mu) / sd.clip(lower=1e-6)
-    return np.nan_to_num(ndtr(z.to_numpy()), nan=0.5)
+    a = pd.Series(np.asarray(p, float)).rolling(short, min_periods=1).mean()
+    past = a.shift(1)
+    mu, sd = past.rolling(hist, min_periods=1).mean(), past.rolling(hist, min_periods=1).std()
+    fit = np.arange(len(a)) // every * every                       # re-fit every `every` steps
+    mu, sd = mu.to_numpy()[fit], np.sqrt(np.maximum(np.nan_to_num(sd.to_numpy()[fit] ** 2), 1.5e-5))
+    out = ndtr((a.to_numpy() - mu) / sd)
+    out[: learn + samples] = 0.5
+    return np.nan_to_num(out, nan=0.5)

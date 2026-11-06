@@ -93,3 +93,7 @@ shared rules and the operating point in (1), and output a causal percentile in [
   refits (about 24 and 14 minutes per grid and seed on a laptop CPU, against 4 and 2.4 frozen) are run
   with seed 0 only, on the 28 grids the scores need (the 9 event grids and the 19 calibration grids), so
   they have no evaluation-half burden. The gradient-boosted refit is run as fixed (5 seeds, 48 grids).
+- 2026-11-05, before Chronos-Bolt base was scored (compute): not run. One grid took over 33 minutes on
+  a laptop CPU and about 2.5 hours on its GPU (mps), so the 28 scored grids were out of reach.
+  Chronos-Bolt small remains the foundation-model entry; `chronos.scores_base` is kept for anyone with
+  the compute.

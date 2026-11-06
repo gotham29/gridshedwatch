@@ -28,7 +28,6 @@ METHODS = {
     "gbm_rt": ("Gradient-boosted forecaster (refit yearly)", "gbm:scores_retrained", range(5)),
     "lstm_rt": ("LSTM forecaster (refit yearly)", "lstm:scores_retrained", range(5)),
     "patchtst_rt": ("PatchTST forecaster (refit yearly)", "patchtst:scores_retrained", range(5)),
-    "chronos_base": ("Chronos-Bolt base (zero-shot)", "chronos:scores_base", [0]),
 }
 ENTRIES = [m for m in METHODS if not m.endswith("_rt")]          # ranked and tested; *_rt are reported beside
 LABEL = {m: v[0] for m, v in METHODS.items()}

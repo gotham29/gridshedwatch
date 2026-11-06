@@ -97,3 +97,7 @@ shared rules and the operating point in (1), and output a causal percentile in [
   a laptop CPU and about 2.5 hours on its GPU (mps), so the 28 scored grids were out of reach.
   Chronos-Bolt small remains the foundation-model entry; `chronos.scores_base` is kept for anyone with
   the compute.
+- 2026-11-05, before either was scored (compute): the LSTM and PatchTST refits are not run. Six
+  single-core processes finished no grid in two hours, so the 28 grids would take most of a day, and
+  the HTM setups had priority. The gradient-boosted refit, the leading method's, is reported.
+  `scores_retrained` stays in both modules.

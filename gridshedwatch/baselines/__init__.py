@@ -26,8 +26,6 @@ METHODS = {
     "csd": ("Critical slowing down", "csd", [0]),
     # reported beside the entries, not entries (docs/protocol_v3.md, New reference methods)
     "gbm_rt": ("Gradient-boosted forecaster (refit yearly)", "gbm:scores_retrained", range(5)),
-    "lstm_rt": ("LSTM forecaster (refit yearly)", "lstm:scores_retrained", range(5)),
-    "patchtst_rt": ("PatchTST forecaster (refit yearly)", "patchtst:scores_retrained", range(5)),
 }
 ENTRIES = [m for m in METHODS if not m.endswith("_rt")]          # ranked and tested; *_rt are reported beside
 LABEL = {m: v[0] for m, v in METHODS.items()}

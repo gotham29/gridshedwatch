@@ -138,3 +138,7 @@ shared rules and the operating point in (1), and output a causal percentile in [
   - HTM's warning threshold falls inside its tie at 0.999, so its warning results depend on the draw.
     HTM is also scored with tie-break salts 1 to 4 (`--salt`), and the paper reports the protocol draw
     with the range over the 5 draws. Other methods have no such tie.
+  - The any-time chance baseline (item 5's comparison with v2.0) is not reported: with one shift shared
+    by all grids, a draw near zero shift leaves every alert in place, which puts a floor of about 0.003
+    to 0.007 under its p-values. All claims use the seasonal baseline, whose shifts are always at least
+    a year less 15 days. Its `_any` columns in the results are kept but not used.

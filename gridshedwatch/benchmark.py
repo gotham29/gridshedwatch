@@ -378,7 +378,7 @@ class Calibrator:
         return self.cache[thr]
 
     def __call__(self, budget: float) -> dict:
-        from .config import V3_BISECT, V3_SCAN
+        from .config import V3_BISECT, V3_SCAN, V3_TOL
         scan = [(t, self.rate(t)) for t in V3_SCAN]
         above = [t for t, r in scan if r >= budget]
         if not above:
@@ -389,6 +389,8 @@ class Calibrator:
         best = (lo, self.rate(lo))
         if hi is not None:
             for _ in range(V3_BISECT):
+                if abs(best[1] - budget) <= V3_TOL * budget:
+                    break
                 mid = (lo + hi) / 2
                 r = self.rate(mid)
                 if abs(r - budget) < abs(best[1] - budget):
@@ -396,7 +398,27 @@ class Calibrator:
                 lo, hi = (mid, hi) if r >= budget else (lo, mid)
             if abs(self.rate(hi) - budget) < abs(best[1] - budget):
                 best = (hi, self.rate(hi))
-        return dict(threshold=float(best[0]), persistence=self.L, calib_rate=best[1], reached=True)
+        return dict(threshold=float(best[0]), persistence=self.L, calib_rate=best[1],
+                    reached=bool(abs(best[1] - budget) <= 2.5 * V3_TOL * budget))
+
+
+def untie(scores: Dict[int, Dict[str, pd.DataFrame]]) -> Dict[int, Dict[str, pd.DataFrame]]:
+    """Break exact ties in per-signal scores with a seeded uniform jitter below config.TIE_JITTER, far
+    smaller than any real score difference (causal percentiles are rounded to 1e-6), so a threshold can
+    always meet the budget (deviation 2026-11-06: HTM's likelihood piles up at exactly 0.999).
+    Deterministic: the jitter depends only on the seed, grid and signal."""
+    import zlib
+    from .config import TIE_JITTER
+    out = {}
+    for k, per in scores.items():
+        out[k] = {}
+        for g, df in per.items():
+            cols = {}
+            for c in df:
+                rng = np.random.default_rng(zlib.crc32(f"{k}/{g}/{c}".encode()))
+                cols[c] = df[c].to_numpy(float) + rng.uniform(0, TIE_JITTER, len(df))
+            out[k][g] = pd.DataFrame(cols, index=df.index)
+    return out
 
 
 def verify_v3(st: dict, level: str, events, near=(), shift_h: float = 0, onset_field: str = None):
@@ -413,7 +435,7 @@ def verify_v3(st: dict, level: str, events, near=(), shift_h: float = 0, onset_f
     ev_rows, grid_rows = [], []
     for (k, g), starts in st.items():
         s = [t + shift_h * H for t in starts]
-        ver = set()
+        ver, ver_t1 = set(), set()
         for e in by_ev.get(g, []):
             on = e["onset"]
             if onset_field and e.get(onset_field):
@@ -421,11 +443,13 @@ def verify_v3(st: dict, level: str, events, near=(), shift_h: float = 0, onset_f
             v = verified(s, on, level)
             ver |= set(v)
             pre = [t for t in v if t < on]
+            if e["tier"] == 1:
+                ver_t1 |= set(pre)
             ev_rows.append(dict(seed=k, grid=g, event=e["id"], tier=e["tier"], split=e.get("split"),
                                 storm=e.get("storm", e["id"]), caught=bool(pre) if level == "watch" else bool(v),
                                 caught_pre=bool(pre), lead_h=(on - min(pre)) / H if pre else np.nan))
         nm = {t for n in by_nm.get(g, []) for t in verified(s, n["time"], level)} - ver
-        grid_rows.append(dict(seed=k, grid=g, n_alerts=len(s), n_verified=len(ver), n_masked=len(nm),
+        grid_rows.append(dict(seed=k, grid=g, n_alerts=len(s), n_verified=len(ver), n_verified_t1=len(ver_t1), n_masked=len(nm),
                               years=data.scored_years(g)))
     return pd.DataFrame(ev_rows), pd.DataFrame(grid_rows)
 
@@ -457,6 +481,8 @@ def chance_v3(st: dict, level: str, events, rng, mode: str = "season", shifts: i
             s = np.array([(t - t0) / H for t in st.get((k, g), [])])
             if not len(s):
                 continue
+            if mode == "season":
+                s = s[s < period]                      # exactly 6 whole years of alerts (no year counted twice)
             x = (s[None, :] + off[:, None]) % period
             for e in evs:
                 d = (e["onset"] - t0) / H - x                  # hours before onset

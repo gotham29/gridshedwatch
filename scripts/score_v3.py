@@ -13,7 +13,8 @@ Step 1, per method (resumable; methods can run in parallel with --jobs):
     ablation.csv  alert rules (any signal, forecast error only) and the likelihood transform
 Step 2, all methods together:
     python scripts/score_v3.py --stats
-  writes results/v3.0/summary.csv, events.csv, stats_*.csv, loso.csv, lead_vs_notice.csv.
+  writes results/v3.0/summary.csv, events.csv, stats_friedman.csv, loso.csv, lead_vs_notice.csv
+  (every scored method folder; tests and Holm over the ranked entries only).
 """
 import argparse
 import sys
@@ -46,6 +47,7 @@ def load(m: str, scores_root: Path, htm: Path):
         sc = submission.load(d, V, grids=[g for g in data.grids(V) if g in have])
     else:
         sc = {k: {g: scores(m, g, k) for g in data.grids(V)} for k in METHODS[m][2]}
+    sc = benchmark.untie(sc)
     return benchmark.from_scores(sc), sorted(sc), sc
 
 
@@ -110,6 +112,10 @@ def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True, o
         for L in LATENCY_H:
             e_l, _ = benchmark.verify_v3(st_ev, lv, t1, shift_h=L)
             sens.append(dict(level=lv, variant=f"latency {L} h", caught=caught(e_l), caught_pre=caught(e_l, "caught_pre")))
+        o48 = benchmark.Calibrator(fn, seeds, [g for g in data.grids(V) if g in group], lv)(BUDGET[lv])
+        e_48, _ = benchmark.verify_v3(benchmark.starts_at(fn, seeds, evg, lv, o48["threshold"], o48["persistence"]), lv, t1)
+        sens.append(dict(level=lv, variant="operating point set on all grids (no labels)", caught=caught(e_48),
+                         caught_pre=caught(e_48, "caught_pre")))
         e_o, _ = benchmark.verify_v3(st_ev, lv, t1, onset_field="oe417_start_utc")
         sens.append(dict(level=lv, variant="onset: earlier of declaration and OE-417", caught=caught(e_o),
                          caught_pre=caught(e_o, "caught_pre")))
@@ -134,8 +140,8 @@ def ablate(m, fn, seeds, sc, out, names):
     variants = {n: benchmark.from_scores_simple(sc, sig) for n, sig in VARIANTS.items() if n in names}
     if "likelihood_transform" in names and m != "htm":       # HTM's entry already is the likelihood
         X = {g: data.signals(g) for g in sc[seeds[0]]}
-        lk = {k: {g: pd.DataFrame({c: likelihood(df[c].to_numpy(), X[g][c[2:]].to_numpy(float)) for c in df})
-                  for g, df in v.items()} for k, v in sc.items()}
+        lk = benchmark.untie({k: {g: pd.DataFrame({c: likelihood(df[c].to_numpy(), X[g][c[2:]].to_numpy(float)) for c in df})
+                                  for g, df in v.items()} for k, v in sc.items()})
         variants["likelihood_transform"] = benchmark.from_scores(lk)
     if not variants:
         return
@@ -158,11 +164,15 @@ def ablate(m, fn, seeds, sc, out, names):
 
 
 def far(gr: pd.DataFrame) -> dict:
-    """False alarm ratio on event grids (mean over seeds), with and without near-miss masks."""
-    s = gr.groupby("seed")[["n_alerts", "n_verified", "n_masked"]].sum()
-    return dict(alerts=float(s.n_alerts.mean()), verified=float(s.n_verified.mean()), masked=float(s.n_masked.mean()),
-                far=float((1 - s.n_verified / s.n_alerts).mean()),
-                far_masked=float((1 - s.n_verified / (s.n_alerts - s.n_masked)).mean()))
+    """False alarm ratio on the Tier 1 grids (mean over seeds): false / (false + alerts that start before a
+    Tier 1 onset in its window). An alert is false if it verifies no event of any tier; alerts that verify
+    only a Tier 2 event, or a load shed after onset, are left out; masked: near-miss alerts left out too."""
+    gr = gr[gr.grid.isin({e["grid"] for e in data.event_list(V) if e["tier"] == 1})]
+    s = gr.groupby("seed")[["n_alerts", "n_verified", "n_verified_t1", "n_masked"]].sum()
+    false = s.n_alerts - s.n_verified
+    return dict(alerts=float(s.n_alerts.mean()), verified_t1=float(s.n_verified_t1.mean()), masked=float(s.n_masked.mean()),
+                far=float((false / (false + s.n_verified_t1)).mean()),
+                far_masked=float(((false - s.n_masked) / (false - s.n_masked + s.n_verified_t1)).mean()))
 
 
 def burden(gr: pd.DataFrame, lv: str) -> dict:
@@ -193,8 +203,9 @@ def notice_leads() -> dict:
 
 
 def stats(primary: list):
-    from scipy.stats import binomtest, friedmanchisquare, rankdata, studentized_range
-    ms = [m for m in primary if (OUT / "methods" / m / "sens.csv").exists()]
+    from scipy.stats import friedmanchisquare, rankdata, studentized_range
+    have = sorted(p.name for p in (OUT / "methods").iterdir() if (p / "sens.csv").exists())
+    ms = [m for m in primary if m in have] + [m for m in have if m not in primary]
     rd = lambda m, f: pd.read_csv(OUT / "methods" / m / f)
     calib, evalq = data.calibration_split(V)
     pd.DataFrame({"grid": calib + evalq, "half": ["calibration"] * len(calib) + ["evaluation"] * len(evalq)}) \
@@ -211,12 +222,14 @@ def stats(primary: list):
             t = e[e.tier == 1]
             s[f"{lv}_threshold"], s[f"{lv}_persistence"] = round(o.threshold, 5), int(o.persistence)
             s[f"{lv}_calib_rate"], s[f"{lv}_reached"] = round(o.calib_rate, 2), bool(o.reached)
+            t1g = gr[(gr.level == lv) & gr.grid.isin(set(t.grid))]
+            s[f"{lv}_tier1_grid_rate"] = round(float((t1g.n_alerts / t1g.years).groupby(t1g.grid).mean().median()), 2)
             for col in (["caught"] if lv == "watch" else ["caught_pre", "caught"]):
                 c = t.groupby("seed")[col].sum()
                 key = f"{lv}_{'pre' if col == 'caught_pre' else 'any'}" if lv == "warning" else lv
                 n = int(round(c.mean()))
                 s[f"{key}_caught"] = round(float(c.mean()), 1)
-                s[f"{key}_ci"] = "%.2f-%.2f" % benchmark.clopper_pearson(n, 8)
+                s[f"{key}_ci"] = "%.2f-%.2f" % benchmark.clopper_pearson(n, 8)      # for the seed-mean count, rounded
                 s[f"{key}_seed_range"] = f"{int(c.min())}-{int(c.max())}"
                 s[f"{key}_held_out"] = round(float(t[t.split == "held-out"].groupby("seed")[col].sum().mean()), 1)
                 for mode in ("season", "any"):
@@ -224,17 +237,16 @@ def stats(primary: list):
                     if len(r):
                         s[f"{key}_chance_{mode}"], s[f"{key}_p_{mode}"] = round(r.chance.iloc[0], 2), r.p.iloc[0]
                         s[f"{key}_chance_lead_h"] = round(r.chance_median_lead_h.iloc[0], 0) if mode == "season" else s.get(f"{key}_chance_lead_h")
+                s[f"{key}_above_chance"] = round(s[f"{key}_caught"] - s.get(f"{key}_chance_season", np.nan), 2)
                 per_ev_mat[(m, key)] = t.groupby("event")[col].mean()
             pre = t[t.caught_pre]
             leads = pre.groupby("event").lead_h.median()
-            s[f"{lv}_median_lead_h"], s[f"{lv}_lead_n_events"] = (round(float(leads.median()), 0) if len(leads) else np.nan), len(leads)
+            s[f"{lv}_median_lead_h"], s[f"{lv}_lead_events_any_seed"] = (round(float(leads.median()), 0) if len(leads) else np.nan), len(leads)
             if lv == "watch":
                 for g, ln in nl.items():
                     lead_rows.append(dict(method=label(m), event=g, method_lead_h=leads.get(g, np.nan), notice_lead_h=ln))
             f = far(gr[(gr.level == lv) & (gr.group == "event")])
-            hits = s[f"{lv}_caught"] if lv == "watch" else s["warning_pre_caught"]
             s.update({f"{lv}_{k}": round(v, 3) for k, v in f.items()})
-            s[f"{lv}_csi"] = round(hits / (8 + f["alerts"] - f["verified"] - f["masked"]), 3)
             b = burden(gr[(gr.level == lv) & (gr.group == "evaluation")], lv)
             s.update({f"{lv}_{k}": (round(v, 2) if isinstance(v, float) else v) for k, v in b.items()})
             t2 = e[e.tier == 2].groupby("event")[["caught", "caught_pre"]].mean()
@@ -249,15 +261,17 @@ def stats(primary: list):
     pd.DataFrame(lead_rows).to_csv(OUT / "lead_vs_notice.csv", index=False)
     # Holm-corrected chance p across methods, per measure and null
     sm = pd.DataFrame(summary)
+    ent = sm.index[sm.code.isin(ENTRIES)]                       # Holm over the ranked entries only
     for col in [c for c in sm if "_p_" in c]:
-        p = sm[col].to_numpy(float)
+        p = sm.loc[ent, col].to_numpy(float)
         order = np.argsort(p)
         adj = np.maximum.accumulate(np.minimum(1, (len(p) - np.arange(len(p))) * p[order]))
-        sm.loc[sm.index[order], col + "_holm"] = adj
+        sm.loc[ent[order], col + "_holm"] = adj
     sm.to_csv(OUT / "summary.csv", index=False)
-    # Friedman, Nemenyi, Holm-corrected sign tests against the leader, leave one storm out
+    # Friedman and Nemenyi over the ranked entries, and leave one storm out. No pairwise tests: with 8 events
+    # and 10 Holm-corrected comparisons, none could reach 0.05 even at 8 of 8 (deviation 2026-11-06).
     storms = {e["id"]: e.get("storm") for e in data.event_list(V) if e["tier"] == 1}
-    fr, pw, loso = [], [], []
+    fr, loso = [], []
     for key in ("watch", "warning_pre", "warning_any"):
         X = pd.DataFrame({m: per_ev_mat[(m, key)] for m in ms if (m, key) in per_ev_mat and m in ENTRIES})  # entries only
         if X.shape[1] < 3:
@@ -268,24 +282,10 @@ def stats(primary: list):
         fr.append(dict(measure=key, events=n, methods=k, friedman_p=friedmanchisquare(*X.to_numpy().T).pvalue,
                        friedman_p_without_random=friedmanchisquare(*X.drop(columns="random", errors="ignore").to_numpy().T).pvalue,
                        nemenyi_cd=cd, **{f"rank_{label(m)}": r for m, r in zip(X.columns, R.mean(0))}))
-        lead = X.sum().idxmax()
-        rows = []
-        for m in X.columns:
-            if m == lead:
-                continue
-            d = X[lead] - X[m]
-            better, worse = int((d > 0).sum()), int((d < 0).sum())
-            p = binomtest(better, better + worse).pvalue if better + worse else 1.0
-            rows.append(dict(measure=key, leader=label(lead), method=label(m), events_behind=round(float(d.sum()), 1),
-                             leader_better=better, leader_worse=worse, sign_p=p))
-        r = pd.DataFrame(rows).sort_values("sign_p")
-        r["sign_p_holm"] = np.maximum.accumulate(np.minimum(1, (len(r) - np.arange(len(r))) * r.sign_p.to_numpy()))
-        pw.append(r)
         for st in sorted(set(storms.values())):
             keep = [e for e in X.index if storms.get(e) != st]
             loso.append(dict(measure=key, without=st, events=len(keep), **{label(m): round(float(X.loc[keep, m].sum()), 1) for m in X.columns}))
     pd.DataFrame(fr).to_csv(OUT / "stats_friedman.csv", index=False)
-    pd.concat(pw or [pd.DataFrame()]).to_csv(OUT / "stats_pairwise.csv", index=False)
     pd.DataFrame(loso).to_csv(OUT / "loso.csv", index=False)
     print("wrote", OUT)
 

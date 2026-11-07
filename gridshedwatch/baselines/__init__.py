@@ -81,8 +81,9 @@ def likelihood(score: np.ndarray, value: np.ndarray = None, learn: int = 60, sam
     0.5 for the first learn + samples steps. Then, every `every` steps, a normal is fit to the
     `avg`-step moving average of the previous `hist` scores (the first `learn` skipped while they are
     in the window; mean at least 0.03, variance at least 0.0003), or a null distribution if `value`
-    barely varied over the window. Likelihood = 1 - the two-sided tail probability of the current
-    moving average; a tail below 1e-5 right after another is raised to 1e-3 (Numenta's filter)."""
+    barely varied over the window. Likelihood = 1 - the upper-tail probability of the current moving
+    average, mirrored about the mean as in Numenta's code (so an unusually low score also scores
+    high, which matters for percentile inputs); a tail below 1e-5 right after another is raised to 1e-3 (Numenta's filter)."""
     from scipy.special import erfc
     x = np.asarray(score, float)
     n, prob = len(x), learn + samples

@@ -101,3 +101,29 @@ shared rules and the operating point in (1), and output a causal percentile in [
   single-core processes finished no grid in two hours, so the 28 grids would take most of a day, and
   the HTM setups had priority. The gradient-boosted refit, the leading method's, is reported.
   `scores_retrained` stays in both modules.
+- 2026-11-04 (logged late, found by an independent audit): before the first v3.0 results, the SPP West
+  near-miss was removed (SPP West is not a benchmark grid) and the ERCOT 2023-09-06 EEA 2 time set
+  exactly; afterwards the likelihood transform used in the ablation was rewritten twice to match
+  htm-monitor's algorithm, and the ablations were rerun. None touches the Tier 1 headline.
+- 2026-11-06, after the first v3.0 results, following an independent audit; every method was rescored:
+  - Ties in scores are broken with a seeded jitter below 1e-7 (scores are percentiles rounded to 1e-6),
+    and bisection continues until the calibration rate is within 2% of the budget; `reached` now means
+    within 5%. Reason: HTM's likelihood piles up at exactly 0.999, so its warning threshold had landed
+    at 2.79 warnings per grid-year (40% over budget) while marked as reached.
+  - Seasonal chance baseline: only the first 6 whole years of a method's alerts are shifted (modulo 6
+    years), so 2026 alerts no longer fold onto earlier years. The old version was conservative.
+  - False alarm ratio: on the 8 Tier 1 grids, with warnings verified only before onset; alerts that
+    verify only a Tier 2 event or a load shed after onset are left out, not counted false. The critical
+    success index is dropped (it mixed events and alerts).
+  - Item 6 corrected: pairwise sign tests are dropped. With 8 events and 10 Holm-corrected
+    comparisons, the smallest possible adjusted p is 0.078 (8 of 8), so none could reach 0.05; the
+    earlier "6 of 6" statement held only for a single uncorrected test. Friedman and Nemenyi remain.
+  - Holm correction of the chance tests runs over the ranked entries only.
+  - The budget is matched on the calibration grids, not on the grids where events are scored, so the
+    summary also reports each method's alert rate on the Tier 1 grids and its catches above chance.
+  - Sensitivities: the operating point set on all grids (still label-free) is now run; the operating
+    point as in v2.0 is reported from `results/v2.0`, not rerun.
+  - HTM setups: the online setup is scored on its 27 grids (no NV Energy run, so its Tier 2 is
+    incomplete); the keep-learning and same-encoder setups keep their v2.0 numbers (compute).
+  - Leads: the count is of events caught by at least one seed; intervals are for the rounded
+    seed-mean count.

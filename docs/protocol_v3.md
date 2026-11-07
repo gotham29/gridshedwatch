@@ -106,7 +106,8 @@ shared rules and the operating point in (1), and output a causal percentile in [
   exactly; afterwards the likelihood transform used in the ablation was rewritten twice to match
   htm-monitor's algorithm, and the ablations were rerun. None touches the Tier 1 headline.
 - 2026-11-06, after the first v3.0 results, following an independent audit; every method was rescored:
-  - Ties in scores are broken with a seeded jitter below 1e-7 (scores are percentiles rounded to 1e-6),
+  - Ties in scores are broken with a seeded jitter below 1e-7 (reference scores are percentiles rounded to 1e-6;
+    scores computed during the run are not rounded, where a jitter this small can reorder only near-ties),
     and bisection continues until the calibration rate is within 2% of the budget; `reached` now means
     within 5%. Reason: HTM's likelihood piles up at exactly 0.999, so its warning threshold had landed
     at 2.79 warnings per grid-year (40% over budget) while marked as reached.
@@ -127,3 +128,13 @@ shared rules and the operating point in (1), and output a causal percentile in [
     incomplete); the keep-learning and same-encoder setups keep their v2.0 numbers (compute).
   - Leads: the count is of events caught by at least one seed; intervals are for the rounded
     seed-mean count.
+- 2026-11-07, after a second independent audit; chance steps rerun:
+  - The seasonal (and any-time) chance baseline uses ONE shift per draw, shared by every grid. Shifting
+    each grid separately treated events of the same storm on different grids as independent, which made
+    the spread of chance catches too narrow and some p-values too small. Item 5 allowed either reading.
+  - The tie-break jitter does not guarantee the budget: single-seed methods move in steps of one alert
+    per grid at the smallest warning budget (0.5), and critical slowing down cannot reach 48 watches.
+    Such curve points keep `reached = False` and are marked on the curves.
+  - HTM's warning threshold falls inside its tie at 0.999, so its warning results depend on the draw.
+    HTM is also scored with tie-break salts 1 to 4 (`--salt`), and the paper reports the protocol draw
+    with the range over the 5 draws. Other methods have no such tie.

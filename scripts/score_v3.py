@@ -36,6 +36,9 @@ OUT = ROOT / "results" / "v3.0"
 VARIANTS = {"any_signal": list(SIGNALS), "forecast_error_only": ["forecast_error"]}
 
 
+SALT = 0                                       # tie-break draw (--salt); results go to methods/<method>_salt<k>
+
+
 def load(m: str, scores_root: Path, htm: Path):
     """(alert function, seeds, per-signal scores or None). Reference scores where they exist on disk,
     computed here otherwise (the deterministic methods)."""
@@ -47,7 +50,7 @@ def load(m: str, scores_root: Path, htm: Path):
         sc = submission.load(d, V, grids=[g for g in data.grids(V) if g in have])
     else:
         sc = {k: {g: scores(m, g, k) for g in data.grids(V)} for k in METHODS[m][2]}
-    sc = benchmark.untie(sc)
+    sc = benchmark.untie(sc, SALT)
     return benchmark.from_scores(sc), sorted(sc), sc
 
 
@@ -62,7 +65,7 @@ def caught(ev: pd.DataFrame, col: str = "caught") -> float:
 
 def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True, only: list = None):
     """Protocol outputs, then ablations. only: rerun just these ablation variants, merged into ablation.csv."""
-    out = OUT / "methods" / m
+    out = OUT / "methods" / (m + (f"_salt{SALT}" if SALT else ""))
     if not only and ((out / "ablation.csv").exists() or ((out / "sens.csv").exists() and not ablations)):
         print(m, "done already", flush=True)
         return
@@ -302,7 +305,10 @@ def main():
     ap.add_argument("--jobs", type=int, default=1)
     ap.add_argument("--stats", action="store_true")
     ap.add_argument("--variants", nargs="+", help="rerun only these ablation variants (merged into ablation.csv)")
+    ap.add_argument("--salt", type=int, default=0, help="tie-break draw; nonzero writes methods/<method>_salt<k>")
     a = ap.parse_args()
+    global SALT
+    SALT = a.salt
     if a.stats:
         return stats(a.method)
     args = [(m, a.scores, a.htm, not a.no_ablations, a.variants) for m in a.method]

@@ -402,11 +402,12 @@ class Calibrator:
                     reached=bool(abs(best[1] - budget) <= 2.5 * V3_TOL * budget))
 
 
-def untie(scores: Dict[int, Dict[str, pd.DataFrame]]) -> Dict[int, Dict[str, pd.DataFrame]]:
+def untie(scores: Dict[int, Dict[str, pd.DataFrame]], salt: int = 0) -> Dict[int, Dict[str, pd.DataFrame]]:
     """Break exact ties in per-signal scores with a seeded uniform jitter below config.TIE_JITTER, far
     smaller than any real score difference (causal percentiles are rounded to 1e-6), so a threshold can
     always meet the budget (deviation 2026-11-06: HTM's likelihood piles up at exactly 0.999).
-    Deterministic: the jitter depends only on the seed, grid and signal."""
+    Deterministic: the jitter depends only on the seed, grid, signal and `salt` (0 = the protocol draw;
+    other salts measure how much a result depends on the draw)."""
     import zlib
     from .config import TIE_JITTER
     out = {}
@@ -415,7 +416,7 @@ def untie(scores: Dict[int, Dict[str, pd.DataFrame]]) -> Dict[int, Dict[str, pd.
         for g, df in per.items():
             cols = {}
             for c in df:
-                rng = np.random.default_rng(zlib.crc32(f"{k}/{g}/{c}".encode()))
+                rng = np.random.default_rng(zlib.crc32((f"{k}/{g}/{c}" + (f"/{salt}" if salt else "")).encode()))
                 cols[c] = df[c].to_numpy(float) + rng.uniform(0, TIE_JITTER, len(df))
             out[k][g] = pd.DataFrame(cols, index=df.index)
     return out
@@ -467,16 +468,19 @@ def chance_v3(st: dict, level: str, events, rng, mode: str = "season", shifts: i
     seeds = sorted({k for k, _ in st})
     tot, tot_pre, leads = np.zeros(shifts), np.zeros(shifts), []
     before, after = WINDOW[level]
+    # One shift per draw, shared by every grid: events of one storm on several grids stay together, so
+    # the null keeps their dependence (deviation 2026-11-07).
+    yrs = Y * rng.integers(SEASON_SHIFT_YEARS[0], SEASON_SHIFT_YEARS[1] + 1, shifts) \
+        + rng.uniform(-24 * SEASON_SHIFT_DAYS, 24 * SEASON_SHIFT_DAYS, shifts)
+    frac = rng.uniform(0, 1, shifts)
     for g, evs in by_ev.items():
         tb = data.timebase(g)
         t0 = tb.loc[tb.in_warmup == 0, "timestamp"].iloc[0]
         T = (tb["timestamp"].iloc[-1] - t0) / H
         if mode == "season":
-            off = Y * rng.integers(SEASON_SHIFT_YEARS[0], SEASON_SHIFT_YEARS[1] + 1, shifts) \
-                + rng.uniform(-24 * SEASON_SHIFT_DAYS, 24 * SEASON_SHIFT_DAYS, shifts)
-            period = 6 * Y
+            off, period = yrs, 6 * Y
         else:
-            off, period = rng.uniform(0, T, shifts), T
+            off, period = frac * T, T
         for k in seeds:
             s = np.array([(t - t0) / H for t in st.get((k, g), [])])
             if not len(s):

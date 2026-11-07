@@ -1,0 +1,101 @@
+seed,grid,event,tier,split,storm,caught,caught_pre,lead_h,level
+0,tx,tx,1,development,Uri,True,True,130.33333333333334,watch
+0,ca,ca,1,development,Aug 2020 heat wave,True,True,44.63333333333333,watch
+0,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,True,True,45.28333333333333,watch
+0,tva,tva,1,development,Elliott,True,True,157.2,watch
+0,spp,spp,1,held-out,Uri,True,True,158.13333333333333,watch
+0,miso,miso,1,held-out,Uri,True,True,109.66666666666667,watch
+0,duk,duk,1,held-out,Elliott,True,True,9.233333333333333,watch
+0,cple,cple,1,held-out,Elliott,True,True,157.41666666666666,watch
+0,lgee,lgee,1,held-out,Elliott,True,True,6.6,watch
+0,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,True,True,91.5,watch
+1,tx,tx,1,development,Uri,True,True,56.333333333333336,watch
+1,ca,ca,1,development,Aug 2020 heat wave,False,False,,watch
+1,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,True,True,136.28333333333333,watch
+1,tva,tva,1,development,Elliott,False,False,,watch
+1,spp,spp,1,held-out,Uri,True,True,124.13333333333334,watch
+1,miso,miso,1,held-out,Uri,True,True,54.666666666666664,watch
+1,duk,duk,1,held-out,Elliott,True,True,9.233333333333333,watch
+1,cple,cple,1,held-out,Elliott,True,True,3.4166666666666665,watch
+1,lgee,lgee,1,held-out,Elliott,True,True,147.6,watch
+1,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,True,True,91.5,watch
+2,tx,tx,1,development,Uri,True,True,80.33333333333333,watch
+2,ca,ca,1,development,Aug 2020 heat wave,False,False,,watch
+2,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,True,True,111.28333333333333,watch
+2,tva,tva,1,development,Elliott,False,False,,watch
+2,spp,spp,1,held-out,Uri,True,True,157.13333333333333,watch
+2,miso,miso,1,held-out,Uri,True,True,132.66666666666666,watch
+2,duk,duk,1,held-out,Elliott,True,True,136.23333333333332,watch
+2,cple,cple,1,held-out,Elliott,False,False,,watch
+2,lgee,lgee,1,held-out,Elliott,True,True,9.6,watch
+2,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,watch
+3,tx,tx,1,development,Uri,True,True,120.33333333333333,watch
+3,ca,ca,1,development,Aug 2020 heat wave,False,False,,watch
+3,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,True,True,166.28333333333333,watch
+3,tva,tva,1,development,Elliott,True,True,42.2,watch
+3,spp,spp,1,held-out,Uri,True,True,10.133333333333333,watch
+3,miso,miso,1,held-out,Uri,False,False,,watch
+3,duk,duk,1,held-out,Elliott,True,True,137.23333333333332,watch
+3,cple,cple,1,held-out,Elliott,True,True,136.41666666666666,watch
+3,lgee,lgee,1,held-out,Elliott,True,True,76.6,watch
+3,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,True,True,91.5,watch
+4,tx,tx,1,development,Uri,True,True,39.333333333333336,watch
+4,ca,ca,1,development,Aug 2020 heat wave,False,False,,watch
+4,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,True,True,111.28333333333333,watch
+4,tva,tva,1,development,Elliott,True,True,41.2,watch
+4,spp,spp,1,held-out,Uri,True,True,158.13333333333333,watch
+4,miso,miso,1,held-out,Uri,False,False,,watch
+4,duk,duk,1,held-out,Elliott,True,True,6.233333333333333,watch
+4,cple,cple,1,held-out,Elliott,False,False,,watch
+4,lgee,lgee,1,held-out,Elliott,True,True,7.6,watch
+4,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,True,True,93.5,watch
+0,tx,tx,1,development,Uri,True,True,119.33333333333333,warning
+0,ca,ca,1,development,Aug 2020 heat wave,True,False,,warning
+0,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,False,False,,warning
+0,tva,tva,1,development,Elliott,True,False,,warning
+0,spp,spp,1,held-out,Uri,True,True,155.13333333333333,warning
+0,miso,miso,1,held-out,Uri,True,True,79.66666666666667,warning
+0,duk,duk,1,held-out,Elliott,True,True,1.2333333333333334,warning
+0,cple,cple,1,held-out,Elliott,True,False,,warning
+0,lgee,lgee,1,held-out,Elliott,True,True,2.6,warning
+0,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,warning
+1,tx,tx,1,development,Uri,True,True,52.333333333333336,warning
+1,ca,ca,1,development,Aug 2020 heat wave,False,False,,warning
+1,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,False,False,,warning
+1,tva,tva,1,development,Elliott,True,False,,warning
+1,spp,spp,1,held-out,Uri,True,True,163.13333333333333,warning
+1,miso,miso,1,held-out,Uri,True,True,39.666666666666664,warning
+1,duk,duk,1,held-out,Elliott,True,False,,warning
+1,cple,cple,1,held-out,Elliott,True,True,2.4166666666666665,warning
+1,lgee,lgee,1,held-out,Elliott,True,False,,warning
+1,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,warning
+2,tx,tx,1,development,Uri,True,True,77.33333333333333,warning
+2,ca,ca,1,development,Aug 2020 heat wave,False,False,,warning
+2,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,True,True,115.28333333333333,warning
+2,tva,tva,1,development,Elliott,True,False,,warning
+2,spp,spp,1,held-out,Uri,True,True,133.13333333333333,warning
+2,miso,miso,1,held-out,Uri,False,False,,warning
+2,duk,duk,1,held-out,Elliott,True,True,7.233333333333333,warning
+2,cple,cple,1,held-out,Elliott,True,True,3.4166666666666665,warning
+2,lgee,lgee,1,held-out,Elliott,True,True,2.6,warning
+2,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,warning
+3,tx,tx,1,development,Uri,True,True,97.33333333333333,warning
+3,ca,ca,1,development,Aug 2020 heat wave,False,False,,warning
+3,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,False,False,,warning
+3,tva,tva,1,development,Elliott,True,False,,warning
+3,spp,spp,1,held-out,Uri,True,True,135.13333333333333,warning
+3,miso,miso,1,held-out,Uri,False,False,,warning
+3,duk,duk,1,held-out,Elliott,True,True,2.2333333333333334,warning
+3,cple,cple,1,held-out,Elliott,True,True,6.416666666666667,warning
+3,lgee,lgee,1,held-out,Elliott,True,True,0.6,warning
+3,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,warning
+4,tx,tx,1,development,Uri,True,True,33.333333333333336,warning
+4,ca,ca,1,development,Aug 2020 heat wave,False,False,,warning
+4,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,True,True,113.28333333333333,warning
+4,tva,tva,1,development,Elliott,True,False,,warning
+4,spp,spp,1,held-out,Uri,True,True,155.13333333333333,warning
+4,miso,miso,1,held-out,Uri,False,False,,warning
+4,duk,duk,1,held-out,Elliott,True,True,3.2333333333333334,warning
+4,cple,cple,1,held-out,Elliott,True,False,,warning
+4,lgee,lgee,1,held-out,Elliott,True,False,,warning
+4,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,warning

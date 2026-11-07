@@ -7,11 +7,11 @@ Operator-style rule,miso,87.66666666666667,23.516666666666666
 Operator-style rule,duk,11.233333333333333,
 Operator-style rule,cple,157.41666666666666,
 Operator-style rule,lgee,,
-Seasonal z-score,tx,107.33333333333333,16.833333333333332
+Seasonal z-score,tx,107.33333333333331,16.833333333333332
 Seasonal z-score,ca,,26.916666666666668
 Seasonal z-score,tva,,
 Seasonal z-score,spp,161.13333333333333,2.7666666666666666
-Seasonal z-score,miso,114.66666666666667,23.516666666666666
+Seasonal z-score,miso,114.66666666666669,23.516666666666666
 Seasonal z-score,duk,11.233333333333333,
 Seasonal z-score,cple,,
 Seasonal z-score,lgee,8.6,
@@ -20,22 +20,22 @@ Chronos-Bolt (zero-shot),ca,,26.916666666666668
 Chronos-Bolt (zero-shot),tva,4.2,
 Chronos-Bolt (zero-shot),spp,2.1333333333333333,2.7666666666666666
 Chronos-Bolt (zero-shot),miso,10.666666666666666,23.516666666666666
-Chronos-Bolt (zero-shot),duk,91.23333333333333,
+Chronos-Bolt (zero-shot),duk,91.23333333333332,
 Chronos-Bolt (zero-shot),cple,139.41666666666666,
 Chronos-Bolt (zero-shot),lgee,48.6,
-LSTM forecaster,tx,105.33333333333333,16.833333333333332
+LSTM forecaster,tx,105.33333333333331,16.833333333333332
 LSTM forecaster,ca,,26.916666666666668
 LSTM forecaster,tva,4.2,
 LSTM forecaster,spp,16.133333333333333,2.7666666666666666
 LSTM forecaster,miso,10.666666666666666,23.516666666666666
 LSTM forecaster,duk,7.233333333333333,
-LSTM forecaster,cple,108.41666666666667,
+LSTM forecaster,cple,108.41666666666669,
 LSTM forecaster,lgee,9.6,
 "HTM (htm-monitor, frozen after 2019)",tx,80.33333333333333,16.833333333333332
 "HTM (htm-monitor, frozen after 2019)",ca,44.63333333333333,26.916666666666668
 "HTM (htm-monitor, frozen after 2019)",tva,42.2,
 "HTM (htm-monitor, frozen after 2019)",spp,157.13333333333333,2.7666666666666666
-"HTM (htm-monitor, frozen after 2019)",miso,109.66666666666667,23.516666666666666
+"HTM (htm-monitor, frozen after 2019)",miso,109.66666666666669,23.516666666666666
 "HTM (htm-monitor, frozen after 2019)",duk,9.233333333333333,
 "HTM (htm-monitor, frozen after 2019)",cple,136.41666666666666,
 "HTM (htm-monitor, frozen after 2019)",lgee,9.6,
@@ -51,19 +51,19 @@ Gradient-boosted forecaster,tx,133.33333333333334,16.833333333333332
 Gradient-boosted forecaster,ca,22.633333333333333,26.916666666666668
 Gradient-boosted forecaster,tva,5.2,
 Gradient-boosted forecaster,spp,16.133333333333333,2.7666666666666666
-Gradient-boosted forecaster,miso,63.666666666666664,23.516666666666666
-Gradient-boosted forecaster,duk,11.233333333333333,
-Gradient-boosted forecaster,cple,91.41666666666667,
+Gradient-boosted forecaster,miso,63.66666666666666,23.516666666666666
+Gradient-boosted forecaster,duk,91.23333333333332,
+Gradient-boosted forecaster,cple,91.41666666666669,
 Gradient-boosted forecaster,lgee,9.6,
-PatchTST forecaster,tx,105.33333333333333,16.833333333333332
+PatchTST forecaster,tx,105.33333333333331,16.833333333333332
 PatchTST forecaster,ca,25.133333333333333,26.916666666666668
 PatchTST forecaster,tva,6.2,
 PatchTST forecaster,spp,,2.7666666666666666
 PatchTST forecaster,miso,10.666666666666666,23.516666666666666
 PatchTST forecaster,duk,11.233333333333333,
-PatchTST forecaster,cple,91.41666666666667,
+PatchTST forecaster,cple,91.41666666666669,
 PatchTST forecaster,lgee,11.6,
-Random scores,tx,130.83333333333334,16.833333333333332
+Random scores,tx,130.83333333333331,16.833333333333332
 Random scores,ca,,26.916666666666668
 Random scores,tva,64.7,
 Random scores,spp,,2.7666666666666666
@@ -71,7 +71,7 @@ Random scores,miso,34.666666666666664,23.516666666666666
 Random scores,duk,,
 Random scores,cple,,
 Random scores,lgee,,
-CUSUM,tx,125.33333333333333,16.833333333333332
+CUSUM,tx,125.33333333333331,16.833333333333332
 CUSUM,ca,,26.916666666666668
 CUSUM,tva,,
 CUSUM,spp,160.13333333333333,2.7666666666666666
@@ -87,3 +87,27 @@ Critical slowing down,miso,,23.516666666666666
 Critical slowing down,duk,1.2333333333333334,
 Critical slowing down,cple,163.41666666666666,
 Critical slowing down,lgee,,
+Gradient-boosted forecaster (refit yearly),tx,133.33333333333334,16.833333333333332
+Gradient-boosted forecaster (refit yearly),ca,22.633333333333333,26.916666666666668
+Gradient-boosted forecaster (refit yearly),tva,5.2,
+Gradient-boosted forecaster (refit yearly),spp,43.13333333333333,2.7666666666666666
+Gradient-boosted forecaster (refit yearly),miso,64.66666666666667,23.516666666666666
+Gradient-boosted forecaster (refit yearly),duk,138.23333333333332,
+Gradient-boosted forecaster (refit yearly),cple,138.41666666666666,
+Gradient-boosted forecaster (refit yearly),lgee,9.6,
+htm_online,tx,103.33333333333331,16.833333333333332
+htm_online,ca,44.63333333333333,26.916666666666668
+htm_online,tva,151.2,
+htm_online,spp,112.13333333333334,2.7666666666666666
+htm_online,miso,64.66666666666667,23.516666666666666
+htm_online,duk,9.233333333333333,
+htm_online,cple,9.416666666666666,
+htm_online,lgee,49.6,
+htm_raw,tx,77.33333333333333,16.833333333333332
+htm_raw,ca,26.133333333333333,26.916666666666668
+htm_raw,tva,0.2,
+htm_raw,spp,133.13333333333333,2.7666666666666666
+htm_raw,miso,57.66666666666667,23.516666666666666
+htm_raw,duk,9.233333333333333,
+htm_raw,cple,8.416666666666666,
+htm_raw,lgee,6.6,

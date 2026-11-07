@@ -24,25 +24,25 @@ ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,50.28333333333333,Seasonal z-
 cple,1,held-out,Elliott,0.0,0.0,,Seasonal z-score,watch
 duk,1,held-out,Elliott,1.0,1.0,11.233333333333333,Seasonal z-score,watch
 lgee,1,held-out,Elliott,1.0,1.0,8.6,Seasonal z-score,watch
-miso,1,held-out,Uri,1.0,1.0,114.66666666666667,Seasonal z-score,watch
+miso,1,held-out,Uri,1.0,1.0,114.66666666666669,Seasonal z-score,watch
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Seasonal z-score,watch
 spp,1,held-out,Uri,1.0,1.0,161.13333333333333,Seasonal z-score,watch
 tva,1,development,Elliott,0.0,0.0,,Seasonal z-score,watch
-tx,1,development,Uri,1.0,1.0,107.33333333333333,Seasonal z-score,watch
+tx,1,development,Uri,1.0,1.0,107.33333333333331,Seasonal z-score,watch
 ca,1,development,Aug 2020 heat wave,0.0,0.0,,Seasonal z-score,warning
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Seasonal z-score,warning
 cple,1,held-out,Elliott,0.0,0.0,,Seasonal z-score,warning
 duk,1,held-out,Elliott,1.0,1.0,5.233333333333333,Seasonal z-score,warning
 lgee,1,held-out,Elliott,1.0,0.0,,Seasonal z-score,warning
-miso,1,held-out,Uri,1.0,1.0,62.666666666666664,Seasonal z-score,warning
+miso,1,held-out,Uri,1.0,1.0,62.66666666666666,Seasonal z-score,warning
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Seasonal z-score,warning
 spp,1,held-out,Uri,0.0,0.0,,Seasonal z-score,warning
 tva,1,development,Elliott,1.0,0.0,,Seasonal z-score,warning
-tx,1,development,Uri,1.0,1.0,100.33333333333333,Seasonal z-score,warning
+tx,1,development,Uri,1.0,1.0,100.33333333333331,Seasonal z-score,warning
 ca,1,development,Aug 2020 heat wave,0.0,0.0,,Chronos-Bolt (zero-shot),watch
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Chronos-Bolt (zero-shot),watch
 cple,1,held-out,Elliott,1.0,1.0,139.41666666666666,Chronos-Bolt (zero-shot),watch
-duk,1,held-out,Elliott,1.0,1.0,91.23333333333333,Chronos-Bolt (zero-shot),watch
+duk,1,held-out,Elliott,1.0,1.0,91.23333333333332,Chronos-Bolt (zero-shot),watch
 lgee,1,held-out,Elliott,1.0,1.0,48.6,Chronos-Bolt (zero-shot),watch
 miso,1,held-out,Uri,1.0,1.0,10.666666666666666,Chronos-Bolt (zero-shot),watch
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Chronos-Bolt (zero-shot),watch
@@ -61,14 +61,14 @@ tva,1,development,Elliott,1.0,0.0,,Chronos-Bolt (zero-shot),warning
 tx,1,development,Uri,1.0,0.0,,Chronos-Bolt (zero-shot),warning
 ca,1,development,Aug 2020 heat wave,0.0,0.0,,LSTM forecaster,watch
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,LSTM forecaster,watch
-cple,1,held-out,Elliott,1.0,1.0,108.41666666666667,LSTM forecaster,watch
+cple,1,held-out,Elliott,1.0,1.0,108.41666666666669,LSTM forecaster,watch
 duk,1,held-out,Elliott,1.0,1.0,7.233333333333333,LSTM forecaster,watch
 lgee,1,held-out,Elliott,1.0,1.0,9.6,LSTM forecaster,watch
 miso,1,held-out,Uri,1.0,1.0,10.666666666666666,LSTM forecaster,watch
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,LSTM forecaster,watch
 spp,1,held-out,Uri,0.2,0.2,16.133333333333333,LSTM forecaster,watch
 tva,1,development,Elliott,1.0,1.0,4.2,LSTM forecaster,watch
-tx,1,development,Uri,1.0,1.0,105.33333333333333,LSTM forecaster,watch
+tx,1,development,Uri,1.0,1.0,105.33333333333331,LSTM forecaster,watch
 ca,1,development,Aug 2020 heat wave,0.4,0.4,25.633333333333333,LSTM forecaster,warning
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.2,0.0,,LSTM forecaster,warning
 cple,1,held-out,Elliott,0.6,0.4,3.416666666666667,LSTM forecaster,warning
@@ -80,21 +80,21 @@ spp,1,held-out,Uri,1.0,0.0,,LSTM forecaster,warning
 tva,1,development,Elliott,1.0,1.0,1.2,LSTM forecaster,warning
 tx,1,development,Uri,1.0,0.8,40.83333333333333,LSTM forecaster,warning
 ca,1,development,Aug 2020 heat wave,0.2,0.2,44.63333333333333,"HTM (htm-monitor, frozen after 2019)",watch
-ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,111.28333333333333,"HTM (htm-monitor, frozen after 2019)",watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,111.28333333333332,"HTM (htm-monitor, frozen after 2019)",watch
 cple,1,held-out,Elliott,0.6,0.6,136.41666666666666,"HTM (htm-monitor, frozen after 2019)",watch
 duk,1,held-out,Elliott,1.0,1.0,9.233333333333333,"HTM (htm-monitor, frozen after 2019)",watch
 lgee,1,held-out,Elliott,1.0,1.0,9.6,"HTM (htm-monitor, frozen after 2019)",watch
-miso,1,held-out,Uri,0.6,0.6,109.66666666666667,"HTM (htm-monitor, frozen after 2019)",watch
+miso,1,held-out,Uri,0.6,0.6,109.66666666666669,"HTM (htm-monitor, frozen after 2019)",watch
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.8,0.8,91.5,"HTM (htm-monitor, frozen after 2019)",watch
 spp,1,held-out,Uri,1.0,1.0,157.13333333333333,"HTM (htm-monitor, frozen after 2019)",watch
 tva,1,development,Elliott,0.6,0.6,42.2,"HTM (htm-monitor, frozen after 2019)",watch
 tx,1,development,Uri,1.0,1.0,80.33333333333333,"HTM (htm-monitor, frozen after 2019)",watch
 ca,1,development,Aug 2020 heat wave,0.2,0.0,,"HTM (htm-monitor, frozen after 2019)",warning
-ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.8,0.8,78.78333333333333,"HTM (htm-monitor, frozen after 2019)",warning
-cple,1,held-out,Elliott,1.0,1.0,4.416666666666667,"HTM (htm-monitor, frozen after 2019)",warning
-duk,1,held-out,Elliott,1.0,1.0,3.2333333333333334,"HTM (htm-monitor, frozen after 2019)",warning
-lgee,1,held-out,Elliott,1.0,0.6,2.6,"HTM (htm-monitor, frozen after 2019)",warning
-miso,1,held-out,Uri,0.6,0.6,76.66666666666667,"HTM (htm-monitor, frozen after 2019)",warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.6,0.6,113.28333333333332,"HTM (htm-monitor, frozen after 2019)",warning
+cple,1,held-out,Elliott,1.0,1.0,2.4166666666666665,"HTM (htm-monitor, frozen after 2019)",warning
+duk,1,held-out,Elliott,1.0,1.0,2.2333333333333334,"HTM (htm-monitor, frozen after 2019)",warning
+lgee,1,held-out,Elliott,1.0,0.4,2.1,"HTM (htm-monitor, frozen after 2019)",warning
+miso,1,held-out,Uri,0.6,0.6,62.66666666666666,"HTM (htm-monitor, frozen after 2019)",warning
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,"HTM (htm-monitor, frozen after 2019)",warning
 spp,1,held-out,Uri,1.0,1.0,155.13333333333333,"HTM (htm-monitor, frozen after 2019)",warning
 tva,1,development,Elliott,1.0,0.0,,"HTM (htm-monitor, frozen after 2019)",warning
@@ -121,10 +121,10 @@ tva,1,development,Elliott,1.0,0.0,,Sub-PCA,warning
 tx,1,development,Uri,1.0,0.0,,Sub-PCA,warning
 ca,1,development,Aug 2020 heat wave,0.2,0.2,22.633333333333333,Gradient-boosted forecaster,watch
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Gradient-boosted forecaster,watch
-cple,1,held-out,Elliott,1.0,1.0,91.41666666666667,Gradient-boosted forecaster,watch
-duk,1,held-out,Elliott,1.0,1.0,11.233333333333333,Gradient-boosted forecaster,watch
+cple,1,held-out,Elliott,1.0,1.0,91.41666666666669,Gradient-boosted forecaster,watch
+duk,1,held-out,Elliott,1.0,1.0,91.23333333333332,Gradient-boosted forecaster,watch
 lgee,1,held-out,Elliott,1.0,1.0,9.6,Gradient-boosted forecaster,watch
-miso,1,held-out,Uri,1.0,1.0,63.666666666666664,Gradient-boosted forecaster,watch
+miso,1,held-out,Uri,1.0,1.0,63.66666666666666,Gradient-boosted forecaster,watch
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Gradient-boosted forecaster,watch
 spp,1,held-out,Uri,1.0,1.0,16.133333333333333,Gradient-boosted forecaster,watch
 tva,1,development,Elliott,1.0,1.0,5.2,Gradient-boosted forecaster,watch
@@ -141,14 +141,14 @@ tva,1,development,Elliott,1.0,1.0,2.2,Gradient-boosted forecaster,warning
 tx,1,development,Uri,1.0,1.0,82.33333333333333,Gradient-boosted forecaster,warning
 ca,1,development,Aug 2020 heat wave,0.8,0.8,25.133333333333333,PatchTST forecaster,watch
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,PatchTST forecaster,watch
-cple,1,held-out,Elliott,1.0,1.0,91.41666666666667,PatchTST forecaster,watch
+cple,1,held-out,Elliott,1.0,1.0,91.41666666666669,PatchTST forecaster,watch
 duk,1,held-out,Elliott,1.0,1.0,11.233333333333333,PatchTST forecaster,watch
 lgee,1,held-out,Elliott,1.0,1.0,11.6,PatchTST forecaster,watch
 miso,1,held-out,Uri,0.2,0.2,10.666666666666666,PatchTST forecaster,watch
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,PatchTST forecaster,watch
 spp,1,held-out,Uri,0.0,0.0,,PatchTST forecaster,watch
 tva,1,development,Elliott,1.0,1.0,6.2,PatchTST forecaster,watch
-tx,1,development,Uri,1.0,1.0,105.33333333333333,PatchTST forecaster,watch
+tx,1,development,Uri,1.0,1.0,105.33333333333331,PatchTST forecaster,watch
 ca,1,development,Aug 2020 heat wave,1.0,1.0,26.633333333333333,PatchTST forecaster,warning
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,PatchTST forecaster,warning
 cple,1,held-out,Elliott,1.0,1.0,7.416666666666667,PatchTST forecaster,warning
@@ -168,7 +168,7 @@ miso,1,held-out,Uri,0.2,0.2,34.666666666666664,Random scores,watch
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Random scores,watch
 spp,1,held-out,Uri,0.0,0.0,,Random scores,watch
 tva,1,development,Elliott,0.4,0.4,64.7,Random scores,watch
-tx,1,development,Uri,0.4,0.4,130.83333333333334,Random scores,watch
+tx,1,development,Uri,0.4,0.4,130.83333333333331,Random scores,watch
 ca,1,development,Aug 2020 heat wave,0.0,0.0,,Random scores,warning
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Random scores,warning
 cple,1,held-out,Elliott,0.0,0.0,,Random scores,warning
@@ -188,13 +188,13 @@ miso,1,held-out,Uri,1.0,1.0,64.66666666666667,CUSUM,watch
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,CUSUM,watch
 spp,1,held-out,Uri,1.0,1.0,160.13333333333333,CUSUM,watch
 tva,1,development,Elliott,0.0,0.0,,CUSUM,watch
-tx,1,development,Uri,1.0,1.0,125.33333333333333,CUSUM,watch
+tx,1,development,Uri,1.0,1.0,125.33333333333331,CUSUM,watch
 ca,1,development,Aug 2020 heat wave,0.0,0.0,,CUSUM,warning
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,CUSUM,warning
 cple,1,held-out,Elliott,0.0,0.0,,CUSUM,warning
 duk,1,held-out,Elliott,1.0,1.0,2.2333333333333334,CUSUM,warning
 lgee,1,held-out,Elliott,1.0,0.0,,CUSUM,warning
-miso,1,held-out,Uri,1.0,1.0,57.666666666666664,CUSUM,warning
+miso,1,held-out,Uri,1.0,1.0,57.66666666666666,CUSUM,warning
 nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,CUSUM,warning
 spp,1,held-out,Uri,1.0,1.0,79.13333333333334,CUSUM,warning
 tva,1,development,Elliott,1.0,0.0,,CUSUM,warning
@@ -219,3 +219,61 @@ nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Critical slowing down,warnin
 spp,1,held-out,Uri,0.0,0.0,,Critical slowing down,warning
 tva,1,development,Elliott,1.0,0.0,,Critical slowing down,warning
 tx,1,development,Uri,1.0,1.0,72.33333333333333,Critical slowing down,warning
+ca,1,development,Aug 2020 heat wave,0.2,0.2,22.633333333333333,Gradient-boosted forecaster (refit yearly),watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Gradient-boosted forecaster (refit yearly),watch
+cple,1,held-out,Elliott,1.0,1.0,138.41666666666666,Gradient-boosted forecaster (refit yearly),watch
+duk,1,held-out,Elliott,1.0,1.0,138.23333333333332,Gradient-boosted forecaster (refit yearly),watch
+lgee,1,held-out,Elliott,1.0,1.0,9.6,Gradient-boosted forecaster (refit yearly),watch
+miso,1,held-out,Uri,1.0,1.0,64.66666666666667,Gradient-boosted forecaster (refit yearly),watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Gradient-boosted forecaster (refit yearly),watch
+spp,1,held-out,Uri,1.0,1.0,43.13333333333333,Gradient-boosted forecaster (refit yearly),watch
+tva,1,development,Elliott,1.0,1.0,5.2,Gradient-boosted forecaster (refit yearly),watch
+tx,1,development,Uri,1.0,1.0,133.33333333333334,Gradient-boosted forecaster (refit yearly),watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Gradient-boosted forecaster (refit yearly),warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,0.0,,Gradient-boosted forecaster (refit yearly),warning
+cple,1,held-out,Elliott,1.0,1.0,5.416666666666667,Gradient-boosted forecaster (refit yearly),warning
+duk,1,held-out,Elliott,1.0,1.0,7.233333333333333,Gradient-boosted forecaster (refit yearly),warning
+lgee,1,held-out,Elliott,1.0,1.0,6.6,Gradient-boosted forecaster (refit yearly),warning
+miso,1,held-out,Uri,0.2,0.2,50.66666666666666,Gradient-boosted forecaster (refit yearly),warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Gradient-boosted forecaster (refit yearly),warning
+spp,1,held-out,Uri,0.2,0.0,,Gradient-boosted forecaster (refit yearly),warning
+tva,1,development,Elliott,1.0,0.8,1.2,Gradient-boosted forecaster (refit yearly),warning
+tx,1,development,Uri,1.0,1.0,75.33333333333333,Gradient-boosted forecaster (refit yearly),warning
+ca,1,development,Aug 2020 heat wave,0.2,0.2,44.63333333333333,htm_online,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.2,0.2,64.28333333333333,htm_online,watch
+cple,1,held-out,Elliott,1.0,1.0,9.416666666666666,htm_online,watch
+duk,1,held-out,Elliott,1.0,1.0,9.233333333333333,htm_online,watch
+lgee,1,held-out,Elliott,1.0,1.0,49.6,htm_online,watch
+miso,1,held-out,Uri,0.8,0.8,64.66666666666667,htm_online,watch
+spp,1,held-out,Uri,0.6,0.6,112.13333333333334,htm_online,watch
+tva,1,development,Elliott,0.8,0.8,151.2,htm_online,watch
+tx,1,development,Uri,1.0,1.0,103.33333333333331,htm_online,watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,htm_online,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,htm_online,warning
+cple,1,held-out,Elliott,1.0,0.6,3.4166666666666665,htm_online,warning
+duk,1,held-out,Elliott,1.0,1.0,5.233333333333333,htm_online,warning
+lgee,1,held-out,Elliott,1.0,0.6,4.6,htm_online,warning
+miso,1,held-out,Uri,1.0,1.0,60.66666666666666,htm_online,warning
+spp,1,held-out,Uri,0.2,0.2,110.13333333333334,htm_online,warning
+tva,1,development,Elliott,1.0,0.6,161.2,htm_online,warning
+tx,1,development,Uri,1.0,0.6,101.33333333333331,htm_online,warning
+ca,1,development,Aug 2020 heat wave,0.8,0.8,26.133333333333333,htm_raw,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.8,0.8,69.78333333333333,htm_raw,watch
+cple,1,held-out,Elliott,1.0,1.0,8.416666666666666,htm_raw,watch
+duk,1,held-out,Elliott,1.0,1.0,9.233333333333333,htm_raw,watch
+lgee,1,held-out,Elliott,1.0,1.0,6.6,htm_raw,watch
+miso,1,held-out,Uri,0.4,0.4,57.66666666666667,htm_raw,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.2,0.2,93.5,htm_raw,watch
+spp,1,held-out,Uri,1.0,1.0,133.13333333333333,htm_raw,watch
+tva,1,development,Elliott,0.2,0.2,0.2,htm_raw,watch
+tx,1,development,Uri,1.0,1.0,77.33333333333333,htm_raw,watch
+ca,1,development,Aug 2020 heat wave,0.8,0.4,23.133333333333333,htm_raw,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,htm_raw,warning
+cple,1,held-out,Elliott,1.0,1.0,4.416666666666667,htm_raw,warning
+duk,1,held-out,Elliott,1.0,1.0,6.233333333333333,htm_raw,warning
+lgee,1,held-out,Elliott,1.0,0.8,3.1,htm_raw,warning
+miso,1,held-out,Uri,0.0,0.0,,htm_raw,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,htm_raw,warning
+spp,1,held-out,Uri,0.2,0.2,130.13333333333333,htm_raw,warning
+tva,1,development,Elliott,1.0,0.0,,htm_raw,warning
+tx,1,development,Uri,1.0,1.0,37.333333333333336,htm_raw,warning

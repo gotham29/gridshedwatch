@@ -179,6 +179,8 @@ def burden(gr: pd.DataFrame, lv: str) -> dict:
     """Alerts per grid-year (mean over seeds) on a group of quiet grids, with and without masks."""
     r = gr.assign(rate=gr.n_alerts / gr.years, rate_m=(gr.n_alerts - gr.n_masked) / gr.years).groupby("grid")[["rate", "rate_m"]].mean()
     cap = GRID_CAP * BUDGET[lv]
+    if r.empty:                                                  # a setup scored without evaluation-half grids
+        return {}
     return dict(burden_median=r.rate.median(), burden_p90=r.rate.quantile(0.9), burden_max=r.rate.max(),
                 burden_max_grid=r.rate.idxmax(), over_cap=int((r.rate > cap).sum()),
                 burden_p90_masked=r.rate_m.quantile(0.9), burden_max_masked=r.rate_m.max(),

@@ -5,7 +5,7 @@ seed,grid,event,tier,split,storm,caught,caught_pre,lead_h,level
 0,tva,tva,1,development,Elliott,True,True,5.2,watch
 0,spp,spp,1,held-out,Uri,True,True,16.133333333333333,watch
 0,miso,miso,1,held-out,Uri,True,True,63.666666666666664,watch
-0,duk,duk,1,held-out,Elliott,True,True,11.233333333333333,watch
+0,duk,duk,1,held-out,Elliott,True,True,91.23333333333333,watch
 0,cple,cple,1,held-out,Elliott,True,True,91.41666666666667,watch
 0,lgee,lgee,1,held-out,Elliott,True,True,9.6,watch
 0,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,watch
@@ -37,7 +37,7 @@ seed,grid,event,tier,split,storm,caught,caught_pre,lead_h,level
 3,miso,miso,1,held-out,Uri,True,True,69.66666666666667,watch
 3,duk,duk,1,held-out,Elliott,True,True,11.233333333333333,watch
 3,cple,cple,1,held-out,Elliott,True,True,138.41666666666666,watch
-3,lgee,lgee,1,held-out,Elliott,True,True,9.6,watch
+3,lgee,lgee,1,held-out,Elliott,True,True,11.6,watch
 3,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,watch
 4,tx,tx,1,development,Uri,True,True,134.33333333333334,watch
 4,ca,ca,1,development,Aug 2020 heat wave,False,False,,watch

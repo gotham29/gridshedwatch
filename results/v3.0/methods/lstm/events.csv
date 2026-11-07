@@ -27,7 +27,7 @@ seed,grid,event,tier,split,storm,caught,caught_pre,lead_h,level
 2,miso,miso,1,held-out,Uri,True,True,10.666666666666666,watch
 2,duk,duk,1,held-out,Elliott,True,True,5.233333333333333,watch
 2,cple,cple,1,held-out,Elliott,True,True,108.41666666666667,watch
-2,lgee,lgee,1,held-out,Elliott,True,True,43.6,watch
+2,lgee,lgee,1,held-out,Elliott,True,True,9.6,watch
 2,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,watch
 3,tx,tx,1,development,Uri,True,True,105.33333333333333,watch
 3,ca,ca,1,development,Aug 2020 heat wave,False,False,,watch

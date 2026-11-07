@@ -1,9 +1,11 @@
 level,variant,caught,caught_pre
 watch,latency 1 h,7.2,7.2
 watch,latency 6 h,6.2,6.2
-watch,latency 24 h,3.8,3.8
+watch,latency 24 h,4.0,4.0
+watch,operating point set on all grids (no labels),7.0,7.0
 watch,onset: earlier of declaration and OE-417,6.2,6.2
 warning,latency 1 h,6.0,6.0
 warning,latency 6 h,6.0,4.0
 warning,latency 24 h,6.0,1.0
+warning,operating point set on all grids (no labels),6.0,5.0
 warning,onset: earlier of declaration and OE-417,6.0,4.0

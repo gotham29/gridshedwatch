@@ -1,0 +1,9 @@
+level,variant,caught,caught_pre
+watch,latency 1 h,2.0,2.0
+watch,latency 6 h,2.0,2.0
+watch,latency 24 h,1.0,1.0
+watch,onset: earlier of declaration and OE-417,2.0,2.0
+warning,latency 1 h,3.0,0.0
+warning,latency 6 h,3.0,0.0
+warning,latency 24 h,2.0,0.0
+warning,onset: earlier of declaration and OE-417,3.0,0.0

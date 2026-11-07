@@ -1,0 +1,221 @@
+event,tier,split,storm,caught,caught_pre,lead_h,method,level
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Operator-style rule,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Operator-style rule,watch
+cple,1,held-out,Elliott,1.0,1.0,157.41666666666666,Operator-style rule,watch
+duk,1,held-out,Elliott,1.0,1.0,11.233333333333333,Operator-style rule,watch
+lgee,1,held-out,Elliott,0.0,0.0,,Operator-style rule,watch
+miso,1,held-out,Uri,1.0,1.0,87.66666666666667,Operator-style rule,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,1.0,1.0,76.5,Operator-style rule,watch
+spp,1,held-out,Uri,1.0,1.0,166.13333333333333,Operator-style rule,watch
+tva,1,development,Elliott,0.0,0.0,,Operator-style rule,watch
+tx,1,development,Uri,1.0,1.0,140.33333333333334,Operator-style rule,watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Operator-style rule,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Operator-style rule,warning
+cple,1,held-out,Elliott,0.0,0.0,,Operator-style rule,warning
+duk,1,held-out,Elliott,0.0,0.0,,Operator-style rule,warning
+lgee,1,held-out,Elliott,0.0,0.0,,Operator-style rule,warning
+miso,1,held-out,Uri,0.0,0.0,,Operator-style rule,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Operator-style rule,warning
+spp,1,held-out,Uri,1.0,1.0,162.13333333333333,Operator-style rule,warning
+tva,1,development,Elliott,0.0,0.0,,Operator-style rule,warning
+tx,1,development,Uri,1.0,1.0,132.33333333333334,Operator-style rule,warning
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Seasonal z-score,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,50.28333333333333,Seasonal z-score,watch
+cple,1,held-out,Elliott,0.0,0.0,,Seasonal z-score,watch
+duk,1,held-out,Elliott,1.0,1.0,11.233333333333333,Seasonal z-score,watch
+lgee,1,held-out,Elliott,1.0,1.0,8.6,Seasonal z-score,watch
+miso,1,held-out,Uri,1.0,1.0,114.66666666666667,Seasonal z-score,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Seasonal z-score,watch
+spp,1,held-out,Uri,1.0,1.0,161.13333333333333,Seasonal z-score,watch
+tva,1,development,Elliott,0.0,0.0,,Seasonal z-score,watch
+tx,1,development,Uri,1.0,1.0,107.33333333333333,Seasonal z-score,watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Seasonal z-score,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Seasonal z-score,warning
+cple,1,held-out,Elliott,0.0,0.0,,Seasonal z-score,warning
+duk,1,held-out,Elliott,1.0,1.0,5.233333333333333,Seasonal z-score,warning
+lgee,1,held-out,Elliott,1.0,0.0,,Seasonal z-score,warning
+miso,1,held-out,Uri,1.0,1.0,62.666666666666664,Seasonal z-score,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Seasonal z-score,warning
+spp,1,held-out,Uri,0.0,0.0,,Seasonal z-score,warning
+tva,1,development,Elliott,1.0,0.0,,Seasonal z-score,warning
+tx,1,development,Uri,1.0,1.0,100.33333333333333,Seasonal z-score,warning
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Chronos-Bolt (zero-shot),watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Chronos-Bolt (zero-shot),watch
+cple,1,held-out,Elliott,1.0,1.0,139.41666666666666,Chronos-Bolt (zero-shot),watch
+duk,1,held-out,Elliott,1.0,1.0,91.23333333333333,Chronos-Bolt (zero-shot),watch
+lgee,1,held-out,Elliott,1.0,1.0,48.6,Chronos-Bolt (zero-shot),watch
+miso,1,held-out,Uri,1.0,1.0,10.666666666666666,Chronos-Bolt (zero-shot),watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Chronos-Bolt (zero-shot),watch
+spp,1,held-out,Uri,1.0,1.0,2.1333333333333333,Chronos-Bolt (zero-shot),watch
+tva,1,development,Elliott,1.0,1.0,4.2,Chronos-Bolt (zero-shot),watch
+tx,1,development,Uri,0.0,0.0,,Chronos-Bolt (zero-shot),watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Chronos-Bolt (zero-shot),warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Chronos-Bolt (zero-shot),warning
+cple,1,held-out,Elliott,1.0,0.0,,Chronos-Bolt (zero-shot),warning
+duk,1,held-out,Elliott,1.0,0.0,,Chronos-Bolt (zero-shot),warning
+lgee,1,held-out,Elliott,1.0,1.0,6.6,Chronos-Bolt (zero-shot),warning
+miso,1,held-out,Uri,0.0,0.0,,Chronos-Bolt (zero-shot),warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Chronos-Bolt (zero-shot),warning
+spp,1,held-out,Uri,0.0,0.0,,Chronos-Bolt (zero-shot),warning
+tva,1,development,Elliott,1.0,0.0,,Chronos-Bolt (zero-shot),warning
+tx,1,development,Uri,1.0,0.0,,Chronos-Bolt (zero-shot),warning
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,LSTM forecaster,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,LSTM forecaster,watch
+cple,1,held-out,Elliott,1.0,1.0,108.41666666666667,LSTM forecaster,watch
+duk,1,held-out,Elliott,1.0,1.0,7.233333333333333,LSTM forecaster,watch
+lgee,1,held-out,Elliott,1.0,1.0,9.6,LSTM forecaster,watch
+miso,1,held-out,Uri,1.0,1.0,10.666666666666666,LSTM forecaster,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,LSTM forecaster,watch
+spp,1,held-out,Uri,0.2,0.2,16.133333333333333,LSTM forecaster,watch
+tva,1,development,Elliott,1.0,1.0,4.2,LSTM forecaster,watch
+tx,1,development,Uri,1.0,1.0,105.33333333333333,LSTM forecaster,watch
+ca,1,development,Aug 2020 heat wave,0.4,0.4,25.633333333333333,LSTM forecaster,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.2,0.0,,LSTM forecaster,warning
+cple,1,held-out,Elliott,0.6,0.4,3.416666666666667,LSTM forecaster,warning
+duk,1,held-out,Elliott,1.0,0.8,2.2333333333333334,LSTM forecaster,warning
+lgee,1,held-out,Elliott,1.0,0.6,6.6,LSTM forecaster,warning
+miso,1,held-out,Uri,0.0,0.0,,LSTM forecaster,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,LSTM forecaster,warning
+spp,1,held-out,Uri,1.0,0.0,,LSTM forecaster,warning
+tva,1,development,Elliott,1.0,1.0,1.2,LSTM forecaster,warning
+tx,1,development,Uri,1.0,0.8,40.83333333333333,LSTM forecaster,warning
+ca,1,development,Aug 2020 heat wave,0.2,0.2,44.63333333333333,"HTM (htm-monitor, frozen after 2019)",watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,111.28333333333333,"HTM (htm-monitor, frozen after 2019)",watch
+cple,1,held-out,Elliott,0.6,0.6,136.41666666666666,"HTM (htm-monitor, frozen after 2019)",watch
+duk,1,held-out,Elliott,1.0,1.0,9.233333333333333,"HTM (htm-monitor, frozen after 2019)",watch
+lgee,1,held-out,Elliott,1.0,1.0,9.6,"HTM (htm-monitor, frozen after 2019)",watch
+miso,1,held-out,Uri,0.6,0.6,109.66666666666667,"HTM (htm-monitor, frozen after 2019)",watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.8,0.8,91.5,"HTM (htm-monitor, frozen after 2019)",watch
+spp,1,held-out,Uri,1.0,1.0,157.13333333333333,"HTM (htm-monitor, frozen after 2019)",watch
+tva,1,development,Elliott,0.6,0.6,42.2,"HTM (htm-monitor, frozen after 2019)",watch
+tx,1,development,Uri,1.0,1.0,80.33333333333333,"HTM (htm-monitor, frozen after 2019)",watch
+ca,1,development,Aug 2020 heat wave,0.2,0.0,,"HTM (htm-monitor, frozen after 2019)",warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.8,0.8,78.78333333333333,"HTM (htm-monitor, frozen after 2019)",warning
+cple,1,held-out,Elliott,1.0,1.0,4.416666666666667,"HTM (htm-monitor, frozen after 2019)",warning
+duk,1,held-out,Elliott,1.0,1.0,3.2333333333333334,"HTM (htm-monitor, frozen after 2019)",warning
+lgee,1,held-out,Elliott,1.0,0.6,2.6,"HTM (htm-monitor, frozen after 2019)",warning
+miso,1,held-out,Uri,0.6,0.6,76.66666666666667,"HTM (htm-monitor, frozen after 2019)",warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,"HTM (htm-monitor, frozen after 2019)",warning
+spp,1,held-out,Uri,1.0,1.0,155.13333333333333,"HTM (htm-monitor, frozen after 2019)",warning
+tva,1,development,Elliott,1.0,0.0,,"HTM (htm-monitor, frozen after 2019)",warning
+tx,1,development,Uri,1.0,1.0,77.33333333333333,"HTM (htm-monitor, frozen after 2019)",warning
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Sub-PCA,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Sub-PCA,watch
+cple,1,held-out,Elliott,0.0,0.0,,Sub-PCA,watch
+duk,1,held-out,Elliott,1.0,1.0,9.233333333333333,Sub-PCA,watch
+lgee,1,held-out,Elliott,1.0,1.0,136.6,Sub-PCA,watch
+miso,1,held-out,Uri,0.0,0.0,,Sub-PCA,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Sub-PCA,watch
+spp,1,held-out,Uri,0.0,0.0,,Sub-PCA,watch
+tva,1,development,Elliott,0.0,0.0,,Sub-PCA,watch
+tx,1,development,Uri,0.0,0.0,,Sub-PCA,watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Sub-PCA,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Sub-PCA,warning
+cple,1,held-out,Elliott,0.0,0.0,,Sub-PCA,warning
+duk,1,held-out,Elliott,0.0,0.0,,Sub-PCA,warning
+lgee,1,held-out,Elliott,1.0,0.0,,Sub-PCA,warning
+miso,1,held-out,Uri,0.0,0.0,,Sub-PCA,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,1.0,0.0,,Sub-PCA,warning
+spp,1,held-out,Uri,0.0,0.0,,Sub-PCA,warning
+tva,1,development,Elliott,1.0,0.0,,Sub-PCA,warning
+tx,1,development,Uri,1.0,0.0,,Sub-PCA,warning
+ca,1,development,Aug 2020 heat wave,0.2,0.2,22.633333333333333,Gradient-boosted forecaster,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Gradient-boosted forecaster,watch
+cple,1,held-out,Elliott,1.0,1.0,91.41666666666667,Gradient-boosted forecaster,watch
+duk,1,held-out,Elliott,1.0,1.0,11.233333333333333,Gradient-boosted forecaster,watch
+lgee,1,held-out,Elliott,1.0,1.0,9.6,Gradient-boosted forecaster,watch
+miso,1,held-out,Uri,1.0,1.0,63.666666666666664,Gradient-boosted forecaster,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Gradient-boosted forecaster,watch
+spp,1,held-out,Uri,1.0,1.0,16.133333333333333,Gradient-boosted forecaster,watch
+tva,1,development,Elliott,1.0,1.0,5.2,Gradient-boosted forecaster,watch
+tx,1,development,Uri,1.0,1.0,133.33333333333334,Gradient-boosted forecaster,watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Gradient-boosted forecaster,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Gradient-boosted forecaster,warning
+cple,1,held-out,Elliott,1.0,1.0,2.4166666666666665,Gradient-boosted forecaster,warning
+duk,1,held-out,Elliott,1.0,1.0,8.233333333333333,Gradient-boosted forecaster,warning
+lgee,1,held-out,Elliott,1.0,1.0,6.6,Gradient-boosted forecaster,warning
+miso,1,held-out,Uri,0.0,0.0,,Gradient-boosted forecaster,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Gradient-boosted forecaster,warning
+spp,1,held-out,Uri,1.0,1.0,11.133333333333333,Gradient-boosted forecaster,warning
+tva,1,development,Elliott,1.0,1.0,2.2,Gradient-boosted forecaster,warning
+tx,1,development,Uri,1.0,1.0,82.33333333333333,Gradient-boosted forecaster,warning
+ca,1,development,Aug 2020 heat wave,0.8,0.8,25.133333333333333,PatchTST forecaster,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,PatchTST forecaster,watch
+cple,1,held-out,Elliott,1.0,1.0,91.41666666666667,PatchTST forecaster,watch
+duk,1,held-out,Elliott,1.0,1.0,11.233333333333333,PatchTST forecaster,watch
+lgee,1,held-out,Elliott,1.0,1.0,11.6,PatchTST forecaster,watch
+miso,1,held-out,Uri,0.2,0.2,10.666666666666666,PatchTST forecaster,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,PatchTST forecaster,watch
+spp,1,held-out,Uri,0.0,0.0,,PatchTST forecaster,watch
+tva,1,development,Elliott,1.0,1.0,6.2,PatchTST forecaster,watch
+tx,1,development,Uri,1.0,1.0,105.33333333333333,PatchTST forecaster,watch
+ca,1,development,Aug 2020 heat wave,1.0,1.0,26.633333333333333,PatchTST forecaster,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,PatchTST forecaster,warning
+cple,1,held-out,Elliott,1.0,1.0,7.416666666666667,PatchTST forecaster,warning
+duk,1,held-out,Elliott,1.0,1.0,8.233333333333333,PatchTST forecaster,warning
+lgee,1,held-out,Elliott,1.0,1.0,8.6,PatchTST forecaster,warning
+miso,1,held-out,Uri,0.2,0.2,20.666666666666668,PatchTST forecaster,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,PatchTST forecaster,warning
+spp,1,held-out,Uri,0.6,0.0,,PatchTST forecaster,warning
+tva,1,development,Elliott,1.0,1.0,2.2,PatchTST forecaster,warning
+tx,1,development,Uri,1.0,0.4,75.33333333333333,PatchTST forecaster,warning
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Random scores,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.4,0.4,85.28333333333333,Random scores,watch
+cple,1,held-out,Elliott,0.0,0.0,,Random scores,watch
+duk,1,held-out,Elliott,0.0,0.0,,Random scores,watch
+lgee,1,held-out,Elliott,0.0,0.0,,Random scores,watch
+miso,1,held-out,Uri,0.2,0.2,34.666666666666664,Random scores,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Random scores,watch
+spp,1,held-out,Uri,0.0,0.0,,Random scores,watch
+tva,1,development,Elliott,0.4,0.4,64.7,Random scores,watch
+tx,1,development,Uri,0.4,0.4,130.83333333333334,Random scores,watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Random scores,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Random scores,warning
+cple,1,held-out,Elliott,0.0,0.0,,Random scores,warning
+duk,1,held-out,Elliott,0.0,0.0,,Random scores,warning
+lgee,1,held-out,Elliott,0.0,0.0,,Random scores,warning
+miso,1,held-out,Uri,0.2,0.2,31.666666666666668,Random scores,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Random scores,warning
+spp,1,held-out,Uri,0.2,0.0,,Random scores,warning
+tva,1,development,Elliott,0.0,0.0,,Random scores,warning
+tx,1,development,Uri,0.0,0.0,,Random scores,warning
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,CUSUM,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,68.28333333333333,CUSUM,watch
+cple,1,held-out,Elliott,0.0,0.0,,CUSUM,watch
+duk,1,held-out,Elliott,1.0,1.0,6.233333333333333,CUSUM,watch
+lgee,1,held-out,Elliott,1.0,1.0,56.6,CUSUM,watch
+miso,1,held-out,Uri,1.0,1.0,64.66666666666667,CUSUM,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,CUSUM,watch
+spp,1,held-out,Uri,1.0,1.0,160.13333333333333,CUSUM,watch
+tva,1,development,Elliott,0.0,0.0,,CUSUM,watch
+tx,1,development,Uri,1.0,1.0,125.33333333333333,CUSUM,watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,CUSUM,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,CUSUM,warning
+cple,1,held-out,Elliott,0.0,0.0,,CUSUM,warning
+duk,1,held-out,Elliott,1.0,1.0,2.2333333333333334,CUSUM,warning
+lgee,1,held-out,Elliott,1.0,0.0,,CUSUM,warning
+miso,1,held-out,Uri,1.0,1.0,57.666666666666664,CUSUM,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,CUSUM,warning
+spp,1,held-out,Uri,1.0,1.0,79.13333333333334,CUSUM,warning
+tva,1,development,Elliott,1.0,0.0,,CUSUM,warning
+tx,1,development,Uri,1.0,1.0,88.33333333333333,CUSUM,warning
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Critical slowing down,watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,54.28333333333333,Critical slowing down,watch
+cple,1,held-out,Elliott,1.0,1.0,163.41666666666666,Critical slowing down,watch
+duk,1,held-out,Elliott,1.0,1.0,1.2333333333333334,Critical slowing down,watch
+lgee,1,held-out,Elliott,0.0,0.0,,Critical slowing down,watch
+miso,1,held-out,Uri,0.0,0.0,,Critical slowing down,watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Critical slowing down,watch
+spp,1,held-out,Uri,1.0,1.0,144.13333333333333,Critical slowing down,watch
+tva,1,development,Elliott,0.0,0.0,,Critical slowing down,watch
+tx,1,development,Uri,1.0,1.0,83.33333333333333,Critical slowing down,watch
+ca,1,development,Aug 2020 heat wave,0.0,0.0,,Critical slowing down,warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Critical slowing down,warning
+cple,1,held-out,Elliott,0.0,0.0,,Critical slowing down,warning
+duk,1,held-out,Elliott,1.0,0.0,,Critical slowing down,warning
+lgee,1,held-out,Elliott,1.0,0.0,,Critical slowing down,warning
+miso,1,held-out,Uri,0.0,0.0,,Critical slowing down,warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Critical slowing down,warning
+spp,1,held-out,Uri,0.0,0.0,,Critical slowing down,warning
+tva,1,development,Elliott,1.0,0.0,,Critical slowing down,warning
+tx,1,development,Uri,1.0,1.0,72.33333333333333,Critical slowing down,warning

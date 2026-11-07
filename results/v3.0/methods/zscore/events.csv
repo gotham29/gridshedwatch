@@ -1,0 +1,21 @@
+seed,grid,event,tier,split,storm,caught,caught_pre,lead_h,level
+0,tx,tx,1,development,Uri,True,True,107.33333333333333,watch
+0,ca,ca,1,development,Aug 2020 heat wave,False,False,,watch
+0,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,True,True,50.28333333333333,watch
+0,tva,tva,1,development,Elliott,False,False,,watch
+0,spp,spp,1,held-out,Uri,True,True,161.13333333333333,watch
+0,miso,miso,1,held-out,Uri,True,True,114.66666666666667,watch
+0,duk,duk,1,held-out,Elliott,True,True,11.233333333333333,watch
+0,cple,cple,1,held-out,Elliott,False,False,,watch
+0,lgee,lgee,1,held-out,Elliott,True,True,8.6,watch
+0,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,watch
+0,tx,tx,1,development,Uri,True,True,100.33333333333333,warning
+0,ca,ca,1,development,Aug 2020 heat wave,False,False,,warning
+0,ca,ciso_2022-09-06,2,held-out,ciso_2022-09-06,False,False,,warning
+0,tva,tva,1,development,Elliott,True,False,,warning
+0,spp,spp,1,held-out,Uri,False,False,,warning
+0,miso,miso,1,held-out,Uri,True,True,62.666666666666664,warning
+0,duk,duk,1,held-out,Elliott,True,True,5.233333333333333,warning
+0,cple,cple,1,held-out,Elliott,False,False,,warning
+0,lgee,lgee,1,held-out,Elliott,True,False,,warning
+0,nevp,nevp_2020-08-18,2,held-out,nevp_2020-08-18,False,False,,warning

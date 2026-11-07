@@ -1,0 +1,31 @@
+measure,leader,method,events_behind,leader_better,leader_worse,sign_p,sign_p_holm
+watch,Gradient-boosted forecaster,Random scores,6.2,8,0,0.0078125,0.078125
+watch,Gradient-boosted forecaster,Sub-PCA,5.2,6,0,0.03125,0.28125
+watch,Gradient-boosted forecaster,Critical slowing down,3.2,4,0,0.125,1.0
+watch,Gradient-boosted forecaster,Operator-style rule,2.2,3,0,0.25,1.0
+watch,Gradient-boosted forecaster,Seasonal z-score,2.2,3,0,0.25,1.0
+watch,Gradient-boosted forecaster,"HTM (htm-monitor, frozen after 2019)",1.2,3,0,0.25,1.0
+watch,Gradient-boosted forecaster,CUSUM,2.2,3,0,0.25,1.0
+watch,Gradient-boosted forecaster,Chronos-Bolt (zero-shot),1.2,2,0,0.5,1.0
+watch,Gradient-boosted forecaster,LSTM forecaster,1.0,2,0,0.5,1.0
+watch,Gradient-boosted forecaster,PatchTST forecaster,1.2,2,1,1.0,1.0
+warning_pre,Gradient-boosted forecaster,Sub-PCA,6.0,6,0,0.03125,0.3125
+warning_pre,Gradient-boosted forecaster,Chronos-Bolt (zero-shot),5.0,5,0,0.0625,0.5625
+warning_pre,Gradient-boosted forecaster,Critical slowing down,5.0,5,0,0.0625,0.5625
+warning_pre,Gradient-boosted forecaster,Operator-style rule,4.0,4,0,0.125,0.875
+warning_pre,Gradient-boosted forecaster,Random scores,5.8,6,1,0.125,0.875
+warning_pre,Gradient-boosted forecaster,LSTM forecaster,2.0,5,1,0.21875,1.0
+warning_pre,Gradient-boosted forecaster,Seasonal z-score,3.0,4,1,0.375,1.0
+warning_pre,Gradient-boosted forecaster,CUSUM,2.0,3,1,0.625,1.0
+warning_pre,Gradient-boosted forecaster,"HTM (htm-monitor, frozen after 2019)",0.8,2,1,1.0,1.0
+warning_pre,Gradient-boosted forecaster,PatchTST forecaster,0.4,2,2,1.0,1.0
+warning_any,"HTM (htm-monitor, frozen after 2019)",Random scores,6.4,8,0,0.0078125,0.078125
+warning_any,"HTM (htm-monitor, frozen after 2019)",Operator-style rule,4.8,6,0,0.03125,0.28125
+warning_any,"HTM (htm-monitor, frozen after 2019)",Sub-PCA,3.8,5,0,0.0625,0.5
+warning_any,"HTM (htm-monitor, frozen after 2019)",Critical slowing down,2.8,4,0,0.125,0.875
+warning_any,"HTM (htm-monitor, frozen after 2019)",Chronos-Bolt (zero-shot),1.8,3,0,0.25,1.0
+warning_any,"HTM (htm-monitor, frozen after 2019)",Gradient-boosted forecaster,0.8,2,0,0.5,1.0
+warning_any,"HTM (htm-monitor, frozen after 2019)",Seasonal z-score,1.8,3,1,0.625,1.0
+warning_any,"HTM (htm-monitor, frozen after 2019)",LSTM forecaster,0.8,2,1,1.0,1.0
+warning_any,"HTM (htm-monitor, frozen after 2019)",PatchTST forecaster,0.0,2,1,1.0,1.0
+warning_any,"HTM (htm-monitor, frozen after 2019)",CUSUM,0.8,2,1,1.0,1.0

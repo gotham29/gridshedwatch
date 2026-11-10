@@ -18,6 +18,7 @@ Step 2, all methods together:
   (every scored method folder; tests and Holm over the ranked entries only).
 """
 import argparse
+from functools import lru_cache
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -123,6 +124,20 @@ def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True, o
         ablate(m, fn, seeds, sc, out, list(VARIANTS) + ["likelihood_transform"])
 
 
+@lru_cache(maxsize=None)
+def _demand_pct(grid: str) -> pd.Series:
+    """Causal percentile of a grid's seasonal demand anomaly, on its timebase."""
+    from .baselines import to_p
+    tb = data.timebase(grid)
+    return pd.Series(to_p(data.signals(grid)["demand_anom"].to_numpy(float)), index=tb["timestamp"].to_numpy())
+
+
+def _exposed(grid: str, t0, before: int, q: float = 0.99) -> bool:
+    """Was the grid's demand anomaly in its top 1% at some hour in the window before t0?"""
+    p = _demand_pct(grid)
+    return bool((p.loc[t0 - pd.Timedelta(hours=before):t0] >= q).any())
+
+
 def _from_starts(lv, st, events, near, t1, evg, group, rng):
     """Everything scored from alert starts {(seed, grid): [Timestamp]} at one level: per-event and per-grid
     rows, the chance baselines, and the latency and onset sensitivities. Shared by both tracks."""
@@ -138,6 +153,27 @@ def _from_starts(lv, st, events, near, t1, evg, group, rng):
             chance.append(dict(level=lv, measure=col, null=mode, observed=obs, chance=float(null[col].mean()),
                                p=float((1 + (null[col] >= obs - 1e-9).sum()) / (len(null[col]) + 1)),
                                chance_median_lead_h=float(np.median(null["leads"])) if len(null["leads"]) else np.nan))
+    # Further chance tests (own random stream, so the headline draws above are unchanged): realistic
+    # delay, held-out events, each storm left out, each seed alone, and any time at least 30 days away.
+    rng2 = np.random.default_rng(1)
+    ids = lambda evs: {e["id"] for e in evs}
+
+    def test(name, st_x, evs, ev_x, col):
+        null = benchmark.chance_v3(st_x, lv, evs, rng2, "any30" if name == "any30" else "season")
+        obs = caught(ev_x[ev_x.event.isin(ids(evs))], col)
+        chance.append(dict(level=lv, measure=col, null=name, observed=obs, chance=float(null[col].mean()),
+                           p=float((1 + (null[col] >= obs - 1e-9).sum()) / (len(null[col]) + 1)),
+                           chance_median_lead_h=np.nan))
+    e24, _ = benchmark.verify_v3(st_ev, lv, t1, shift_h=24)
+    st24 = {kg: [t + pd.Timedelta(hours=24) for t in v] for kg, v in st_ev.items()}
+    for col in (("caught",) if lv == "watch" else ("caught_pre", "caught")):
+        test("any30", st_ev, t1, ev, col)
+        test("lat24", st24, t1, e24.assign(tier=1), col)
+        test("heldout", st_ev, [e for e in t1 if e["split"] == "held-out"], ev, col)
+        for storm in sorted({e["storm"] for e in t1}):
+            test("without_" + storm.split()[0].lower(), st_ev, [e for e in t1 if e["storm"] != storm], ev, col)
+        for k in sorted({k for k, _ in st_ev}):
+            test(f"seed{k}", {kg: v for kg, v in st_ev.items() if kg[0] == k}, t1, ev[ev.seed == k], col)
     for L in LATENCY_H:
         e_l, _ = benchmark.verify_v3(st_ev, lv, t1, shift_h=L)
         sens.append(dict(level=lv, variant=f"latency {L} h", caught=caught(e_l), caught_pre=caught(e_l, "caught_pre")))
@@ -156,6 +192,14 @@ def _from_starts(lv, st, events, near, t1, evg, group, rng):
         share = np.mean([np.mean([any(0 < (t0 - t) / pd.Timedelta(hours=1) <= before for t in st.get((k, g), []))
                                   for g in evalq]) for k in sorted({k for k, _ in st})])
         sens.append(dict(level=lv, variant=f"storm control: {storm}", caught=float(share), caught_pre=float(share)))
+    # exposure-matched: only quiet grids whose own demand anomaly reached its top 1% in that window
+    for storm in sorted({e["storm"] for e in t1}):
+        t0 = min(e["onset"] for e in t1 if e["storm"] == storm)
+        exp_ = [g for g in evalq if _exposed(g, t0, before)]
+        share = np.mean([np.mean([any(0 < (t0 - t) / pd.Timedelta(hours=1) <= before for t in st.get((k, g), []))
+                                  for g in exp_]) for k in sorted({k for k, _ in st})]) if exp_ else np.nan
+        sens.append(dict(level=lv, variant=f"storm control, exposed grids ({len(exp_)}): {storm}", caught=float(share),
+                         caught_pre=float(share)))
     # the same share for a typical week: pseudo-onsets every 7 days through the scored period
     tb = data.timebase(evalq[0])
     ts = pd.date_range(tb.loc[tb.in_warmup == 0, "timestamp"].iloc[0] + pd.Timedelta(hours=before),
@@ -272,7 +316,10 @@ def stats(primary: list):
                 s[f"{key}_ci"] = "%.2f-%.2f" % benchmark.clopper_pearson(n, 8)      # for the seed-mean count, rounded
                 s[f"{key}_seed_range"] = f"{int(c.min())}-{int(c.max())}"
                 s[f"{key}_held_out"] = round(float(t[t.split == "held-out"].groupby("seed")[col].sum().mean()), 1)
-                for mode in ("season", "any"):
+                cs = ch[(ch.level == lv) & (ch.measure == col) & ch.null.str.startswith("seed")]
+                if len(cs):
+                    s[f"{key}_p_seed_median"], s[f"{key}_p_seed_max"] = float(cs.p.median()), float(cs.p.max())
+                for mode in [x for x in ch.null.unique() if not x.startswith("seed")]:
                     r = ch[(ch.level == lv) & (ch.measure == col) & (ch.null == mode)]
                     if len(r):
                         s[f"{key}_chance_{mode}"], s[f"{key}_p_{mode}"] = round(r.chance.iloc[0], 2), r.p.iloc[0]

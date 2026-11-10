@@ -479,6 +479,8 @@ def chance_v3(st: dict, level: str, events, rng, mode: str = "season", shifts: i
         T = (tb["timestamp"].iloc[-1] - t0) / H
         if mode == "season":
             off, period = yrs, 6 * Y
+        elif mode == "any30":                       # any time, but at least 30 days from the real one
+            off, period = 720 + frac * (T - 1440), T
         else:
             off, period = frac * T, T
         for k in seeds:

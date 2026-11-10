@@ -483,10 +483,10 @@ def chance_v3(st: dict, level: str, events, rng, mode: str = "season", shifts: i
             off, period = frac * T, T
         for k in seeds:
             s = np.array([(t - t0) / H for t in st.get((k, g), [])])
-            if not len(s):
-                continue
-            if mode == "season":
+            if mode == "season" and len(s):
                 s = s[s < period]                      # exactly 6 whole years of alerts (no year counted twice)
+            if not len(s):                             # no alerts (in those years): adds nothing to chance
+                continue
             x = (s[None, :] + off[:, None]) % period
             for e in evs:
                 d = (e["onset"] - t0) / H - x                  # hours before onset

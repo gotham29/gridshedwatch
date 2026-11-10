@@ -1,0 +1,416 @@
+#!/usr/bin/env python3
+"""The scoring protocol (docs/protocol_v3.md): reference methods, results/v3.0/, and new submissions.
+
+Step 1, per method (resumable; methods can run in parallel with --jobs):
+    python scripts/score_v3.py --method gbm lstm ...      (default: every method)
+  writes results/v3.0/methods/<method>/ with
+    op.csv        operating point per level and budget (threshold, persistence, calibration-grid rate)
+    alerts.csv    the alerts at the operating point, in the alerts-track format
+    events.csv    per seed x event x level at the protocol budget
+    grids.csv     per seed x grid x level: alerts, verified, masked (near-miss), grid group
+    curves.csv    Tier 1 catches per level and budget
+    chance.csv    per level and null (season, any): observed, chance, p, chance lead
+    sens.csv      Tier 1 catches with delayed data (latency) and with OE-417 onsets
+    ablation.csv  alert rules (any signal, forecast error only) and the likelihood transform
+Step 2, all methods together:
+    python scripts/score_v3.py --stats
+  writes results/v3.0/summary.csv, events.csv, stats_friedman.csv, loso.csv, lead_vs_notice.csv
+  (every scored method folder; tests and Holm over the ranked entries only).
+"""
+import argparse
+from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+from . import alerts, benchmark, data, submission
+from .baselines import ENTRIES, HTM_V2, LABEL, METHODS, likelihood, oprule, scores
+from .config import BUDGET, GRID_CAP, LATENCY_H, ROOT, SIGNALS, V3_CURVE, V3_TOL, WINDOW
+
+V = "2.0"                                     # the data release scored (48 grids, 10 events)
+LEVELS = benchmark.LEVELS
+OUT = ROOT / "results" / "v3.0"
+VARIANTS = {"any_signal": list(SIGNALS), "forecast_error_only": ["forecast_error"]}
+
+
+SALT = 0                                       # tie-break draw (--salt); results go to methods/<method>_salt<k>
+
+
+def load(m: str, scores_root: Path, htm: Path):
+    """(alert function, seeds, per-signal scores or None). Reference scores where they exist on disk,
+    computed here otherwise (the deterministic methods)."""
+    if m == "oprule":
+        return oprule.alerts, [0], None
+    d = htm if m == "htm" else scores_root / m
+    if d.exists():                 # an extra folder (e.g. an HTM setup) may hold only some grids
+        have = sorted({f.name.split(".")[0] for f in (d / "s0").iterdir()})
+        sc = submission.load(d, V, grids=[g for g in data.grids(V) if g in have])
+    else:
+        sc = {k: {g: scores(m, g, k) for g in data.grids(V)} for k in METHODS[m][2]}
+    sc = benchmark.untie(sc, SALT)
+    return benchmark.from_scores(sc), sorted(sc), sc
+
+
+def tier1(ev: pd.DataFrame) -> pd.DataFrame:
+    return ev[ev.tier == 1]
+
+
+def caught(ev: pd.DataFrame, col: str = "caught") -> float:
+    """Tier 1 events caught, mean over seeds."""
+    return float(tier1(ev).groupby("seed")[col].sum().mean())
+
+
+def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True, only: list = None):
+    """Protocol outputs, then ablations. only: rerun just these ablation variants, merged into ablation.csv."""
+    out = OUT / "methods" / (m + (f"_salt{SALT}" if SALT else ""))
+    if not only and ((out / "ablation.csv").exists() or ((out / "sens.csv").exists() and not ablations)):
+        print(m, "done already", flush=True)
+        return
+    out.mkdir(parents=True, exist_ok=True)
+    fn, seeds, sc = load(m, scores_root, htm)
+    if only:
+        return ablate(m, fn, seeds, sc, out, only)
+    events, near = data.event_list(V), data.near_misses()
+    t1 = [e for e in events if e["tier"] == 1]
+    calib, evalq = data.calibration_split(V)
+    evg = data.event_grids(V)
+    group = {**{g: "event" for g in evg}, **{g: "calibration" for g in calib}, **{g: "evaluation" for g in evalq}}
+    have = set(sc[seeds[0]]) if sc is not None else set(group)
+    missing = [g for g in calib if g not in have]
+    if missing:
+        raise SystemExit(f"{m}: no scores for calibration grids {missing}")
+    group = {g: v for g, v in group.items() if g in have}           # grids without scores are left out
+    evg, evalq = [g for g in evg if g in have], [g for g in evalq if g in have]
+    rng = np.random.default_rng(0)
+    ops, evs, grs, curves, chance, sens, rows = [], [], [], [], [], [], []
+    for lv in LEVELS:
+        cal = benchmark.Calibrator(fn, seeds, calib, lv)
+        op = cal(BUDGET[lv])
+        ops.append(dict(level=lv, budget=BUDGET[lv], **op))
+        st = benchmark.starts_at(fn, seeds, list(group), lv, op["threshold"], op["persistence"])
+        ev, gr, ch, sn = _from_starts(lv, st, events, near, t1, evg, group, rng)
+        evs.append(ev)
+        grs.append(gr)
+        chance += ch
+        sens += sn
+        rows += [dict(grid=g, level=lv, start_utc=pd.Timestamp(t).strftime("%Y-%m-%d %H:%M"), seed=k)
+                 for (k, g), v in st.items() for t in v]
+        st_ev = {kg: v for kg, v in st.items() if kg[1] in evg}
+        for b in V3_CURVE[lv]:
+            o = op if b == BUDGET[lv] else cal(b)
+            if b != BUDGET[lv]:
+                ops.append(dict(level=lv, budget=b, **o))
+            sb = st_ev if b == BUDGET[lv] else benchmark.starts_at(fn, seeds, evg, lv, o["threshold"], o["persistence"])
+            e_b, _ = benchmark.verify_v3(sb, lv, t1)
+            curves.append(dict(level=lv, budget=b, calib_rate=o["calib_rate"], caught=caught(e_b),
+                               caught_pre=caught(e_b, "caught_pre")))
+        o48 = benchmark.Calibrator(fn, seeds, [g for g in data.grids(V) if g in group], lv)(BUDGET[lv])
+        e_48, _ = benchmark.verify_v3(benchmark.starts_at(fn, seeds, evg, lv, o48["threshold"], o48["persistence"]), lv, t1)
+        sens.append(dict(level=lv, variant="operating point set on all grids (no labels)", caught=caught(e_48),
+                         caught_pre=caught(e_48, "caught_pre")))
+    pd.DataFrame(ops).to_csv(out / "op.csv", index=False)
+    alerts.write(pd.DataFrame(rows, columns=["grid", "level", "start_utc", "seed"]), out / "alerts.csv")
+    pd.concat(evs).to_csv(out / "events.csv", index=False)
+    pd.concat(grs).to_csv(out / "grids.csv", index=False)
+    pd.DataFrame(curves).to_csv(out / "curves.csv", index=False)
+    pd.DataFrame(chance).to_csv(out / "chance.csv", index=False)
+    pd.DataFrame(sens).to_csv(out / "sens.csv", index=False)
+    print(m, "protocol done", flush=True)
+    if ablations and sc is not None:
+        ablate(m, fn, seeds, sc, out, list(VARIANTS) + ["likelihood_transform"])
+
+
+def _from_starts(lv, st, events, near, t1, evg, group, rng):
+    """Everything scored from alert starts {(seed, grid): [Timestamp]} at one level: per-event and per-grid
+    rows, the chance baselines, and the latency and onset sensitivities. Shared by both tracks."""
+    ev, gr = benchmark.verify_v3(st, lv, events, near)
+    st_ev = {kg: v for kg, v in st.items() if kg[1] in evg}
+    chance, sens = [], []
+    for col in ("caught", "caught_pre"):
+        if lv == "watch" and col == "caught_pre":
+            continue
+        obs = caught(ev, col)
+        for mode in ("season", "any"):
+            null = benchmark.chance_v3(st_ev, lv, t1, rng, mode)
+            chance.append(dict(level=lv, measure=col, null=mode, observed=obs, chance=float(null[col].mean()),
+                               p=float((1 + (null[col] >= obs - 1e-9).sum()) / (len(null[col]) + 1)),
+                               chance_median_lead_h=float(np.median(null["leads"])) if len(null["leads"]) else np.nan))
+    for L in LATENCY_H:
+        e_l, _ = benchmark.verify_v3(st_ev, lv, t1, shift_h=L)
+        sens.append(dict(level=lv, variant=f"latency {L} h", caught=caught(e_l), caught_pre=caught(e_l, "caught_pre")))
+    e_o, _ = benchmark.verify_v3(st_ev, lv, t1, onset_field="oe417_start_utc")
+    sens.append(dict(level=lv, variant="onset: earlier of declaration and OE-417", caught=caught(e_o),
+                     caught_pre=caught(e_o, "caught_pre")))
+    return ev.assign(level=lv), gr.assign(level=lv, group=gr.grid.map(group)), chance, sens
+
+
+def ablate(m, fn, seeds, sc, out, names):
+    if sc is None:
+        return
+    events, near = data.event_list(V), data.near_misses()
+    calib, evalq = data.calibration_split(V)
+    have = set(sc[seeds[0]])
+    evg, evalq = [g for g in data.event_grids(V) if g in have], [g for g in evalq if g in have]
+    variants = {n: benchmark.from_scores_simple(sc, sig) for n, sig in VARIANTS.items() if n in names}
+    if "likelihood_transform" in names and m != "htm":       # HTM's entry already is the likelihood
+        X = {g: data.signals(g) for g in sc[seeds[0]]}
+        lk = benchmark.untie({k: {g: pd.DataFrame({c: likelihood(df[c].to_numpy(), X[g][c[2:]].to_numpy(float)) for c in df})
+                                  for g, df in v.items()} for k, v in sc.items()})
+        variants["likelihood_transform"] = benchmark.from_scores(lk)
+    if not variants:
+        return
+    rows = []
+    for name, f in variants.items():
+        for lv in LEVELS:
+            o = benchmark.Calibrator(f, seeds, calib, lv)(BUDGET[lv])
+            st = benchmark.starts_at(f, seeds, evg + list(evalq), lv, o["threshold"], o["persistence"])
+            ev, gr = benchmark.verify_v3(st, lv, events, near)
+            rows.append(dict(variant=name, level=lv, threshold=o["threshold"], caught=caught(ev),
+                             caught_pre=caught(ev, "caught_pre"), **far(gr[gr.grid.isin(evg)]),
+                             **(burden(gr[gr.grid.isin(evalq)], lv) if evalq else {})))
+    new = pd.DataFrame(rows)
+    f = out / "ablation.csv"
+    if f.exists():
+        old = pd.read_csv(f)
+        new = pd.concat([old[~old.variant.isin(new.variant.unique())], new], ignore_index=True)
+    new.to_csv(f, index=False)
+    print(m, "ablations done:", ", ".join(variants), flush=True)
+
+
+def far(gr: pd.DataFrame) -> dict:
+    """False alarm ratio on the Tier 1 grids (mean over seeds): false / (false + alerts that start before a
+    Tier 1 onset in its window). An alert is false if it verifies no event of any tier; alerts that verify
+    only a Tier 2 event, or a load shed after onset, are left out; masked: near-miss alerts left out too."""
+    gr = gr[gr.grid.isin({e["grid"] for e in data.event_list(V) if e["tier"] == 1})]
+    s = gr.groupby("seed")[["n_alerts", "n_verified", "n_verified_t1", "n_masked"]].sum()
+    false = s.n_alerts - s.n_verified
+    return dict(alerts=float(s.n_alerts.mean()), verified_t1=float(s.n_verified_t1.mean()), masked=float(s.n_masked.mean()),
+                far=float((false / (false + s.n_verified_t1)).mean()),
+                far_masked=float(((false - s.n_masked) / (false - s.n_masked + s.n_verified_t1)).mean()))
+
+
+def burden(gr: pd.DataFrame, lv: str) -> dict:
+    """Alerts per grid-year (mean over seeds) on a group of quiet grids, with and without masks."""
+    r = gr.assign(rate=gr.n_alerts / gr.years, rate_m=(gr.n_alerts - gr.n_masked) / gr.years).groupby("grid")[["rate", "rate_m"]].mean()
+    cap = GRID_CAP * BUDGET[lv]
+    if r.empty:                                                  # a setup scored without evaluation-half grids
+        return {}
+    return dict(burden_median=r.rate.median(), burden_p90=r.rate.quantile(0.9), burden_max=r.rate.max(),
+                burden_max_grid=r.rate.idxmax(), over_cap=int((r.rate > cap).sum()),
+                burden_p90_masked=r.rate_m.quantile(0.9), burden_max_masked=r.rate_m.max(),
+                over_cap_masked=int((r.rate_m > cap).sum()))
+
+
+# ------------------------------------------------------------------------------------- step 2
+
+def label(m: str) -> str:
+    return HTM_V2 if m == "htm" else LABEL.get(m, m)
+
+
+def notice_leads() -> dict:
+    """Hours before onset of each Tier 1 event's first public operator notice (None if none in the week)."""
+    out = {}
+    for g, e in data.operator_notices().items():
+        on = data.onset(g)
+        pub = [pd.Timestamp(n["utc"]) for n in e["notices"] if n.get("public")]
+        pre = [t for t in pub if on - WINDOW["watch"][0] * benchmark.H <= t < on]
+        out[g] = (on - min(pre)) / benchmark.H if pre else None
+    return out
+
+
+def stats(primary: list):
+    from scipy.stats import friedmanchisquare, rankdata, studentized_range
+    have = sorted(p.name for p in (OUT / "methods").iterdir() if (p / "sens.csv").exists())
+    ms = [m for m in primary if m in have] + [m for m in have if m not in primary]
+    rd = lambda m, f: pd.read_csv(OUT / "methods" / m / f)
+    calib, evalq = data.calibration_split(V)
+    pd.DataFrame({"grid": calib + evalq, "half": ["calibration"] * len(calib) + ["evaluation"] * len(evalq)}) \
+        .to_csv(OUT / "calibration_grids.csv", index=False)
+    summary, per_event, per_ev_mat = [], [], {}
+    nl = notice_leads()
+    lead_rows = []
+    for m in ms:
+        ev, gr, op, ch = rd(m, "events.csv"), rd(m, "grids.csv"), rd(m, "op.csv"), rd(m, "chance.csv")
+        s = {"method": label(m), "code": m, "seeds": ev.seed.nunique()}
+        for lv in LEVELS:
+            e = ev[ev.level == lv]
+            o = op[(op.level == lv) & (op.budget == BUDGET[lv])].iloc[0]
+            t = e[e.tier == 1]
+            s[f"{lv}_threshold"], s[f"{lv}_persistence"] = round(o.threshold, 5), (int(o.persistence) if o.persistence == o.persistence else np.nan)
+            s[f"{lv}_calib_rate"], s[f"{lv}_reached"] = round(o.calib_rate, 2), bool(o.reached)
+            t1g = gr[(gr.level == lv) & gr.grid.isin(set(t.grid))]
+            s[f"{lv}_tier1_grid_rate"] = round(float((t1g.n_alerts / t1g.years).groupby(t1g.grid).mean().median()), 2)
+            for col in (["caught"] if lv == "watch" else ["caught_pre", "caught"]):
+                c = t.groupby("seed")[col].sum()
+                key = f"{lv}_{'pre' if col == 'caught_pre' else 'any'}" if lv == "warning" else lv
+                n = int(round(c.mean()))
+                s[f"{key}_caught"] = round(float(c.mean()), 1)
+                s[f"{key}_ci"] = "%.2f-%.2f" % benchmark.clopper_pearson(n, 8)      # for the seed-mean count, rounded
+                s[f"{key}_seed_range"] = f"{int(c.min())}-{int(c.max())}"
+                s[f"{key}_held_out"] = round(float(t[t.split == "held-out"].groupby("seed")[col].sum().mean()), 1)
+                for mode in ("season", "any"):
+                    r = ch[(ch.level == lv) & (ch.measure == col) & (ch.null == mode)]
+                    if len(r):
+                        s[f"{key}_chance_{mode}"], s[f"{key}_p_{mode}"] = round(r.chance.iloc[0], 2), r.p.iloc[0]
+                        s[f"{key}_chance_lead_h"] = round(r.chance_median_lead_h.iloc[0], 0) if mode == "season" else s.get(f"{key}_chance_lead_h")
+                s[f"{key}_above_chance"] = round(s[f"{key}_caught"] - s.get(f"{key}_chance_season", np.nan), 2)
+                per_ev_mat[(m, key)] = t.groupby("event")[col].mean()
+            pre = t[t.caught_pre]
+            leads = pre.groupby("event").lead_h.median()
+            s[f"{lv}_median_lead_h"], s[f"{lv}_lead_events_any_seed"] = (round(float(leads.median()), 0) if len(leads) else np.nan), len(leads)
+            if lv == "watch":
+                for g, ln in nl.items():
+                    lead_rows.append(dict(method=label(m), event=g, method_lead_h=leads.get(g, np.nan), notice_lead_h=ln))
+            f = far(gr[(gr.level == lv) & (gr.group == "event")])
+            s.update({f"{lv}_{k}": round(v, 3) for k, v in f.items()})
+            b = burden(gr[(gr.level == lv) & (gr.group == "evaluation")], lv)
+            s.update({f"{lv}_{k}": (round(v, 2) if isinstance(v, float) else v) for k, v in b.items()})
+            t2 = e[e.tier == 2].groupby("event")[["caught", "caught_pre"]].mean()
+            for eid, r in t2.iterrows():
+                s[f"{lv}_tier2_{eid}"] = round(float(r.caught_pre if lv == "warning" else r.caught), 1)
+            per_event.append(e.groupby(["event", "tier", "split", "storm"]).agg(
+                caught=("caught", "mean"), caught_pre=("caught_pre", "mean"), lead_h=("lead_h", "median"))
+                .reset_index().assign(method=label(m), level=lv))
+        summary.append(s)
+    pd.DataFrame(summary).to_csv(OUT / "summary.csv", index=False)
+    pd.concat(per_event).to_csv(OUT / "events.csv", index=False)
+    pd.DataFrame(lead_rows).to_csv(OUT / "lead_vs_notice.csv", index=False)
+    # Holm-corrected chance p across methods, per measure and null
+    sm = pd.DataFrame(summary)
+    ent = sm.index[sm.code.isin(ENTRIES)]                       # Holm over the ranked entries only
+    for col in [c for c in sm if "_p_" in c]:
+        p = sm.loc[ent, col].to_numpy(float)
+        order = np.argsort(p)
+        adj = np.maximum.accumulate(np.minimum(1, (len(p) - np.arange(len(p))) * p[order]))
+        sm.loc[ent[order], col + "_holm"] = adj
+    sm.to_csv(OUT / "summary.csv", index=False)
+    # Friedman and Nemenyi over the ranked entries, and leave one storm out. No pairwise tests: with 8 events
+    # and 10 Holm-corrected comparisons, none could reach 0.05 even at 8 of 8 (deviation 2026-11-06).
+    storms = {e["id"]: e.get("storm") for e in data.event_list(V) if e["tier"] == 1}
+    fr, loso = [], []
+    for key in ("watch", "warning_pre", "warning_any"):
+        X = pd.DataFrame({m: per_ev_mat[(m, key)] for m in ms if (m, key) in per_ev_mat and m in ENTRIES})  # entries only
+        if X.shape[1] < 3:
+            continue
+        R = np.array([rankdata(-row) for row in X.to_numpy()])
+        k, n = X.shape[1], X.shape[0]
+        cd = studentized_range.ppf(0.95, k, np.inf) / np.sqrt(2) * np.sqrt(k * (k + 1) / (6 * n))
+        fr.append(dict(measure=key, events=n, methods=k, friedman_p=friedmanchisquare(*X.to_numpy().T).pvalue,
+                       friedman_p_without_random=friedmanchisquare(*X.drop(columns="random", errors="ignore").to_numpy().T).pvalue,
+                       nemenyi_cd=cd, **{f"rank_{label(m)}": r for m, r in zip(X.columns, R.mean(0))}))
+        for st in sorted(set(storms.values())):
+            keep = [e for e in X.index if storms.get(e) != st]
+            loso.append(dict(measure=key, without=st, events=len(keep), **{label(m): round(float(X.loc[keep, m].sum()), 1) for m in X.columns}))
+    pd.DataFrame(fr).to_csv(OUT / "stats_friedman.csv", index=False)
+    pd.DataFrame(loso).to_csv(OUT / "loso.csv", index=False)
+    print("wrote", OUT)
+
+
+
+# ------------------------------------------------------------------------------ new submissions
+
+def _score_alerts(starts: dict, mdir: Path):
+    """Alerts track: submitted watch and warning starts {seed: {grid: {level: [Timestamp]}}}, scored by the
+    same event rules. No threshold is set; the median calibration grid must alert at most the budget (+5%),
+    as the scores track's operating point does. Grids left out of the file count as raising no alerts."""
+    events, near = data.event_list(V), data.near_misses()
+    t1 = [e for e in events if e["tier"] == 1]
+    calib, evalq = data.calibration_split(V)
+    evg = data.event_grids(V)
+    group = {**{g: "event" for g in evg}, **{g: "calibration" for g in calib}, **{g: "evaluation" for g in evalq}}
+    rng = np.random.default_rng(0)
+    ops, evs, grs, chance, sens = [], [], [], [], []
+    for lv in LEVELS:
+        st = {(k, g): sorted(starts[k].get(g, {}).get(lv, [])) for k in sorted(starts) for g in group}
+        r = benchmark.median_rate({kg: v for kg, v in st.items() if kg[1] in calib}, calib)
+        ops.append(dict(level=lv, budget=BUDGET[lv], threshold=np.nan, persistence=np.nan, calib_rate=r,
+                        reached=bool(r <= BUDGET[lv] * (1 + 2.5 * V3_TOL))))
+        ev, gr, ch, sn = _from_starts(lv, st, events, near, t1, evg, group, rng)
+        evs.append(ev)
+        grs.append(gr)
+        chance += ch
+        sens += sn
+    mdir.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(ops).to_csv(mdir / "op.csv", index=False)
+    pd.concat(evs).to_csv(mdir / "events.csv", index=False)
+    pd.concat(grs).to_csv(mdir / "grids.csv", index=False)
+    pd.DataFrame(chance).to_csv(mdir / "chance.csv", index=False)
+    pd.DataFrame(sens).to_csv(mdir / "sens.csv", index=False)
+
+
+def score_new(name: str, folder=None, alerts_file=None, out=None) -> pd.DataFrame:
+    """Score a new method under this protocol, next to the reference methods.
+
+    Scores track: `folder` in the submission layout (gridshedwatch.submission); its operating point is set
+    exactly as the reference methods' are. Alerts track: `alerts_file`, watch and warning start times
+    (gridshedwatch.alerts). Results go to `out`/methods/<name>/; returns the comparison table, the new
+    method last. Its chance p-value is not Holm-corrected (the reference methods' are, over themselves)."""
+    import os
+    import tempfile
+    global OUT
+    out, keep = Path(out or "gsw_results").resolve(), OUT
+    mdir = out / "methods" / name
+    OUT = out
+    try:
+        if folder is not None:
+            folder = Path(folder).resolve()
+            if folder.name != name:
+                (out / "scores").mkdir(parents=True, exist_ok=True)
+                link = out / "scores" / name
+                if not link.exists():
+                    os.symlink(folder, link)
+                folder = link
+            score_method(name, folder.parent, None, ablations=False)
+        else:
+            _score_alerts(alerts.load(alerts_file, V), mdir)
+        tmp = Path(tempfile.mkdtemp(prefix="gsw_"))         # the reference methods' folders, plus this one
+        (tmp / "methods").mkdir()
+        for m in ENTRIES:
+            os.symlink(keep / "methods" / m, tmp / "methods" / m)
+        os.symlink(mdir, tmp / "methods" / name)
+        OUT = tmp
+        stats(list(ENTRIES))
+        s = pd.read_csv(tmp / "summary.csv")
+    finally:
+        OUT = keep
+    s = s[s.code.isin(list(ENTRIES) + [name])]
+    s["p"] = s.watch_p_season_holm.fillna(s.watch_p_season)
+    r = lambda x: np.floor(x + 0.5).astype("Int64").astype(str)        # half up, as in the paper
+    t = pd.DataFrame({"method": s.method, "watches (of 8)": s.watch_caught, "by chance": s.watch_chance_season,
+                      "p": s.p.round(4), "warnings before onset": s.warning_pre_caught,
+                      "median watch lead (h)": s.watch_median_lead_h,
+                      "quiet grids: median / 90th pct / worst": r(s.watch_burden_median)
+                      + " / " + r(s.watch_burden_p90) + " / " + r(s.watch_burden_max),
+                      "within budget": s.watch_reached & s.warning_reached})
+    t = pd.concat([t[s.code != name].sort_values("watches (of 8)", ascending=False), t[s.code == name]])
+    t.to_csv(out / f"{name}_comparison.csv", index=False)
+    return t
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--method", nargs="+", default=list(METHODS),
+                    help="reference methods, or any folder in --scores (e.g. an extra HTM setup)")
+    ap.add_argument("--scores", type=Path, default=ROOT / "reference_scores")
+    ap.add_argument("--htm", type=Path, default=ROOT / "reference_scores" / "htm_frozen")
+    ap.add_argument("--no-ablations", action="store_true")
+    ap.add_argument("--jobs", type=int, default=1)
+    ap.add_argument("--stats", action="store_true")
+    ap.add_argument("--variants", nargs="+", help="rerun only these ablation variants (merged into ablation.csv)")
+    ap.add_argument("--salt", type=int, default=0, help="tie-break draw; nonzero writes methods/<method>_salt<k>")
+    a = ap.parse_args()
+    global SALT
+    SALT = a.salt
+    if a.stats:
+        return stats(a.method)
+    args = [(m, a.scores, a.htm, not a.no_ablations, a.variants) for m in a.method]
+    if a.jobs > 1:
+        with ProcessPoolExecutor(a.jobs) as ex:
+            list(ex.map(score_method, *zip(*args)))
+    else:
+        for x in args:
+            score_method(*x)
+
+
+if __name__ == "__main__":
+    main()

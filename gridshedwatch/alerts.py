@@ -16,6 +16,7 @@ from pathlib import Path
 import pandas as pd
 
 from . import data
+from .config import VERSION
 
 LEVELS = ("watch", "warning")
 COLUMNS = ["grid", "level", "start_utc"]
@@ -27,16 +28,16 @@ def scored_period(grid: str) -> tuple:
     return s.iloc[0], s.iloc[-1]
 
 
-def check(df: pd.DataFrame) -> pd.DataFrame:
+def check(df: pd.DataFrame, version: str = VERSION) -> pd.DataFrame:
     missing = [c for c in COLUMNS if c not in df]
     if missing:
         raise ValueError(f"missing columns {missing}; need grid, level, start_utc (and optionally seed)")
     df = df.copy()
     if "seed" not in df:
         df["seed"] = 0
-    bad = sorted(set(df.grid) - set(data.grids()))
+    bad = sorted(set(df.grid) - set(data.grids(version)))
     if bad:
-        raise ValueError(f"unknown grids {bad}; use {data.grids()}")
+        raise ValueError(f"unknown grids {bad}; use {data.grids(version)}")
     bad = sorted(set(df.level) - set(LEVELS))
     if bad:
         raise ValueError(f"unknown levels {bad}; use watch or warning")
@@ -56,9 +57,9 @@ def check(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def load(path) -> dict:
+def load(path, version: str = VERSION) -> dict:
     """{seed: {grid: {level: [Timestamp, ...]}}}"""
-    df = check(pd.read_csv(path))
+    df = check(pd.read_csv(path), version)
     out = {}
     for (k, g, lv), x in df.groupby(["seed", "grid", "level"]):
         out.setdefault(int(k), {}).setdefault(g, {})[lv] = sorted(x.start_utc)

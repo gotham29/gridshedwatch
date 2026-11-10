@@ -120,20 +120,24 @@ gridshedwatch score-alerts my_alerts.csv --name "My rule"
 ```
 
 ```
-My rule  (1 seed)
-  watch    submitted alerts   caught 3.0 of 8 [1.0-5.0], chance 0.9; held-out 2.0 of 5;
-                              median lead 131.0 h; 5.7 alerts/grid/yr; false alarm ratio 99%
-  warning  submitted alerts   caught 1.0 of 8 [0.0-3.0], chance 0.1; held-out 0.0 of 5;
-                              median lead 130.0 h; 0.6 alerts/grid/yr; false alarm ratio 97%
+                     method  watches (of 8)  by chance       p  warnings before onset  median watch lead (h)  quiet grids: median / 90th pct / worst  within budget
+Gradient-boosted forecaster             7.2       2.21  0.0055                    6.0                   43.0                            16 / 33 / 63           True
+...
+              Random scores             1.0       1.77  0.9730                    0.2                   65.0                            12 / 13 / 14           True
+                    my_rule             3.0       1.40  0.1439                    1.0                  131.0                               4 / 7 / 10           True
 ```
 
-The rule watched 3 of the 8 load sheds where its alerts at random times would have caught about
-one, and warned Texas five days before Uri; it missed the rest. Alerts-track entries are scored
-exactly like the scores track, at the same budget (median grid at most 12 watches and 2 warnings
-a year, no grid above 3 times that); an entry over budget is flagged. Format:
+Your method is printed under the 11 reference methods, scored by the same rules: load sheds
+caught with a watch, how many its alerts would catch at random times in the same season, the
+chance p-value, warnings before onset, lead, and watches a year on the 20 quiet grids not used to
+set thresholds. The rule above watched 3 of the 8 load sheds where chance gives 1.4, not enough to
+beat chance. Alerts-track entries must be within the same budget as the scores track (the median
+calibration grid at most 12 watches and 2 warnings a year, +5%); list alerts for all 48 grids
+(`data.grids("2.0")`), since a grid left out counts as raising none. Full results go to
+`gsw_results/methods/<name>/`. Format:
 [gridshedwatch/alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/alerts.py).
-The five reference methods' alerts, in [results/v1.0/alerts/](https://github.com/gotham29/gridshedwatch/tree/main/results/v1.0/alerts/),
-are further worked examples and reproduce the table above.
+A scores-track run also writes its alerts in this format (`alerts.csv`), and scoring that file
+reproduces its results.
 
 ![How one method is scored on one grid](https://raw.githubusercontent.com/gotham29/gridshedwatch/main/docs/img/scoring_example.png)
 

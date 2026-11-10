@@ -42,6 +42,6 @@ def my_alerts(grid: str) -> list:
 
 
 if __name__ == "__main__":
-    df = pd.DataFrame([r for g in data.grids() for r in my_alerts(g)])
+    df = pd.DataFrame([r for g in data.grids("2.0") for r in my_alerts(g)])
     alerts.write(df, "my_alerts.csv")
     print(f"wrote my_alerts.csv ({len(df)} alerts); now: gridshedwatch score-alerts my_alerts.csv --name 'My rule'")

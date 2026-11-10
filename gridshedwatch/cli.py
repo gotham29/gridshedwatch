@@ -3,9 +3,10 @@
   gridshedwatch info                          events, grids, data snapshot
   gridshedwatch signals <grid> -o FILE        the five signals for one grid (CSV)
   gridshedwatch baseline zscore -o DIR        write reference scores in the submission layout
-  gridshedwatch score DIR --name NAME         scores track: score a method from its per-signal scores
-  gridshedwatch score DIR --version 2.0       the same at the v1.0 operating point on every v2.0 grid
-  gridshedwatch score-alerts FILE --name NAME  alerts track: score a method's watch/warning start times
+  gridshedwatch score DIR --name NAME         scores track: score a method from its per-signal scores, under the
+                                              final protocol, and print it next to the 11 reference methods
+  gridshedwatch score-alerts FILE --name NAME  alerts track: the same from a method's watch/warning start times
+  (--version 1.0 or 2.0 reproduces an earlier release's scoring)
 """
 import argparse
 import json
@@ -46,7 +47,26 @@ def _baseline(a):
     print(f"wrote {a.output}")
 
 
+def _protocol(a, folder=None, file=None):
+    from . import protocol
+    if not a.name:
+        sys.exit("give the method a short --name (used for its results folder)")
+    t = protocol.score_new(a.name, folder=folder, alerts_file=file, out=a.out)
+    if a.json:
+        print(t.to_json(orient="records", indent=2))
+        return
+    if t["quiet grids: median / 90th pct / worst"].iloc[-1] == "0 / 0 / 0":
+        print("note: no alerts on any quiet grid. Was the method run on all 48 grids (data.grids('2.0'))? "
+              "A grid left out counts as raising no alerts, which flatters the budget check.\n")
+    with pd.option_context("display.width", 200, "display.max_columns", 20):
+        print(t.to_string(index=False))
+    print(f"\nResults in {a.out}/methods/{a.name}/ and {a.out}/{a.name}_comparison.csv. Reference p-values are "
+          f"Holm-corrected over the 11 methods; the new method's is not. 'within budget' must be True to compare.")
+
+
 def _score(a):
+    if a.version == "3.0" and not a.oprule:
+        return _protocol(a, folder=a.folder)
     if a.oprule:
         from .baselines import oprule
         fn, seeds, name = oprule.alerts, [0], a.name or "Operator-style rule"
@@ -64,6 +84,8 @@ def _score(a):
 
 
 def _score_alerts(a):
+    if a.version == "3.0":
+        return _protocol(a, file=a.file)
     r = benchmark.evaluate_alerts(a.name or str(a.file), alerts.load(a.file), chance=not a.no_chance)
     _report(a, r)
     over = [lv for lv in ("watch", "warning") if not r.summary[f"{lv}_within_budget"]]
@@ -133,10 +155,14 @@ def main(argv=None):
     p.add_argument("--events", help="also write per-event rows to this CSV")
     p.add_argument("--json", action="store_true")
     p.add_argument("--alerts-out", help="also write the alerts at the operating point, in the alerts-track format")
-    p.add_argument("--version", default="1.0", choices=["1.0", "2.0"], help="release to score (2.0: every v2.0 grid)")
+    p.add_argument("--version", default="3.0", choices=["1.0", "2.0", "3.0"],
+                   help="scoring to use: 3.0, the final protocol (default); 1.0 or 2.0 reproduce earlier releases")
+    p.add_argument("--out", default="gsw_results", help="results folder (final protocol)")
     p.set_defaults(fn=_score)
     p = sub.add_parser("score-alerts")
     p.add_argument("file", help="CSV with grid, level, start_utc[, seed] (see gridshedwatch/alerts.py)")
+    p.add_argument("--version", default="3.0", choices=["1.0", "3.0"], help="3.0: the final protocol (default)")
+    p.add_argument("--out", default="gsw_results", help="results folder (final protocol)")
     p.add_argument("--name")
     p.add_argument("--no-chance", action="store_true")
     p.add_argument("--events", help="also write per-event rows to this CSV")

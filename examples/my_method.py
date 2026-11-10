@@ -33,6 +33,6 @@ def my_scores(grid: str, seed: int = 0) -> pd.DataFrame:
 
 if __name__ == "__main__":
     seeds = [0]                          # list several if your method is random
-    scores = {k: {g: my_scores(g, k) for g in data.grids()} for k in seeds}
+    scores = {k: {g: my_scores(g, k) for g in data.grids("2.0")} for k in seeds}
     submission.write(scores, "my_scores")
     print("wrote my_scores/; now: gridshedwatch score my_scores --name 'My method'")

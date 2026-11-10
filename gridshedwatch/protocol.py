@@ -62,10 +62,11 @@ def caught(ev: pd.DataFrame, col: str = "caught") -> float:
     return float(tier1(ev).groupby("seed")[col].sum().mean())
 
 
-def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True, only: list = None):
-    """Protocol outputs, then ablations. only: rerun just these ablation variants, merged into ablation.csv."""
+def score_method(m: str, scores_root: Path, htm: Path, ablations: bool = True, only: list = None, redo: bool = False):
+    """Protocol outputs, then ablations. only: rerun just these ablation variants, merged into ablation.csv.
+    redo: rescore the protocol outputs even if present (ablation.csv is kept unless ablations are run)."""
     out = OUT / "methods" / (m + (f"_salt{SALT}" if SALT else ""))
-    if not only and ((out / "ablation.csv").exists() or ((out / "sens.csv").exists() and not ablations)):
+    if not redo and not only and ((out / "ablation.csv").exists() or ((out / "sens.csv").exists() and not ablations)):
         print(m, "done already", flush=True)
         return
     out.mkdir(parents=True, exist_ok=True)
@@ -143,6 +144,25 @@ def _from_starts(lv, st, events, near, t1, evg, group, rng):
     e_o, _ = benchmark.verify_v3(st_ev, lv, t1, onset_field="oe417_start_utc")
     sens.append(dict(level=lv, variant="onset: earlier of declaration and OE-417", caught=caught(e_o),
                      caught_pre=caught(e_o, "caught_pre")))
+    # Storm-window negative control: share of evaluation quiet grids (no emergency) with an alert starting in
+    # the 168 h before each storm's first load-shed onset, i.e. that would have "caught" an event that never
+    # happened. A method that only detects unusual weather alerts on quiet grids in the storm as well.
+    evalq = [g for g, k in group.items() if k == "evaluation"]
+    before = WINDOW["watch"][0]
+    for storm in sorted({e["storm"] for e in t1}):
+        t0 = min(e["onset"] for e in t1 if e["storm"] == storm)
+        share = np.mean([np.mean([any(0 < (t0 - t) / pd.Timedelta(hours=1) <= before for t in st.get((k, g), []))
+                                  for g in evalq]) for k in sorted({k for k, _ in st})])
+        sens.append(dict(level=lv, variant=f"storm control: {storm}", caught=float(share), caught_pre=float(share)))
+    # the same share for a typical week: pseudo-onsets every 7 days through the scored period
+    tb = data.timebase(evalq[0])
+    ts = pd.date_range(tb.loc[tb.in_warmup == 0, "timestamp"].iloc[0] + pd.Timedelta(hours=before),
+                       tb["timestamp"].iloc[-1], freq="7D")
+    seeds_ = sorted({k for k, _ in st})
+    hit = [[np.searchsorted(np.sort(np.array(st.get((k, g), []), dtype="datetime64[ns]")), ts.values) -
+            np.searchsorted(np.sort(np.array(st.get((k, g), []), dtype="datetime64[ns]")),
+                            (ts - pd.Timedelta(hours=before)).values, side="right") > 0 for g in evalq] for k in seeds_]
+    sens.append(dict(level=lv, variant="storm control: typical week", caught=float(np.mean(hit)), caught_pre=float(np.mean(hit))))
     return ev.assign(level=lv), gr.assign(level=lv, group=gr.grid.map(group)), chance, sens
 
 
@@ -298,10 +318,16 @@ def stats(primary: list):
             continue
         R = np.array([rankdata(-row) for row in X.to_numpy()])
         k, n = X.shape[1], X.shape[0]
-        cd = studentized_range.ppf(0.95, k, np.inf) / np.sqrt(2) * np.sqrt(k * (k + 1) / (6 * n))
+        cd = lambda k: studentized_range.ppf(0.95, k, np.inf) / np.sqrt(2) * np.sqrt(k * (k + 1) / (6 * n))
+        Xn = X.drop(columns="random", errors="ignore")           # the tests reported: without random scores
+        Rn = np.array([rankdata(-row) for row in Xn.to_numpy()]).mean(0)
+        top4 = Xn.sum().sort_values(ascending=False).index[:4]
         fr.append(dict(measure=key, events=n, methods=k, friedman_p=friedmanchisquare(*X.to_numpy().T).pvalue,
-                       friedman_p_without_random=friedmanchisquare(*X.drop(columns="random", errors="ignore").to_numpy().T).pvalue,
-                       nemenyi_cd=cd, **{f"rank_{label(m)}": r for m, r in zip(X.columns, R.mean(0))}))
+                       friedman_p_without_random=friedmanchisquare(*Xn.to_numpy().T).pvalue,
+                       nemenyi_cd=cd(k), nemenyi_cd_without_random=cd(Xn.shape[1]),
+                       max_rank_gap_without_random=Rn.max() - Rn.min(),
+                       friedman_p_top4=friedmanchisquare(*Xn[top4].to_numpy().T).pvalue,
+                       top4=" ".join(top4), **{f"rank_{label(m)}": r for m, r in zip(X.columns, R.mean(0))}))
         for st in sorted(set(storms.values())):
             keep = [e for e in X.index if storms.get(e) != st]
             loso.append(dict(measure=key, without=st, events=len(keep), **{label(m): round(float(X.loc[keep, m].sum()), 1) for m in X.columns}))
@@ -405,12 +431,13 @@ def main():
     ap.add_argument("--stats", action="store_true")
     ap.add_argument("--variants", nargs="+", help="rerun only these ablation variants (merged into ablation.csv)")
     ap.add_argument("--salt", type=int, default=0, help="tie-break draw; nonzero writes methods/<method>_salt<k>")
+    ap.add_argument("--redo", action="store_true", help="rescore protocol outputs that already exist")
     a = ap.parse_args()
     global SALT
     SALT = a.salt
     if a.stats:
         return stats(a.method)
-    args = [(m, a.scores, a.htm, not a.no_ablations, a.variants) for m in a.method]
+    args = [(m, a.scores, a.htm, not a.no_ablations, a.variants, a.redo) for m in a.method]
     if a.jobs > 1:
         with ProcessPoolExecutor(a.jobs) as ex:
             list(ex.map(score_method, *zip(*args)))

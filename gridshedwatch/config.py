@@ -1,4 +1,6 @@
-"""Fixed settings of GridShedWatch v1.0. Changing any of these makes a different benchmark."""
+"""Fixed settings of GridShedWatch. Changing any of these makes a different benchmark. The final scoring
+protocol (docs/protocol_v3.md) uses the shared settings and the V3_* block; THRESHOLDS, PERSISTENCE and
+BOOTSTRAP_DRAWS reproduce earlier releases."""
 from pathlib import Path
 
 import pandas as pd
@@ -35,9 +37,9 @@ WINDOW = {"watch": (168, 0), "warning": (168, 48)}
 
 # Alert budgets (episodes per grid per year), chosen without event labels.
 BUDGET = {"watch": 12.0, "warning": 2.0}
-# Alerts track only: no grid may exceed GRID_CAP x budget (alerts there can be placed grid by grid,
-# so a median alone could be met while flooding a few grids). Every reference method's alerts
-# meet it (highest single-grid rates in v1.0: 17.7 watches, 5.1 warnings per year).
+# Quiet grids above GRID_CAP x budget are counted and reported for every method, in both tracks alike
+# (an operator would learn to ignore a grid alerting that often). Earlier releases also required
+# alerts-track entries to stay under it; the final protocol reports it instead of enforcing it.
 GRID_CAP = 3.0
 
 # Shared alert rules. Per-signal scores p in [0, 1] -> system alert.

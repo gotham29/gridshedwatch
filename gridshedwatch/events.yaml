@@ -398,3 +398,18 @@ near_miss:
     time_utc: 2026-01-24 09:36
     what: Max Gen Event Step 2a then 2c (EEA 2), from 4:36 AM EST, Winter Storm Fern
     source: MISO update to the Missouri PSC, 2026-02-19
+  pjm_2022-12-23:
+    grid_id: pjm
+    time_utc: 2022-12-23 22:30
+    what: Maximum Generation Emergency Action and Emergency Load Management Reduction Action, NERC EEA 2, from 5:30 PM EPT, Winter Storm Elliott (again from 4:20 AM Dec 24)
+    source: PJM, Winter Storm Elliott overview, Markets and Reliability Committee, 2023-01-11
+  sceg_2022-12-24:
+    grid_id: sceg
+    time_utc: 2022-12-24 10:18
+    what: 94 MW firm load shed for 9 minutes, morning of Dec 24, Winter Storm Elliott (exact time unpublished; set to the Carolinas reserve-sharing EEA, 5:18 AM EST)
+    source: FERC-NERC Winter Storm Elliott inquiry, presentation of 2023-09-21
+  sc_2022-12-24:
+    grid_id: sc
+    time_utc: 2022-12-24 10:18
+    what: 86 MW firm load shed for 17 minutes, morning of Dec 24, Winter Storm Elliott (exact time unpublished; set as for Dominion Energy SC)
+    source: FERC-NERC Winter Storm Elliott inquiry, presentation of 2023-09-21

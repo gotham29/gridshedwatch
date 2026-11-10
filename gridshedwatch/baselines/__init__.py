@@ -26,8 +26,10 @@ METHODS = {
     "csd": ("Critical slowing down", "csd", [0]),
     # reported beside the entries, not entries (docs/protocol_v3.md, New reference methods)
     "gbm_rt": ("Gradient-boosted forecaster (refit yearly)", "gbm:scores_retrained", range(5)),
+    "dflevel": ("Day-ahead forecast level (weather control)", "dflevel", [0]),
 }
-ENTRIES = [m for m in METHODS if not m.endswith("_rt")]          # ranked and tested; *_rt are reported beside
+CONTROLS = {"dflevel"}                                            # scored like a method, reported beside
+ENTRIES = [m for m in METHODS if not m.endswith("_rt") and m not in CONTROLS]   # ranked and tested
 LABEL = {m: v[0] for m, v in METHODS.items()}
 HTM_V2 = "HTM (htm-monitor, frozen after 2019)"     # HTM's entry from v2.0 on (docs/protocol_v2.md)
 V1_METHODS = ["oprule", "zscore", "chronos", "lstm", "htm"]     # the published v1.0 table

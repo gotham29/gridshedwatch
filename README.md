@@ -38,7 +38,7 @@ what GridShedWatch measures.
 | **Rules** | One shared rule that turns per-signal scores into watches and warnings, so methods differ only in how they score each hour ([gridshedwatch/rules.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/rules.py)) |
 | **Scoring** | The same alert budget for every method, set on quiet grids without looking at any event; events caught, lead time, and false alarms on quiet grids, with exact intervals and a seasonal chance baseline, fixed in a dated protocol ([docs/protocol_v3.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/protocol_v3.md)) |
 | **Status quo** | Every operator notice in the week before each event, with times and sources ([gridshedwatch/operator_notices.yaml](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/operator_notices.yaml)) |
-| **Reference methods** | An operator-style rule, a seasonal z-score, an LSTM forecaster, Chronos-Bolt (zero-shot), and HTM ([gridshedwatch/baselines/](https://github.com/gotham29/gridshedwatch/tree/main/gridshedwatch/baselines/)) |
+| **Reference methods** | 11: an operator-style rule, a seasonal z-score, CUSUM, critical slowing down, Sub-PCA, LSTM, PatchTST and LightGBM forecasters, Chronos-Bolt (zero-shot), HTM, and random scores, plus two weather controls built on the day-ahead forecast ([gridshedwatch/baselines/](https://github.com/gotham29/gridshedwatch/tree/main/gridshedwatch/baselines/)) |
 | **Datasheet** | Motivation, composition, collection, intended uses, known biases and maintenance ([docs/datasheet.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/datasheet.md)) |
 
 | Event | Grid | Shed at its worst | Split |

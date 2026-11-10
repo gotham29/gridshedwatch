@@ -141,4 +141,16 @@ shared rules and the operating point in (1), and output a causal percentile in [
   - The any-time chance baseline (item 5's comparison with v2.0) is not reported: with one shift shared
     by all grids, a draw near zero shift leaves every alert in place, which puts a floor of about 0.003
     to 0.007 under its p-values. All claims use the seasonal baseline, whose shifts are always at least
-    a year less 15 days. Its `_any` columns in the results are kept but not used.
+    a year less 15 days. Its `_any` columns are kept and reported for reference only, never used for claims.
+- 2026-11-10, after three independent reviews; all exploratory, none changes the headline numbers:
+  - Weather controls, scored like methods but not ranked: the day-ahead forecast level, and its
+    seasonal anomaly. Storm-window control: share of evaluation quiet grids alerted in the week before
+    each storm's first onset, for all of them and for those whose demand anomaly reached its top 1%.
+  - Selectivity: exact permutation test, within Uri and Elliott, of watches on load-shed grids against
+    those exposed quiet grids (`selectivity.csv`), Holm over the ranked entries.
+  - Further chance tests, on their own random stream: alerts delayed 24 h, the held-out events, each
+    storm left out, each seed alone, and any time with shifts of at least 30 days.
+  - Near-miss masks added: PJM's Elliott EEA 2, the Dominion Energy SC and Santee Cooper sheds, and
+    CAISO's 2021-07-09 EEA 3 (a Tier 2 candidate whose declaration time is unpublished).
+  - Friedman test also reported over the methods that beat chance; operators' first notice of any
+    kind reported beside their first public one.

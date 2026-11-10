@@ -15,10 +15,11 @@ Labels, two variants (every event on a grid is labeled):
   event:   the 48 hours from onset (the emergency itself, as a per-hour benchmark would label it)
   lead:    the 168 hours before onset (the window in which a watch counts)
 Metrics are computed per grid with an event (post-warm-up hours only), averaged over seeds, then over
-grids. On a later release HTM's entry is htm-monitor frozen after 2019 (reference_scores/htm_frozen),
-and per_hour_tau.csv gives each metric's Kendall tau with events caught (results/v<version>/summary.csv).
+grids. With --version 3.0 (the final protocol): the 8 Tier 1 grids, only Tier 1 load sheds labeled,
+all 11 reference methods, and per_hour_tau.csv gives each metric's Kendall tau with Tier 1 watches and
+warnings before onset caught (results/v3.0/summary.csv).
 
-Usage: python scripts/per_hour_metrics.py [--version 1.0] [--jobs 2] [--out results/v<version>/per_hour]
+Usage: python scripts/per_hour_metrics.py [--version 3.0] [--jobs 2] [--out results/v<version>/per_hour]
 """
 import argparse
 import json
@@ -33,10 +34,12 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from gridshedwatch import data, submission  # noqa: E402
-from gridshedwatch.baselines import HTM_V2, LABEL, to_p, zscore  # noqa: E402
+from gridshedwatch.baselines import HTM_V2, LABEL, scores, to_p, zscore  # noqa: E402
 
 H = pd.Timedelta(hours=1)
 LABELS = {"event": (0, 48), "lead": (-168, 0)}          # hours relative to onset, [lo, hi)
+DATA = {"3.0": "2.0"}                                   # final protocol scores the 48-grid data release
+FINAL = ["oprule", "zscore", "cusum", "csd", "chronos", "subpca", "gbm", "patchtst", "lstm", "htm", "random"]
 WINDOW = 24                                              # TSB-AD sliding window (daily cycle)
 RANDOM_SEEDS = range(5)
 
@@ -54,11 +57,13 @@ def scores_for(method, grid, version="1.0"):
         return {0: oprule_score(grid)}
     if method == "zscore":
         return {0: zscore.scores(grid).to_numpy().max(axis=1)}
+    if method in ("cusum", "csd"):
+        return {0: scores(method, grid, 0).to_numpy().max(axis=1)}
     if method == "random":
         n = len(data.timebase(grid))
         return {k: np.random.default_rng(1000 + k).random(n) for k in RANDOM_SEEDS}
     folder = "htm_frozen" if method == "htm" and version != "1.0" else method
-    sc = submission.load(ROOT / "reference_scores" / folder, version, [grid])
+    sc = submission.load(ROOT / "reference_scores" / folder, DATA.get(version, version), [grid])
     return {k: sc[k][grid].to_numpy().max(axis=1) for k in sc}
 
 
@@ -66,8 +71,8 @@ def labels(grid, variant, version="1.0"):
     tb = data.timebase(grid)
     lo, hi = LABELS[variant]
     y = np.zeros(len(tb), int)
-    for e in data.event_list(version):
-        if e["grid"] == grid:
+    for e in data.event_list(DATA.get(version, version)):
+        if e["grid"] == grid and (version != "3.0" or e["tier"] == 1):
             d = (tb["timestamp"] - e["onset"]) / H
             y |= ((d >= lo) & (d < hi)).to_numpy(int)
     return y
@@ -88,15 +93,18 @@ def main():
     ap.add_argument("--version", default="1.0")
     ap.add_argument("--jobs", type=int, default=2)
     ap.add_argument("--out", type=Path)
-    ap.add_argument("--method", nargs="+", default=["oprule", "zscore", "chronos", "subpca", "gbm", "patchtst", "lstm", "htm",
-                                                    "random"])
+    ap.add_argument("--method", nargs="+")
     a = ap.parse_args()
+    a.method = a.method or (FINAL if a.version == "3.0" else ["oprule", "zscore", "chronos", "subpca", "gbm", "patchtst",
+                                                               "lstm", "htm", "random"])
     a.out = a.out or ROOT / "results" / f"v{a.version}" / "per_hour"
     a.out.mkdir(parents=True, exist_ok=True)
     done_file = a.out / "per_hour_raw.jsonl"           # one line per finished task, so a stopped run resumes
     rows = [json.loads(x) for x in done_file.read_text().splitlines()] if done_file.exists() else []
     done = {(r["method"], r["grid"], r["labels"], r["seed"]) for r in rows}
-    tasks = [(m, g, v, k, s, a.version) for m in a.method for g in data.event_grids(a.version)
+    grids = (sorted({e["grid"] for e in data.event_list("2.0") if e["tier"] == 1}) if a.version == "3.0"
+             else data.event_grids(a.version))
+    tasks = [(m, g, v, k, s, a.version) for m in a.method for g in grids
              for k, s in scores_for(m, g, a.version).items() for v in LABELS if (m, g, v, k) not in done]
     with ProcessPoolExecutor(a.jobs) as ex, done_file.open("a") as fh:
         for i, r in enumerate(ex.map(job, tasks, chunksize=1)):
@@ -119,7 +127,8 @@ def main():
         tau = []
         for (lab, lv) in [(lab, lv) for lab in LABELS for lv in ("watch", "warning")]:
             x = summary[summary.labels == lab].set_index("name")
-            caught = (ev[f"tier1_{lv}_caught_all"] + ev[f"tier2_{lv}_caught_all"]).loc[x.index]
+            caught = (ev[f"{lv}_caught" if lv == "watch" else "warning_pre_caught"] if a.version == "3.0"
+                      else ev[f"tier1_{lv}_caught_all"] + ev[f"tier2_{lv}_caught_all"]).loc[x.index]
             tau.append(dict(labels=lab, level=lv, **{m: round(kendalltau(x[m], caught).statistic, 2) for m in metrics}))
         pd.DataFrame(tau).to_csv(a.out / "per_hour_tau.csv", index=False)
         print(pd.DataFrame(tau).to_string(index=False))

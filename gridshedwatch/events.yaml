@@ -413,3 +413,8 @@ near_miss:
     time_utc: 2022-12-24 10:18
     what: 86 MW firm load shed for 17 minutes, morning of Dec 24, Winter Storm Elliott (exact time unpublished; set as for Dominion Energy SC)
     source: FERC-NERC Winter Storm Elliott inquiry, presentation of 2023-09-21
+  ciso_2021-07-09:
+    grid_id: ca
+    time_utc: 2021-07-10 00:00
+    what: EEA 3 (Stage 2), load armed and operating reserves released, about 800 MW of reliability demand response; fires derated the Malin and NOB interties (over 1,500 MW of imports lost); no rotating outages. Declaration time unpublished; set to 5 PM PDT, the start of the emergency hours in CAISO's report
+    source: CAISO, Summer Market Performance Report for July 2021

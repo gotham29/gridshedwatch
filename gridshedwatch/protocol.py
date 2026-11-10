@@ -26,7 +26,7 @@ import pandas as pd
 
 from . import alerts, benchmark, data, submission
 from .baselines import ENTRIES, HTM_V2, LABEL, METHODS, likelihood, oprule, scores
-from .config import BUDGET, GRID_CAP, LATENCY_H, ROOT, SIGNALS, V3_CURVE, V3_TOL, WINDOW
+from .config import BUDGET, GRID_CAP, LATENCY_H, PACKAGE, ROOT, SIGNALS, V3_CURVE, V3_TOL, WINDOW
 
 V = "2.0"                                     # the data release scored (48 grids, 10 events)
 LEVELS = benchmark.LEVELS
@@ -34,6 +34,7 @@ OUT = ROOT / "results" / "v3.0"
 VARIANTS = {"any_signal": list(SIGNALS), "forecast_error_only": ["forecast_error"]}
 
 
+REFERENCE = PACKAGE / "reference_v3.csv"      # summary rows of the 11 reference methods (shipped with the package)
 SALT = 0                                       # tie-break draw (--salt); results go to methods/<method>_salt<k>
 
 
@@ -285,6 +286,8 @@ def stats(primary: list):
         adj = np.maximum.accumulate(np.minimum(1, (len(p) - np.arange(len(p))) * p[order]))
         sm.loc[ent[order], col + "_holm"] = adj
     sm.to_csv(OUT / "summary.csv", index=False)
+    if OUT == ROOT / "results" / "v3.0":           # the reference rows new submissions are shown against
+        sm[sm.code.isin(list(ENTRIES))].to_csv(REFERENCE, index=False)
     # Friedman and Nemenyi over the ranked entries, and leave one storm out. No pairwise tests: with 8 events
     # and 10 Holm-corrected comparisons, none could reach 0.05 even at 8 of 8 (deviation 2026-11-06).
     storms = {e["id"]: e.get("storm") for e in data.event_list(V) if e["tier"] == 1}
@@ -364,17 +367,23 @@ def score_new(name: str, folder=None, alerts_file=None, out=None) -> pd.DataFram
             score_method(name, folder.parent, None, ablations=False)
         else:
             _score_alerts(alerts.load(alerts_file, V), mdir)
-        tmp = Path(tempfile.mkdtemp(prefix="gsw_"))         # the reference methods' folders, plus this one
+        tmp = Path(tempfile.mkdtemp(prefix="gsw_"))         # this method's summary row, on its own
         (tmp / "methods").mkdir()
-        for m in ENTRIES:
-            os.symlink(keep / "methods" / m, tmp / "methods" / m)
         os.symlink(mdir, tmp / "methods" / name)
         OUT = tmp
-        stats(list(ENTRIES))
-        s = pd.read_csv(tmp / "summary.csv")
+        stats([name])
+        s = pd.concat([pd.read_csv(REFERENCE), pd.read_csv(tmp / "summary.csv")], ignore_index=True)
     finally:
         OUT = keep
-    s = s[s.code.isin(list(ENTRIES) + [name])]
+    t = comparison(s, name)
+    t.to_csv(out / f"{name}_comparison.csv", index=False)
+    return t
+
+
+def comparison(s: pd.DataFrame = None, name: str = None) -> pd.DataFrame:
+    """The comparison table: the reference methods by watches caught, then `name` (if given) last."""
+    s = pd.read_csv(REFERENCE) if s is None else s
+    s = s[s.code.isin(list(ENTRIES) + [name])].copy()
     s["p"] = s.watch_p_season_holm.fillna(s.watch_p_season)
     r = lambda x: np.floor(x + 0.5).astype("Int64").astype(str)        # half up, as in the paper
     t = pd.DataFrame({"method": s.method, "watches (of 8)": s.watch_caught, "by chance": s.watch_chance_season,
@@ -383,9 +392,7 @@ def score_new(name: str, folder=None, alerts_file=None, out=None) -> pd.DataFram
                       "quiet grids: median / 90th pct / worst": r(s.watch_burden_median)
                       + " / " + r(s.watch_burden_p90) + " / " + r(s.watch_burden_max),
                       "within budget": s.watch_reached & s.warning_reached})
-    t = pd.concat([t[s.code != name].sort_values("watches (of 8)", ascending=False), t[s.code == name]])
-    t.to_csv(out / f"{name}_comparison.csv", index=False)
-    return t
+    return pd.concat([t[s.code != name].sort_values("watches (of 8)", ascending=False), t[s.code == name]])
 
 def main():
     ap = argparse.ArgumentParser()

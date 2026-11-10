@@ -29,4 +29,6 @@ jobs:
           cd "$RUNNER_TEMP"
           gridshedwatch info
           gridshedwatch score --oprule --no-chance
+          printf 'grid,level,start_utc\ntx,watch,2021-02-12 00:00\n' > one_alert.csv
+          gridshedwatch score-alerts one_alert.csv --name one_alert
           python -c "from gridshedwatch import data; assert len(data.signals('tx')) == 59040"

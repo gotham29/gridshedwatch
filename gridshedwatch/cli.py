@@ -49,6 +49,10 @@ def _baseline(a):
 
 def _protocol(a, folder=None, file=None):
     from . import protocol
+    if getattr(a, "oprule", False):       # a reference method: its row is in the reference table
+        t = protocol.comparison()
+        print(t.to_string(index=False))
+        return
     if not a.name:
         sys.exit("give the method a short --name (used for its results folder)")
     t = protocol.score_new(a.name, folder=folder, alerts_file=file, out=a.out)
@@ -65,7 +69,7 @@ def _protocol(a, folder=None, file=None):
 
 
 def _score(a):
-    if a.version == "3.0" and not a.oprule:
+    if a.version == "3.0":
         return _protocol(a, folder=a.folder)
     if a.oprule:
         from .baselines import oprule

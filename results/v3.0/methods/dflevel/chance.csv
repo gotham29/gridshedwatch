@@ -1,0 +1,7 @@
+level,measure,null,observed,chance,p,chance_median_lead_h
+watch,caught,season,3.0,0.5375,0.041979010494752625,97.61006160686702
+watch,caught,any,3.0,1.0685,0.1794102948525737,117.29430004523965
+warning,caught,season,3.0,0.0,0.0004997501249375312,
+warning,caught,any,3.0,0.4215,0.04297851074462768,101.3380428645587
+warning,caught_pre,season,0.0,0.0,1.0,
+warning,caught_pre,any,0.0,0.388,1.0,102.6682753326968

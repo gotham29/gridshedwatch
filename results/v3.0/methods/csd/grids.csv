@@ -68,8 +68,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 0,pacw,15,0,0,0,6.729637234770705,warning,calibration
 0,pge,15,0,0,0,6.729637234770705,warning,calibration
 0,pnm,19,0,0,0,6.729637234770705,warning,calibration
-0,sc,8,0,0,0,6.729637234770705,warning,calibration
-0,sceg,7,0,0,0,6.729637234770705,warning,calibration
+0,sc,8,0,0,1,6.729637234770705,warning,calibration
+0,sceg,7,0,0,1,6.729637234770705,warning,calibration
 0,scl,16,0,0,0,6.729637234770705,warning,calibration
 0,tal,8,0,0,0,6.729637234770705,warning,calibration
 0,tec,4,0,0,0,6.729637234770705,warning,calibration

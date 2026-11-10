@@ -20,8 +20,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 0,pacw,63,0,0,0,6.729637234770705,watch,calibration
 0,pge,76,0,0,0,6.729637234770705,watch,calibration
 0,pnm,150,0,0,0,6.729637234770705,watch,calibration
-0,sc,91,0,0,0,6.729637234770705,watch,calibration
-0,sceg,76,0,0,0,6.729637234770705,watch,calibration
+0,sc,91,0,0,1,6.729637234770705,watch,calibration
+0,sceg,76,0,0,1,6.729637234770705,watch,calibration
 0,scl,28,0,0,0,6.729637234770705,watch,calibration
 0,tal,160,0,0,0,6.729637234770705,watch,calibration
 0,tec,178,0,0,0,6.729637234770705,watch,calibration
@@ -68,8 +68,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 1,pacw,53,0,0,0,6.729637234770705,watch,calibration
 1,pge,85,0,0,0,6.729637234770705,watch,calibration
 1,pnm,156,0,0,0,6.729637234770705,watch,calibration
-1,sc,89,0,0,0,6.729637234770705,watch,calibration
-1,sceg,87,0,0,0,6.729637234770705,watch,calibration
+1,sc,89,0,0,1,6.729637234770705,watch,calibration
+1,sceg,87,0,0,1,6.729637234770705,watch,calibration
 1,scl,30,0,0,0,6.729637234770705,watch,calibration
 1,tal,161,0,0,0,6.729637234770705,watch,calibration
 1,tec,184,0,0,0,6.729637234770705,watch,calibration
@@ -116,8 +116,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 2,pacw,53,0,0,0,6.729637234770705,watch,calibration
 2,pge,70,0,0,0,6.729637234770705,watch,calibration
 2,pnm,159,0,0,0,6.729637234770705,watch,calibration
-2,sc,88,0,0,0,6.729637234770705,watch,calibration
-2,sceg,79,0,0,0,6.729637234770705,watch,calibration
+2,sc,88,0,0,1,6.729637234770705,watch,calibration
+2,sceg,79,0,0,1,6.729637234770705,watch,calibration
 2,scl,30,0,0,0,6.729637234770705,watch,calibration
 2,tal,164,0,0,0,6.729637234770705,watch,calibration
 2,tec,178,0,0,0,6.729637234770705,watch,calibration
@@ -164,8 +164,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 3,pacw,58,0,0,0,6.729637234770705,watch,calibration
 3,pge,73,0,0,0,6.729637234770705,watch,calibration
 3,pnm,159,0,0,0,6.729637234770705,watch,calibration
-3,sc,91,0,0,0,6.729637234770705,watch,calibration
-3,sceg,81,0,0,0,6.729637234770705,watch,calibration
+3,sc,91,0,0,1,6.729637234770705,watch,calibration
+3,sceg,81,0,0,1,6.729637234770705,watch,calibration
 3,scl,29,0,0,0,6.729637234770705,watch,calibration
 3,tal,163,0,0,0,6.729637234770705,watch,calibration
 3,tec,182,0,0,0,6.729637234770705,watch,calibration
@@ -212,8 +212,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 4,pacw,59,0,0,0,6.729637234770705,watch,calibration
 4,pge,73,0,0,0,6.729637234770705,watch,calibration
 4,pnm,161,0,0,0,6.729637234770705,watch,calibration
-4,sc,83,0,0,0,6.729637234770705,watch,calibration
-4,sceg,84,0,0,0,6.729637234770705,watch,calibration
+4,sc,83,0,0,1,6.729637234770705,watch,calibration
+4,sceg,84,0,0,1,6.729637234770705,watch,calibration
 4,scl,30,0,0,0,6.729637234770705,watch,calibration
 4,tal,147,0,0,0,6.729637234770705,watch,calibration
 4,tec,176,0,0,0,6.729637234770705,watch,calibration
@@ -260,8 +260,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 0,pacw,16,0,0,0,6.729637234770705,warning,calibration
 0,pge,3,0,0,0,6.729637234770705,warning,calibration
 0,pnm,9,0,0,0,6.729637234770705,warning,calibration
-0,sc,22,0,0,0,6.729637234770705,warning,calibration
-0,sceg,9,0,0,0,6.729637234770705,warning,calibration
+0,sc,22,0,0,1,6.729637234770705,warning,calibration
+0,sceg,9,0,0,1,6.729637234770705,warning,calibration
 0,scl,2,0,0,0,6.729637234770705,warning,calibration
 0,tal,19,0,0,0,6.729637234770705,warning,calibration
 0,tec,35,0,0,0,6.729637234770705,warning,calibration
@@ -278,7 +278,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 0,ipco,7,0,0,0,6.729637234770705,warning,evaluation
 0,ldwp,20,0,0,0,6.729637234770705,warning,evaluation
 0,nyis,32,0,0,0,6.729637234770705,warning,evaluation
-0,pjm,10,0,0,0,6.729637234770705,warning,evaluation
+0,pjm,10,0,0,1,6.729637234770705,warning,evaluation
 0,psco,112,0,0,0,6.729637234770705,warning,evaluation
 0,soco,31,0,0,0,6.729637234770705,warning,evaluation
 0,spa,4,0,0,0,6.701460187086471,warning,evaluation
@@ -308,8 +308,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 1,pacw,18,0,0,0,6.729637234770705,warning,calibration
 1,pge,2,0,0,0,6.729637234770705,warning,calibration
 1,pnm,9,0,0,0,6.729637234770705,warning,calibration
-1,sc,23,0,0,0,6.729637234770705,warning,calibration
-1,sceg,9,0,0,0,6.729637234770705,warning,calibration
+1,sc,23,0,0,1,6.729637234770705,warning,calibration
+1,sceg,9,0,0,1,6.729637234770705,warning,calibration
 1,scl,2,0,0,0,6.729637234770705,warning,calibration
 1,tal,18,0,0,0,6.729637234770705,warning,calibration
 1,tec,33,0,0,0,6.729637234770705,warning,calibration
@@ -326,7 +326,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 1,ipco,9,0,0,0,6.729637234770705,warning,evaluation
 1,ldwp,21,0,0,0,6.729637234770705,warning,evaluation
 1,nyis,32,0,0,0,6.729637234770705,warning,evaluation
-1,pjm,18,0,0,0,6.729637234770705,warning,evaluation
+1,pjm,18,0,0,1,6.729637234770705,warning,evaluation
 1,psco,113,0,0,0,6.729637234770705,warning,evaluation
 1,soco,31,0,0,0,6.729637234770705,warning,evaluation
 1,spa,7,0,0,0,6.701460187086471,warning,evaluation
@@ -356,8 +356,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 2,pacw,18,0,0,0,6.729637234770705,warning,calibration
 2,pge,5,0,0,0,6.729637234770705,warning,calibration
 2,pnm,8,0,0,0,6.729637234770705,warning,calibration
-2,sc,20,0,0,0,6.729637234770705,warning,calibration
-2,sceg,10,0,0,0,6.729637234770705,warning,calibration
+2,sc,20,0,0,1,6.729637234770705,warning,calibration
+2,sceg,10,0,0,1,6.729637234770705,warning,calibration
 2,scl,2,0,0,0,6.729637234770705,warning,calibration
 2,tal,19,0,0,0,6.729637234770705,warning,calibration
 2,tec,35,0,0,0,6.729637234770705,warning,calibration
@@ -374,7 +374,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 2,ipco,8,0,0,0,6.729637234770705,warning,evaluation
 2,ldwp,23,0,0,0,6.729637234770705,warning,evaluation
 2,nyis,31,0,0,0,6.729637234770705,warning,evaluation
-2,pjm,12,0,0,0,6.729637234770705,warning,evaluation
+2,pjm,12,0,0,1,6.729637234770705,warning,evaluation
 2,psco,113,0,0,0,6.729637234770705,warning,evaluation
 2,soco,35,0,0,0,6.729637234770705,warning,evaluation
 2,spa,6,0,0,0,6.701460187086471,warning,evaluation
@@ -404,8 +404,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 3,pacw,17,0,0,0,6.729637234770705,warning,calibration
 3,pge,6,0,0,0,6.729637234770705,warning,calibration
 3,pnm,8,0,0,0,6.729637234770705,warning,calibration
-3,sc,21,0,0,0,6.729637234770705,warning,calibration
-3,sceg,8,0,0,0,6.729637234770705,warning,calibration
+3,sc,21,0,0,1,6.729637234770705,warning,calibration
+3,sceg,8,0,0,1,6.729637234770705,warning,calibration
 3,scl,3,0,0,0,6.729637234770705,warning,calibration
 3,tal,20,0,0,0,6.729637234770705,warning,calibration
 3,tec,36,0,0,0,6.729637234770705,warning,calibration
@@ -422,7 +422,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 3,ipco,8,0,0,0,6.729637234770705,warning,evaluation
 3,ldwp,24,0,0,0,6.729637234770705,warning,evaluation
 3,nyis,33,0,0,0,6.729637234770705,warning,evaluation
-3,pjm,13,0,0,0,6.729637234770705,warning,evaluation
+3,pjm,13,0,0,1,6.729637234770705,warning,evaluation
 3,psco,115,0,0,0,6.729637234770705,warning,evaluation
 3,soco,31,0,0,0,6.729637234770705,warning,evaluation
 3,spa,6,0,0,0,6.701460187086471,warning,evaluation
@@ -452,8 +452,8 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 4,pacw,17,0,0,0,6.729637234770705,warning,calibration
 4,pge,5,0,0,0,6.729637234770705,warning,calibration
 4,pnm,11,0,0,0,6.729637234770705,warning,calibration
-4,sc,23,0,0,0,6.729637234770705,warning,calibration
-4,sceg,8,0,0,0,6.729637234770705,warning,calibration
+4,sc,23,0,0,1,6.729637234770705,warning,calibration
+4,sceg,8,0,0,1,6.729637234770705,warning,calibration
 4,scl,2,0,0,0,6.729637234770705,warning,calibration
 4,tal,18,0,0,0,6.729637234770705,warning,calibration
 4,tec,34,0,0,0,6.729637234770705,warning,calibration
@@ -470,7 +470,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 4,ipco,7,0,0,0,6.729637234770705,warning,evaluation
 4,ldwp,19,0,0,0,6.729637234770705,warning,evaluation
 4,nyis,29,0,0,0,6.729637234770705,warning,evaluation
-4,pjm,9,0,0,0,6.729637234770705,warning,evaluation
+4,pjm,9,0,0,1,6.729637234770705,warning,evaluation
 4,psco,110,0,0,0,6.729637234770705,warning,evaluation
 4,soco,29,0,0,0,6.729637234770705,warning,evaluation
 4,spa,5,0,0,0,6.701460187086471,warning,evaluation

@@ -239,6 +239,26 @@ nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Gradient-boosted forecaster 
 spp,1,held-out,Uri,0.2,0.0,,Gradient-boosted forecaster (refit yearly),warning
 tva,1,development,Elliott,1.0,0.8,1.2,Gradient-boosted forecaster (refit yearly),warning
 tx,1,development,Uri,1.0,1.0,75.33333333333333,Gradient-boosted forecaster (refit yearly),warning
+ca,1,development,Aug 2020 heat wave,1.0,1.0,24.633333333333333,Day-ahead forecast level (weather control),watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,119.28333333333333,Day-ahead forecast level (weather control),watch
+cple,1,held-out,Elliott,1.0,1.0,1.4166666666666667,Day-ahead forecast level (weather control),watch
+duk,1,held-out,Elliott,0.0,0.0,,Day-ahead forecast level (weather control),watch
+lgee,1,held-out,Elliott,1.0,1.0,0.6,Day-ahead forecast level (weather control),watch
+miso,1,held-out,Uri,0.0,0.0,,Day-ahead forecast level (weather control),watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,1.0,1.0,20.5,Day-ahead forecast level (weather control),watch
+spp,1,held-out,Uri,0.0,0.0,,Day-ahead forecast level (weather control),watch
+tva,1,development,Elliott,0.0,0.0,,Day-ahead forecast level (weather control),watch
+tx,1,development,Uri,0.0,0.0,,Day-ahead forecast level (weather control),watch
+ca,1,development,Aug 2020 heat wave,1.0,0.0,,Day-ahead forecast level (weather control),warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,20.283333333333335,Day-ahead forecast level (weather control),warning
+cple,1,held-out,Elliott,1.0,0.0,,Day-ahead forecast level (weather control),warning
+duk,1,held-out,Elliott,0.0,0.0,,Day-ahead forecast level (weather control),warning
+lgee,1,held-out,Elliott,0.0,0.0,,Day-ahead forecast level (weather control),warning
+miso,1,held-out,Uri,0.0,0.0,,Day-ahead forecast level (weather control),warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Day-ahead forecast level (weather control),warning
+spp,1,held-out,Uri,0.0,0.0,,Day-ahead forecast level (weather control),warning
+tva,1,development,Elliott,1.0,0.0,,Day-ahead forecast level (weather control),warning
+tx,1,development,Uri,0.0,0.0,,Day-ahead forecast level (weather control),warning
 ca,1,development,Aug 2020 heat wave,0.2,0.2,44.63333333333333,htm_online,watch
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.2,0.2,64.28333333333333,htm_online,watch
 cple,1,held-out,Elliott,1.0,1.0,9.416666666666666,htm_online,watch

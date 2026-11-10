@@ -2,10 +2,18 @@ level,variant,caught,caught_pre
 watch,latency 1 h,1.0,1.0
 watch,latency 6 h,1.0,1.0
 watch,latency 24 h,1.2,1.2
-watch,operating point set on all grids (no labels),1.0,1.0
 watch,onset: earlier of declaration and OE-417,1.0,1.0
+watch,storm control: Aug 2020 heat wave,0.22999999999999998,0.22999999999999998
+watch,storm control: Elliott,0.15,0.15
+watch,storm control: Uri,0.18,0.18
+watch,storm control: typical week,0.20603988603988604,0.20603988603988604
+watch,operating point set on all grids (no labels),1.0,1.0
 warning,latency 1 h,0.4,0.2
 warning,latency 6 h,0.4,0.2
 warning,latency 24 h,0.6,0.4
-warning,operating point set on all grids (no labels),0.4,0.2
 warning,onset: earlier of declaration and OE-417,0.4,0.2
+warning,storm control: Aug 2020 heat wave,0.02,0.02
+warning,storm control: Elliott,0.030000000000000006,0.030000000000000006
+warning,storm control: Uri,0.02,0.02
+warning,storm control: typical week,0.03723646723646724,0.03723646723646724
+warning,operating point set on all grids (no labels),0.4,0.2

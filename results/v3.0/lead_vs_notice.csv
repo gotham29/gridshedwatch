@@ -95,6 +95,14 @@ Gradient-boosted forecaster (refit yearly),miso,64.66666666666667,23.51666666666
 Gradient-boosted forecaster (refit yearly),duk,138.23333333333332,
 Gradient-boosted forecaster (refit yearly),cple,138.41666666666666,
 Gradient-boosted forecaster (refit yearly),lgee,9.6,
+Day-ahead forecast level (weather control),tx,,16.833333333333332
+Day-ahead forecast level (weather control),ca,24.633333333333333,26.916666666666668
+Day-ahead forecast level (weather control),tva,,
+Day-ahead forecast level (weather control),spp,,2.7666666666666666
+Day-ahead forecast level (weather control),miso,,23.516666666666666
+Day-ahead forecast level (weather control),duk,,
+Day-ahead forecast level (weather control),cple,1.4166666666666667,
+Day-ahead forecast level (weather control),lgee,0.6,
 htm_online,tx,103.33333333333333,16.833333333333332
 htm_online,ca,44.63333333333333,26.916666666666668
 htm_online,tva,151.2,

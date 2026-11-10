@@ -55,16 +55,21 @@ what GridShedWatch measures.
 ## Results
 
 <!-- leaderboard:start -->
-| Method | Watches: caught (of 8) | held-out (of 5) | by chance | median lead (h) | Warnings: caught (of 8) | held-out (of 5) | by chance | False alarm ratio (watch / warning) |
-|---|---|---|---|---|---|---|---|---|
-| Operators (public notices) | 4 | 2 | - | 20 | - | - | - | - |
-| Operator-style rule | 5 [3.0-7.0] | 4 | 1.2 | 85 | 2 [0.0-4.0] | 1 | 0.2 | 98% / 94% |
-| Seasonal z-score | 5 [3.0-7.0] | 4 | 1.1 | 105 | 6 [4.0-8.0] | 4 | 0.2 | 98% / 92% |
-| Chronos-Bolt (zero-shot) | 1 [0.0-3.0] | 1 | 0.9 | 9 | 3 [1.0-5.0] | 1 | 0.3 | 100% / 96% |
-| LSTM forecaster | 6.4 [4.6-8.0] | 4.4 | 1.3 | 8 | 4.8 [2.8-6.8] | 2.8 | 0.3 | 99% / 94% |
-| HTM (htm-monitor) | 6 [4.6-7.2] | 4 | 1.4 | 56 | 5.6 [3.8-7.2] | 3.6 | 0.3 | 98% / 93% |
+| method | watches (of 8) | by chance | p | warnings before onset | median watch lead (h) | quiet grids: median / 90th pct / worst | within budget |
+|---|---|---|---|---|---|---|---|
+| Gradient-boosted forecaster | 7.2 | 2.21 | 0.0055 | 6 | 43 | 16 / 33 / 63 | yes |
+| LSTM forecaster | 6.2 | 1.94 | 0.0055 | 4 | 11 | 12 / 32 / 56 | yes |
+| Chronos-Bolt (zero-shot) | 6 | 2.6 | 0.1434 | 1 | 30 | 12 / 32 / 49 | yes |
+| HTM (htm-monitor, frozen after 2019) | 6 | 1.7 | 0.0055 | 5 | 62 | 14 / 20 / 29 | yes |
+| PatchTST forecaster | 6 | 1.83 | 0.0055 | 5.6 | 12 | 12 / 28 / 47 | yes |
+| Operator-style rule | 5 | 2.33 | 0.2549 | 2 | 140 | 12 / 19 / 31 | yes |
+| Seasonal z-score | 5 | 0.86 | 0.1434 | 3 | 107 | 13 / 16 / 21 | yes |
+| CUSUM | 5 | 1.54 | 0.2549 | 4 | 65 | 12 / 20 / 27 | yes |
+| Critical slowing down | 4 | 2.26 | 0.4873 | 1 | 114 | 9 / 14 / 21 | yes |
+| Sub-PCA | 2 | 0.78 | 0.4873 | 0 | 73 | 11 / 23 / 28 | yes |
+| Random scores | 1 | 1.77 | 0.973 | 0.2 | 65 | 12 / 13 / 14 | yes |
 
-All five reference methods are in the scores track; no alerts-track entries yet. Mean over 5 seeds for the LSTM and HTM. [a-b]: 5th-95th percentile with events resampled. Operators: public notices in the 7 days before onset, scored as watches.
+Tier 1 load sheds, mean over seeds. *By chance*: the same alerts moved to random times in the same season; *p*: Holm-corrected over the 11 methods. Listed by watches caught; 8 events cannot rank the leading methods. Weather control (alerts when the grid's own day-ahead forecast is extreme): 3 watches, 0.54 by chance, 0 warnings before onset.
 <!-- leaderboard:end -->
 
 Four methods catch 6 to 7 of the 8 load sheds with watches, and 4 to 6 with warnings before onset,

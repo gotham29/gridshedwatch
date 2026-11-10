@@ -48,7 +48,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 0,wacm,150,0,0,0,6.232146931325576,watch,evaluation
 0,walc,55,0,0,0,6.729637234770705,watch,evaluation
 1,tx,118,6,6,1,6.729637234770705,watch,event
-1,ca,135,0,0,0,6.729637234770705,watch,event
+1,ca,135,0,0,1,6.729637234770705,watch,event
 1,tva,138,1,1,0,6.729637234770705,watch,event
 1,spp,143,0,0,0,6.729637234770705,watch,event
 1,miso,60,1,1,1,6.729637234770705,watch,event
@@ -96,7 +96,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 1,wacm,148,0,0,0,6.232146931325576,watch,evaluation
 1,walc,60,0,0,0,6.729637234770705,watch,evaluation
 2,tx,133,4,4,1,6.729637234770705,watch,event
-2,ca,122,0,0,0,6.729637234770705,watch,event
+2,ca,122,0,0,1,6.729637234770705,watch,event
 2,tva,141,1,1,0,6.729637234770705,watch,event
 2,spp,142,0,0,0,6.729637234770705,watch,event
 2,miso,59,1,1,0,6.729637234770705,watch,event
@@ -192,7 +192,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 3,wacm,136,0,0,0,6.232146931325576,watch,evaluation
 3,walc,59,0,0,0,6.729637234770705,watch,evaluation
 4,tx,147,5,5,1,6.729637234770705,watch,event
-4,ca,140,0,0,0,6.729637234770705,watch,event
+4,ca,140,0,0,1,6.729637234770705,watch,event
 4,tva,123,1,1,0,6.729637234770705,watch,event
 4,spp,148,0,0,0,6.729637234770705,watch,event
 4,miso,52,1,1,0,6.729637234770705,watch,event

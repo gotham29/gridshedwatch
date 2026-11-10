@@ -1,6 +1,6 @@
 seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 0,tx,67,0,0,0,6.729637234770705,watch,event
-0,ca,85,0,0,0,6.729637234770705,watch,event
+0,ca,85,0,0,1,6.729637234770705,watch,event
 0,tva,39,0,0,0,6.729637234770705,watch,event
 0,spp,74,0,0,0,6.729637234770705,watch,event
 0,miso,31,0,0,0,6.729637234770705,watch,event
@@ -48,7 +48,7 @@ seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 0,wacm,62,0,0,0,6.232146931325576,watch,evaluation
 0,walc,85,0,0,0,6.729637234770705,watch,evaluation
 0,tx,3,1,0,0,6.729637234770705,warning,event
-0,ca,12,0,0,0,6.729637234770705,warning,event
+0,ca,12,0,0,1,6.729637234770705,warning,event
 0,tva,6,1,0,0,6.729637234770705,warning,event
 0,spp,6,0,0,0,6.729637234770705,warning,event
 0,miso,4,0,0,0,6.729637234770705,warning,event

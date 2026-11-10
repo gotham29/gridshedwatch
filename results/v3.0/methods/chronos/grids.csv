@@ -1,6 +1,6 @@
 seed,grid,n_alerts,n_verified,n_verified_t1,n_masked,years,level,group
 0,tx,176,0,0,0,6.729637234770705,watch,event
-0,ca,90,0,0,0,6.729637234770705,watch,event
+0,ca,90,0,0,1,6.729637234770705,watch,event
 0,tva,139,1,1,0,6.729637234770705,watch,event
 0,spp,138,1,1,0,6.729637234770705,watch,event
 0,miso,64,1,1,0,6.729637234770705,watch,event

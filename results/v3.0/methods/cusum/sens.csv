@@ -6,6 +6,9 @@ watch,onset: earlier of declaration and OE-417,5.0,5.0
 watch,storm control: Aug 2020 heat wave,0.0,0.0
 watch,storm control: Elliott,0.35,0.35
 watch,storm control: Uri,0.25,0.25
+watch,"storm control, exposed grids (2): Aug 2020 heat wave",0.0,0.0
+watch,"storm control, exposed grids (6): Elliott",0.5,0.5
+watch,"storm control, exposed grids (5): Uri",0.2,0.2
 watch,storm control: typical week,0.14188034188034188,0.14188034188034188
 watch,operating point set on all grids (no labels),5.0,5.0
 warning,latency 1 h,6.0,4.0
@@ -15,5 +18,8 @@ warning,onset: earlier of declaration and OE-417,6.0,4.0
 warning,storm control: Aug 2020 heat wave,0.0,0.0
 warning,storm control: Elliott,0.0,0.0
 warning,storm control: Uri,0.1,0.1
+warning,"storm control, exposed grids (2): Aug 2020 heat wave",0.0,0.0
+warning,"storm control, exposed grids (6): Elliott",0.0,0.0
+warning,"storm control, exposed grids (5): Uri",0.0,0.0
 warning,storm control: typical week,0.026923076923076925,0.026923076923076925
 warning,operating point set on all grids (no labels),6.0,4.0

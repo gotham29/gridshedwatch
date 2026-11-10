@@ -259,6 +259,26 @@ nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Day-ahead forecast level (we
 spp,1,held-out,Uri,0.0,0.0,,Day-ahead forecast level (weather control),warning
 tva,1,development,Elliott,1.0,0.0,,Day-ahead forecast level (weather control),warning
 tx,1,development,Uri,0.0,0.0,,Day-ahead forecast level (weather control),warning
+ca,1,development,Aug 2020 heat wave,1.0,1.0,25.633333333333333,Day-ahead forecast anomaly (weather control),watch
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,1.0,1.0,50.28333333333333,Day-ahead forecast anomaly (weather control),watch
+cple,1,held-out,Elliott,1.0,1.0,15.416666666666666,Day-ahead forecast anomaly (weather control),watch
+duk,1,held-out,Elliott,1.0,1.0,8.233333333333333,Day-ahead forecast anomaly (weather control),watch
+lgee,1,held-out,Elliott,1.0,1.0,1.6,Day-ahead forecast anomaly (weather control),watch
+miso,1,held-out,Uri,1.0,1.0,16.666666666666668,Day-ahead forecast anomaly (weather control),watch
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Day-ahead forecast anomaly (weather control),watch
+spp,1,held-out,Uri,1.0,1.0,22.133333333333333,Day-ahead forecast anomaly (weather control),watch
+tva,1,development,Elliott,1.0,1.0,2.2,Day-ahead forecast anomaly (weather control),watch
+tx,1,development,Uri,1.0,1.0,66.33333333333333,Day-ahead forecast anomaly (weather control),watch
+ca,1,development,Aug 2020 heat wave,1.0,0.0,,Day-ahead forecast anomaly (weather control),warning
+ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.0,0.0,,Day-ahead forecast anomaly (weather control),warning
+cple,1,held-out,Elliott,1.0,1.0,2.4166666666666665,Day-ahead forecast anomaly (weather control),warning
+duk,1,held-out,Elliott,1.0,1.0,1.2333333333333334,Day-ahead forecast anomaly (weather control),warning
+lgee,1,held-out,Elliott,1.0,0.0,,Day-ahead forecast anomaly (weather control),warning
+miso,1,held-out,Uri,0.0,0.0,,Day-ahead forecast anomaly (weather control),warning
+nevp_2020-08-18,2,held-out,nevp_2020-08-18,0.0,0.0,,Day-ahead forecast anomaly (weather control),warning
+spp,1,held-out,Uri,0.0,0.0,,Day-ahead forecast anomaly (weather control),warning
+tva,1,development,Elliott,1.0,0.0,,Day-ahead forecast anomaly (weather control),warning
+tx,1,development,Uri,1.0,1.0,57.333333333333336,Day-ahead forecast anomaly (weather control),warning
 ca,1,development,Aug 2020 heat wave,0.2,0.2,44.63333333333333,htm_online,watch
 ciso_2022-09-06,2,held-out,ciso_2022-09-06,0.2,0.2,64.28333333333333,htm_online,watch
 cple,1,held-out,Elliott,1.0,1.0,9.416666666666666,htm_online,watch

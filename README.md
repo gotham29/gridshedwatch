@@ -69,15 +69,16 @@ what GridShedWatch measures.
 | Sub-PCA | 2 | 0.78 | 0.4873 | 0 | 73 | 11 / 23 / 28 | yes |
 | Random scores | 1 | 1.77 | 0.973 | 0.2 | 65 | 12 / 13 / 14 | yes |
 
-Tier 1 load sheds, mean over seeds. *By chance*: the same alerts moved to random times in the same season; *p*: Holm-corrected over the 11 methods. Listed by watches caught; 8 events cannot rank the leading methods. Weather control (alerts when the grid's own day-ahead forecast is extreme): 3 watches, 0.54 by chance, 0 warnings before onset.
+Tier 1 load sheds, mean over seeds. *By chance*: the same alerts moved to random times in the same season; *p*: Holm-corrected over the 11 methods. Listed by watches caught; 8 events cannot rank the leading methods. Weather control (how unusual the grid's own day-ahead forecast is for the season): 8 watches, 1.25 by chance, 3 warnings before onset. Weather control (the grid's own day-ahead forecast level): 3 watches, 0.54 by chance, 0 warnings before onset.
 <!-- leaderboard:end -->
 
-Four methods catch 6 to 7 of the 8 load sheds with watches, and 4 to 6 with warnings before onset,
-where their own alerts at random times in the same season catch about 2. The other results are not
-significant after correction. Eight events from three storms cannot rank the four. They do differ
-in practice: published net generation arrives the next morning, and a day's delay cuts the
-forecasters' catches the most. Full results, robustness checks and controls are in the paper and in
-`results/v3.0/` (per method: `methods/<method>/`).
+With data replayed as it happened, four methods catch 6 to 7 of the 8 load sheds with watches,
+where their own alerts at random times in the same season catch about 2. But a control built only
+on the operators' own day-ahead demand forecast catches all 8, about 16 hours ahead, with no
+publication delay; it also alerts on every equally cold grid that did not shed, while the learned
+methods are selective. With a day's real-time delay (published net generation arrives the next
+morning) no method beats chance. Telling a coming shortfall from a cold week is where methods
+differ. Full results, robustness checks and controls: the paper and `results/v3.0/`.
 
 ## Quick start
 

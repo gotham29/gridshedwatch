@@ -22,11 +22,12 @@ def main():
     note = ("\nTier 1 load sheds, mean over seeds. *By chance*: the same alerts moved to random times in the same "
             "season; *p*: Holm-corrected over the 11 methods. Listed by watches caught; 8 events cannot rank the "
             "leading methods.")
-    if "dflevel" in s_all.index:
-        d = s_all.loc["dflevel"]
-        note += (f" Weather control (alerts when the grid's own day-ahead forecast is extreme): "
-                 f"{d.watch_caught:g} watches, {d.watch_chance_season:.2f} by chance, "
-                 f"{d.warning_pre_caught:g} warnings before onset.")
+    for c, what in (("dfanom", "how unusual the grid's own day-ahead forecast is for the season"),
+                    ("dflevel", "the grid's own day-ahead forecast level")):
+        if c in s_all.index:
+            d = s_all.loc[c]
+            note += (f" Weather control ({what}): {d.watch_caught:g} watches, {d.watch_chance_season:.2f} by chance, "
+                     f"{d.warning_pre_caught:g} warnings before onset.")
     table = "\n".join(lines) + "\n" + note
     p = ROOT / "README.md"
     s = p.read_text()

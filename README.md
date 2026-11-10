@@ -34,9 +34,9 @@ what GridShedWatch measures.
 | | |
 |---|---|
 | **Events** | 8 supply-shortfall load sheds of at least 250 MW, Jan 2020 to Sep 2026, chosen by a stated rule from NERC's annual lists ([docs/events.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/events.md)) |
-| **Data** | A frozen snapshot of EIA-930 hourly demand, day-ahead forecast and net generation for the 8 grids, 2019-2026, and the five signals built from it ([gridshedwatch/snapshot_v1.0/](https://github.com/gotham29/gridshedwatch/tree/main/gridshedwatch/snapshot_v1.0/), [gridshedwatch/data.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/data.py)) |
+| **Data** | A frozen snapshot of EIA-930 hourly demand, day-ahead forecast and net generation for 48 balancing authorities, 2019-2026 (the 8 with load sheds, 1 with a Tier 2 case study, and 39 with no qualifying emergency), and the five signals built from it ([gridshedwatch/snapshot_v2.0/](https://github.com/gotham29/gridshedwatch/tree/main/gridshedwatch/snapshot_v2.0)) |
 | **Rules** | One shared rule that turns per-signal scores into watches and warnings, so methods differ only in how they score each hour ([gridshedwatch/rules.py](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/rules.py)) |
-| **Scoring** | Same alert budget for every method, chosen without looking at the events; events caught, lead time and false alarm ratio, with bootstrap intervals and a chance baseline ([docs/scoring.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/scoring.md)) |
+| **Scoring** | The same alert budget for every method, set on quiet grids without looking at any event; events caught, lead time, and false alarms on quiet grids, with exact intervals and a seasonal chance baseline, fixed in a dated protocol ([docs/protocol_v3.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/protocol_v3.md)) |
 | **Status quo** | Every operator notice in the week before each event, with times and sources ([gridshedwatch/operator_notices.yaml](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/operator_notices.yaml)) |
 | **Reference methods** | An operator-style rule, a seasonal z-score, an LSTM forecaster, Chronos-Bolt (zero-shot), and HTM ([gridshedwatch/baselines/](https://github.com/gotham29/gridshedwatch/tree/main/gridshedwatch/baselines/)) |
 | **Datasheet** | Motivation, composition, collection, intended uses, known biases and maintenance ([docs/datasheet.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/datasheet.md)) |
@@ -52,7 +52,7 @@ what GridShedWatch measures.
 | Elliott | Duke Energy Progress | about 960 MW | held-out |
 | Elliott | LG&E and KU (Kentucky) | about 300 MW | held-out |
 
-## Results, v1.0
+## Results
 
 <!-- leaderboard:start -->
 | Method | Watches: caught (of 8) | held-out (of 5) | by chance | median lead (h) | Warnings: caught (of 8) | held-out (of 5) | by chance | False alarm ratio (watch / warning) |
@@ -67,11 +67,12 @@ what GridShedWatch measures.
 All five reference methods are in the scores track; no alerts-track entries yet. Mean over 5 seeds for the LSTM and HTM. [a-b]: 5th-95th percentile with events resampled. Operators: public notices in the 7 days before onset, scored as watches.
 <!-- leaderboard:end -->
 
-Every method except Chronos's watches catches far more than chance, and none leads at both
-levels. The differences are by kind of emergency: the simple rules caught all three Uri events
-days ahead, the LSTM and HTM caught the Elliott events hours ahead (when the public got no
-warning), and only the operators warned California. With eight events, differences of about one
-event are not meaningful. Per-event results: `results/v1.0/<method>_events.csv`.
+Four methods catch 6 to 7 of the 8 load sheds with watches, and 4 to 6 with warnings before onset,
+where their own alerts at random times in the same season catch about 2. The other results are not
+significant after correction. Eight events from three storms cannot rank the four. They do differ
+in practice: published net generation arrives the next morning, and a day's delay cuts the
+forecasters' catches the most. Full results, robustness checks and controls are in the paper and in
+`results/v3.0/` (per method: `methods/<method>/`).
 
 ## Quick start
 
@@ -151,34 +152,34 @@ reproduces its results.
   ([docs/scoring.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/scoring.md#listing-a-result)). Every result is added, including ones
   that beat the reference methods.
 
-## Reproducing v1.0
+## Reproducing the results
 
 ```bash
-python -m pytest -q                      # rebuilds the rule and z-score results from the data
-python scripts/fetch_reference.py        # reference scores for LSTM, Chronos, HTM (about 100 MB)
-python -m pytest -q                      # now also checks those three against results/v1.0/
-python scripts/reproduce_v1.py           # writes results/v1.0/ from scratch
-docker build -t gridshedwatch . && docker run --rm gridshedwatch
+python scripts/fetch_reference.py                    # reference scores (release asset)
+python scripts/score_v3.py --jobs 4                  # every reference method, under docs/protocol_v3.md
+python scripts/score_v3.py --stats                   # summary.csv, Friedman, leave one storm out
+python scripts/per_hour_metrics.py --version 3.0     # per-hour metrics (pip install TSB-AD --no-deps)
+python scripts/leaderboard_md.py                     # the table above
 ```
 
-The LSTM and Chronos can be rerun with `gridshedwatch baseline lstm|chronos -o DIR` (needs
-`pip install -e ".[lstm]"` or `".[chronos]"`). Neural-network training is not bit-identical
-across platforms and library versions, so a rerun gives close but not identical scores; the
-reference scores are the official v1.0 results. HTM's scores come from
+Deterministic methods are recomputed from the data; the neural ones and HTM are read from their
+reference scores, since training is not bit-identical across platforms. HTM's scores come from
 [htm-monitor](https://github.com/gotham29/htm-monitor), scored here like any other submission.
+Earlier releases stay reproducible from their tags.
 
 ## Limits
 
-- Eight events, seven from two storms (Uri and Elliott). One storm of a new kind could change
-  the picture.
-- Three events were used to design the shared rules; five were held out and scored once.
+- Eight load sheds, seven from two storms (Uri and Elliott); the five held-out events share those
+  storms. One storm of a new kind could change the picture.
+- The shared alert rule was developed on three of the events, using HTM's output.
 - Reference methods see only five signals from EIA-930: no weather, outage or market data. The
   alerts track is open to methods that use more.
-- The status quo row covers operators' public notices; their notices to the industry and their
-  false alarms in ordinary years are not yet compiled.
+- Published net generation arrives the next morning, so real-time alerts would come 11 to 35 hours
+  later than in the replay; results a day late are reported beside the headline.
+- The status quo covers operators' public notices, not their operating notices to the industry.
 
 GridShedWatch grows as new events happen: each load shed that meets the rule is added in a new
-version and scored with the rules frozen in v1.0.
+release and scored by the frozen protocol.
 
 ## Citation and license
 

@@ -3,18 +3,19 @@
 Following the questions of *Datasheets for Datasets* (Gebru et al., 2021), for the benchmark as
 a whole: the event list, the data snapshot, the operator-notice timelines and the scoring.
 Details are in [events.md](events.md), [scoring.md](scoring.md) and
-[protocol_v2.md](protocol_v2.md); this page points to them rather than repeating them. It describes
-the current release (v2.0); v1.0 (8 events, 8 grids) stays reproducible from its tag.
+[protocol_v3.md](protocol_v3.md) (the scoring protocol); this page points to them rather than
+repeating them. Earlier releases stay reproducible from their tags.
 
 ## Motivation
 
 - **Why was it created?** To give early-warning methods for grid emergencies a common,
   public test. Many methods claim to detect grid stress early, but each is evaluated on its own
   events, data and metric, usually per hour on simulated grids or a single storm, so none can
-  be compared. GridShedWatch fixes the events, the data, the alert budget and the scoring.
+  be compared. GridShedWatch fixes the events and the scoring, and provides frozen data and shared signals.
 - **Who created it?** Sam Heiserman (independent; htm-monitor / DataGrip LLC). One of the
-  reference methods (HTM, via htm-monitor) is the author's own; it is scored by the same
-  path as the others, and the benchmark code does not depend on it.
+  reference methods, HTM, is run through htm-monitor, software the author develops as an HTM
+  practitioner; it is scored by the same path as the others, and the benchmark code does not
+  depend on it.
 - **Funding:** none.
 
 ## Composition
@@ -39,9 +40,9 @@ the current release (v2.0); v1.0 (8 events, 8 grids) stays reproducible from its
 - **Operator notices (`gridshedwatch/operator_notices.yaml`):** every notice found from each
   operator in the week before its event, with time (UTC; marked when only the day is
   published), audience (public or industry) and sources. They form the status-quo row.
-- **Reference results (`results/v2.0/`):** summary, per-event, alert-burden and per-alert
-  results for nine reference methods, with robustness analyses and the HTM ablation. Reference
-  scores are a release asset.
+- **Reference results (`results/v3.0/`):** summary, per-event, per-grid, chance-baseline,
+  sensitivity and ablation results for 11 reference methods and the controls, plus per-hour
+  metrics. Reference scores are a release asset.
 - **Labels:** the onset times are the only labels. There are no per-hour labels.
 - **Missing data:** hours without all of D, DF and NG, and hours failing a bad-data filter set
   from 2019 (values at or below zero, or above twice the 2019 99.9th percentile), are dropped
@@ -55,7 +56,7 @@ the current release (v2.0); v1.0 (8 events, 8 grids) stays reproducible from its
 ## Collection
 
 - **EIA-930:** pulled from the EIA Open Data API in October 2026 (`scripts/pull_eia930.py`).
-  EIA revises historical values, so the frozen snapshot, not the live API, defines v1.0; the
+  EIA revises historical values, so the frozen snapshot, not the live API, defines the benchmark; the
   script reports how far today's API has drifted.
 - **Events and onsets:** from NERC *State of Reliability* reports, the FERC-NERC inquiry
   reports on Winter Storms Uri and Elliott, CAISO's root cause analysis of August 2020, and
@@ -92,8 +93,9 @@ the current release (v2.0); v1.0 (8 events, 8 grids) stays reproducible from its
     independent tests.
   - The signals are balancing-authority totals: an event in a small part of a very large
     balancing authority (MISO South within MISO) is diluted.
-  - The replay treats each hourly value as available at its time stamp; live EIA-930 data
-    arrive with a short delay.
+  - The replay treats each hourly value as available at its time stamp. Live EIA-930 demand
+    arrives about an hour later, but net generation only by 11 a.m. Eastern the next day, so
+    real-time alerts would come 11 to 35 hours later; results with a one-day delay are reported.
   - Pretrained models (Chronos-Bolt) may have seen public EIA-930 data; both Tier 2 events
     predate its release, so neither tests contamination.
   - The status-quo row covers public notices only; operators' notices to the industry and their
@@ -112,7 +114,7 @@ the current release (v2.0); v1.0 (8 events, 8 grids) stays reproducible from its
 - **Maintainer:** Sam Heiserman (sam@htm-monitor.com); issues and pull requests on GitHub.
 - **Versioning:** the benchmark version (events, data, rules, scoring) is separate from the
   package version; a package release never changes a score (CHANGELOG.md). Each new load shed
-  that meets the rule is added in a new benchmark version, scored with the rules frozen in v1.0,
+  that meets the rule is added in a new benchmark version, scored by the frozen protocol,
   and earlier versions stay reproducible from their tags.
 - **Errata:** corrections to an onset or a notice are made in a new version, with the change
   and its source recorded in the change log; old results are not silently rewritten.

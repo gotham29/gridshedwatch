@@ -1,9 +1,9 @@
-# GridShedWatch v1.0 events: every operator-initiated firm load shed caused by insufficient
-# supply in North America, Jan 2020 - Sep 2026, of at least 250 MW at its worst, in a balancing
+# GridShedWatch events: every operator-initiated firm load shed caused by insufficient
+# supply in the United States, Jan 2020 - Sep 2026, of at least 250 MW at its worst, in a balancing
 # authority that reports D, DF and NG to EIA-930. Source list: NERC State of Reliability reports.
 # Selection rule, exclusions and onset fallback: docs/events.md. Times: onset_utc is what scoring uses.
 # split: the three development events were used to design the shared alert rules; the five
-# held-out events were scored once after the rules were frozen.
+# held-out events were not used to design them (they share storms with the development events).
 version: '1.0'
 events:
   tx:

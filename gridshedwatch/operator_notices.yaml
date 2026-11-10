@@ -64,10 +64,12 @@ events:
     onset_source: {title: "U.S. House Energy & Commerce hearing materials, Feb 18 2021", url: "https://docs.house.gov/meetings/IF/IF03/20210218/111210/HHRG-117-IF03-20210218-SD017.pdf"}
     notices:
       - {utc: "2021-02-09 06:00", label: "Conservative operations declared", by: operator}
+      - {utc: "2021-02-15 06:00", label: "EEA 1 announced Feb 14 for 05:00 Feb 15; members ask customers to conserve from midnight (time of the announcement unpublished; set to the start of the appeal)", by: operator, public: true}
       - {utc: "2021-02-15 11:00", label: "EEA 1", by: operator}
       - {utc: "2021-02-15 13:22", label: "EEA 2; members issue conservation appeals", by: operator, public: true}
     sources:
       - {title: "U.S. House Energy & Commerce hearing materials, Feb 18 2021", url: "https://docs.house.gov/meetings/IF/IF03/20210218/111210/HHRG-117-IF03-20210218-SD017.pdf"}
+      - {title: "GRDA statement on SPP Energy Emergency Alert (EEA) Level 1 declaration", url: "https://grda.com/grda-statement-on-spp-energy-emergency-alert-eea-level-1-declaration/"}
   miso:
     title: Winter Storm Uri
     grid: MISO (MISO South)

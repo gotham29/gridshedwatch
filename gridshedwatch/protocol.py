@@ -276,13 +276,16 @@ def label(m: str) -> str:
 
 
 def notice_leads() -> dict:
-    """Hours before onset of each Tier 1 event's first public operator notice (None if none in the week)."""
+    """Hours before onset of each Tier 1 event's first public operator notice, and of its first operator
+    notice of any kind (conservative operations, EEA 1 or 2, advisories), in the week before onset
+    (None if none): {grid: (public, any)}."""
     out = {}
     for g, e in data.operator_notices().items():
         on = data.onset(g)
-        pub = [pd.Timestamp(n["utc"]) for n in e["notices"] if n.get("public")]
-        pre = [t for t in pub if on - WINDOW["watch"][0] * benchmark.H <= t < on]
-        out[g] = (on - min(pre)) / benchmark.H if pre else None
+        first = lambda ts: (lambda pre: (on - min(pre)) / benchmark.H if pre else None)(
+            [t for t in ts if on - WINDOW["watch"][0] * benchmark.H <= t < on])
+        out[g] = (first([pd.Timestamp(n["utc"]) for n in e["notices"] if n.get("public")]),
+                  first([pd.Timestamp(n["utc"]) for n in e["notices"]]))
     return out
 
 
@@ -331,7 +334,8 @@ def stats(primary: list):
             s[f"{lv}_median_lead_h"], s[f"{lv}_lead_events_any_seed"] = (round(float(leads.median()), 0) if len(leads) else np.nan), len(leads)
             if lv == "watch":
                 for g, ln in nl.items():
-                    lead_rows.append(dict(method=label(m), event=g, method_lead_h=leads.get(g, np.nan), notice_lead_h=ln))
+                    lead_rows.append(dict(method=label(m), event=g, method_lead_h=leads.get(g, np.nan), notice_lead_h=ln[0],
+                                          any_notice_lead_h=ln[1]))
             f = far(gr[(gr.level == lv) & (gr.group == "event")])
             s.update({f"{lv}_{k}": round(v, 3) for k, v in f.items()})
             b = burden(gr[(gr.level == lv) & (gr.group == "evaluation")], lv)
@@ -360,6 +364,9 @@ def stats(primary: list):
     # Friedman and Nemenyi over the ranked entries, and leave one storm out. No pairwise tests: with 8 events
     # and 10 Holm-corrected comparisons, none could reach 0.05 even at 8 of 8 (deviation 2026-11-06).
     storms = {e["id"]: e.get("storm") for e in data.event_list(V) if e["tier"] == 1}
+    hp = lambda c: sm.set_index("code")[c] if c in sm else pd.Series(dtype=float)
+    passed = [c for c in sm.code if c in ENTRIES and hp("watch_p_season_holm").get(c, 1) < 0.05
+              and hp("warning_pre_p_season_holm").get(c, 1) < 0.05]
     fr, loso = [], []
     for key in ("watch", "warning_pre", "warning_any"):
         X = pd.DataFrame({m: per_ev_mat[(m, key)] for m in ms if (m, key) in per_ev_mat and m in ENTRIES})  # entries only
@@ -370,7 +377,7 @@ def stats(primary: list):
         cd = lambda k: studentized_range.ppf(0.95, k, np.inf) / np.sqrt(2) * np.sqrt(k * (k + 1) / (6 * n))
         Xn = X.drop(columns="random", errors="ignore")           # the tests reported: without random scores
         Rn = np.array([rankdata(-row) for row in Xn.to_numpy()]).mean(0)
-        top4 = Xn.sum().sort_values(ascending=False).index[:4]
+        top4 = [m for m in Xn.columns if m in passed] or list(Xn.sum().sort_values(ascending=False).index[:4])
         fr.append(dict(measure=key, events=n, methods=k, friedman_p=friedmanchisquare(*X.to_numpy().T).pvalue,
                        friedman_p_without_random=friedmanchisquare(*Xn.to_numpy().T).pvalue,
                        nemenyi_cd=cd(k), nemenyi_cd_without_random=cd(Xn.shape[1]),
@@ -381,6 +388,7 @@ def stats(primary: list):
             keep = [e for e in X.index if storms.get(e) != st]
             loso.append(dict(measure=key, without=st, events=len(keep), **{label(m): round(float(X.loc[keep, m].sum()), 1) for m in X.columns}))
     pd.DataFrame(fr).to_csv(OUT / "stats_friedman.csv", index=False)
+    selectivity([m for m in ms if (OUT / "methods" / m / "alerts.csv").exists()])
     pd.DataFrame(loso).to_csv(OUT / "loso.csv", index=False)
     print("wrote", OUT)
 
@@ -415,6 +423,53 @@ def _score_alerts(starts: dict, mdir: Path):
     pd.concat(grs).to_csv(mdir / "grids.csv", index=False)
     pd.DataFrame(chance).to_csv(mdir / "chance.csv", index=False)
     pd.DataFrame(sens).to_csv(mdir / "sens.csv", index=False)
+
+
+def selectivity(methods: list):
+    """Selectivity in the winter storms: does a method watch the grids that shed load more than quiet grids
+    equally exposed to the same storm (demand anomaly in its top 1% in the week)? Per grid, the share of
+    seeds with a watch starting in the 168 h before onset (shed grids: their own onset; quiet grids: the
+    storm's first onset). Test: exact permutation of the shed labels within each storm; statistic = mean
+    over shed grids minus mean over exposed quiet grids. Holm over the ranked entries."""
+    import itertools
+    t1 = [e for e in data.event_list(V) if e["tier"] == 1]
+    _, evalq = data.calibration_split(V)
+    before = WINDOW["watch"][0]
+    units = []                                    # (storm, grid, shed, onset)
+    for storm in ("Uri", "Elliott"):
+        es = [e for e in t1 if e["storm"] == storm]
+        t0 = min(e["onset"] for e in es)
+        units += [(storm, e["grid"], True, e["onset"]) for e in es]
+        units += [(storm, g, False, t0) for g in evalq if _exposed(g, t0, before)]
+    rows = []
+    for m in methods:
+        a = pd.read_csv(OUT / "methods" / m / "alerts.csv", parse_dates=["start_utc"])
+        a = a[a.level == "watch"]
+        seeds = sorted(a.seed.unique()) or [0]
+        val = np.array([np.mean([((a.seed == k) & (a.grid == g) & (a.start_utc <= t) &
+                                  (a.start_utc > t - pd.Timedelta(hours=before))).any() for k in seeds])
+                        for _, g, _, t in units])
+        shed = np.array([u[2] for u in units])
+        obs = val[shed].mean() - val[~shed].mean()
+        # exact null: every relabelling within storms with the same number of shed grids per storm
+        idx = {st: [i for i, u in enumerate(units) if u[0] == st] for st in ("Uri", "Elliott")}
+        k = {st: int(shed[idx[st]].sum()) for st in idx}
+        null = []
+        for cu in itertools.combinations(idx["Uri"], k["Uri"]):
+            for ce in itertools.combinations(idx["Elliott"], k["Elliott"]):
+                lab = np.zeros(len(units), bool)
+                lab[list(cu) + list(ce)] = True
+                null.append(val[lab].mean() - val[~lab].mean())
+        null = np.array(null)
+        rows.append(dict(code=m, method=label(m), shed_pct=100 * val[shed].mean(), exposed_quiet_pct=100 * val[~shed].mean(),
+                         n_shed=int(shed.sum()), n_quiet=int((~shed).sum()), p=float((null >= obs - 1e-12).mean())))
+    t = pd.DataFrame(rows)
+    ent = t.index[t.code.isin(ENTRIES)]
+    p = t.loc[ent, "p"].to_numpy(float)
+    order = np.argsort(p)
+    t.loc[ent[order], "p_holm"] = np.maximum.accumulate(np.minimum(1, (len(p) - np.arange(len(p))) * p[order]))
+    t.to_csv(OUT / "selectivity.csv", index=False)
+    return t
 
 
 def score_new(name: str, folder=None, alerts_file=None, out=None) -> pd.DataFrame:

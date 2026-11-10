@@ -62,7 +62,8 @@ repeating them. Earlier releases stay reproducible from their tags.
   reports on Winter Storms Uri and Elliott, CAISO's root cause analysis of August 2020, and
   operators' own reports and regulatory filings (sources per event in events.yaml and
   events.md). Where the emergency declaration time is not published, a fallback fixed in
-  advance moves onset earlier, never later.
+  advance uses the first load-shed directive, which can place onset after the declaration; a
+  sensitivity check uses the earlier DOE OE-417 start.
 - **Operator notices:** from operators' reports, filings, press releases and contemporaneous
   news coverage, collected by hand and checked against the sources listed per notice.
 - **Who collected it:** the author. Every time and claim is tied to a cited source.

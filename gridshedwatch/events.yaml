@@ -259,7 +259,7 @@ events:
     onset_local: 2022-12-23 13:36
     onset_utc: 2022-12-23 18:36
     onset_basis: EEA 3 declared
-    max_shed_mw: 300
+    max_shed_mw: 317
     source: LG&E-KU responses to KY PSC
     split: held-out
     cause: Unplanned generation outages in extreme cold (Winter Storm Elliott)

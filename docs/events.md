@@ -24,8 +24,10 @@ emergency level the event reached, from an official source, converted to UTC. Ho
 
 **When the declaration time is not published** (fallback, fixed in advance): use the
 earliest officially documented load-shed directive. If only the day is documented, use
-00:00 local time on that day. Both choices move onset earlier, never later, so they can
-only reduce claimed lead time and never turn a late alert into a "predicted" one.
+00:00 local time on that day. A load-shed directive comes at or after the declaration, so the
+first choice can place onset later than the unpublished declaration and lengthen lead time; the
+second places it earlier. A sensitivity check moves every onset to the earlier DOE OE-417 start
+(paper, Appendix F), which costs the leading methods at most one watch.
 
 ## Target onsets
 

@@ -1,0 +1,5 @@
+labels,level,AUC-PR,AUC-ROC,VUS-PR,VUS-ROC,Standard-F1,PA-F1,Event-based-F1,R-based-F1,Affiliation-F
+event,watch,0.17,-0.06,0.17,-0.02,0.29,-0.48,0.06,-0.21,-0.13
+event,warning,0.17,0.02,0.13,0.06,0.2,-0.39,0.06,-0.13,-0.02
+lead,watch,-0.13,-0.02,-0.06,-0.02,-0.02,-0.48,-0.13,-0.29,-0.13
+lead,warning,0.09,0.13,0.09,0.13,0.09,-0.39,-0.06,-0.2,-0.02

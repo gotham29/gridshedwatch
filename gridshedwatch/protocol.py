@@ -148,6 +148,8 @@ def _from_starts(lv, st, events, near, t1, evg, group, rng):
     # the 168 h before each storm's first load-shed onset, i.e. that would have "caught" an event that never
     # happened. A method that only detects unusual weather alerts on quiet grids in the storm as well.
     evalq = [g for g, k in group.items() if k == "evaluation"]
+    if not evalq:                                  # a setup run on no evaluation quiet grid (htm_online)
+        return ev.assign(level=lv), gr.assign(level=lv, group=gr.grid.map(group)), chance, sens
     before = WINDOW["watch"][0]
     for storm in sorted({e["storm"] for e in t1}):
         t0 = min(e["onset"] for e in t1 if e["storm"] == storm)

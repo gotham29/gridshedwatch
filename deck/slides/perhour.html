@@ -1,0 +1,7 @@
+<section id="perhour" data-transition="fade" style="background:#14213D;color:#F7F6F2;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#F2A65A">Why event scoring</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:80px;font-weight:600;line-height:1.1;color:#F7F6F2;width:1550px">Scored hour by hour, random scores come first</h2>
+<p style="font-size:34px;line-height:1.45;color:#C9D3E0;width:1450px">Point-adjusted F1, still common in anomaly detection, ranks random scores above every method on the same grids and events. An hourly score can’t see what an operator needs: one alert in time, and few elsewhere.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#9AA8BC">Per-hour metrics computed with TSB-AD’s code on the 9 grids with events, under two labelings</p>
+<aside>Labelings: the 48 hours from each onset, and the 168 hours before it. PA-F1 ranks random scores first under both (0.088 and 0.364, against at most 0.054 and 0.242 for any method). VUS-PR, TSB-AD’s recommended metric, agrees only weakly with events caught. [Before the paper: recompute the rank correlations against the final events-caught ranking and add CUSUM and critical slowing down to the per-hour table; quote correlations only after that.] Reference: Kim et al. (AAAI 2022) on point adjustment; Paparrizos et al. (VLDB 2022) on VUS.</aside>
+</section>

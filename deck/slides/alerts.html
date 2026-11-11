@@ -1,0 +1,17 @@
+<section id="alerts" data-transition="fade" style="background:#EDEAE2;color:#3D4A5C;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#9C4A12">Scoring</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#14213D">Alerts are scored as events: caught, how early, and with how many false alarms</h2>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:36px;font-weight:600;color:#14213D">Watch</h3>
+<p style="font-size:28px;line-height:1.4">Counts if it starts in the 7 days before onset.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:36px;font-weight:600;color:#14213D">Warning</h3>
+<p style="font-size:28px;line-height:1.4">Counts from 7 days before onset to 2 days after. Headline results use only warnings before onset.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.4;width:1550px">Measured: events caught, lead time, false alarm ratio, and alerts per year on the 39 quiet grids.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">Methods submit per-signal scores; shared rules turn every method’s scores into alerts the same way. Methods can also submit alert times directly</p>
+<aside>Why both levels: a watch is the early, low-cost heads-up; a warning is rarer and more serious. The warning window extends 48 h past onset because a warning early in an ongoing emergency still has value, but we report warnings before onset separately so no method gets credit for detecting the load shed itself (a shed drops demand, which spikes forecast error). Lead time = hours from the first verified alert to onset. False alarm ratio is on the 8 Tier 1 grids: an alert is false if it verifies no event; alerts during documented near-misses (sub-250 MW sheds, EEA 2 or higher) count neither way. Shared rules: two signal groups, structure (demand and generation anomalies) and residual (forecast error, imbalance, imbalance anomaly); an alert needs both groups hot within a coincidence window (3 h watch, 24 h warning) for a persistence length (3 h watch, 6 h warning). They exist so methods differ only in their scores. Alerts track: any method can submit watch and warning times, scored by the same event rules.</aside>
+</section>

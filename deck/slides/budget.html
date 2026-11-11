@@ -1,0 +1,16 @@
+<section id="budget" data-transition="fade" style="background:#EDEAE2;color:#3D4A5C;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#9C4A12">Fair comparison</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#14213D">Every method alerts at the same rate, set without looking at any event</h2>
+<div style="display:flex;gap:48px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.4"><b>Budget:</b> 12 watches and 2 warnings per grid per year, on the median grid. About as often as operators already alert the public in a strained year.</p>
+<p style="font-size:30px;line-height:1.4"><b>Set on quiet grids:</b> each method’s threshold is tuned on 19 grids that never had an emergency. No event grid is seen.</p>
+<p style="font-size:30px;line-height:1.4"><b>In practice:</b> this is how any alarm threshold is set. Pick, from past data, the setting that would have alerted about once a month, then keep it fixed.</p>
+</div>
+<div style="width:600px;display:flex;flex-direction:column;gap:16px;background:#14213D;padding:48px;border-radius:16px">
+<p style="font-size:28px;line-height:1.4;color:#F7F6F2">Without a matched budget, a comparison mostly rewards whoever alerts most often.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">The other 20 quiet grids measure false-alarm burden; curves at ¼× to 4× the budget are in the appendix</p>
+<aside>Mechanics: persistence is fixed; the threshold is found by a scan then bisection until the median calibration grid is within 2% of budget (all 11 entries within 5%). The 39 quiet grids are split in half by the SHA-256 hash of their EIA-930 code: 19 calibration, 20 evaluation. Exact ties in scores are broken with a seeded jitter below 1e-7 (HTM’s likelihood piles up at exactly 0.999); HTM is also scored with 5 tie-break draws, giving 4.4 to 5.0 warnings before onset and 6.0 watches in every draw. Important caveat if asked: the budget is matched on the calibration grids, not on the event grids. On the 8 load-shed grids, realized watch rates range from about 8 a year (Sub-PCA, critical slowing down) to 20 (LightGBM, CUSUM); HTM 15.5. That is why the significance test compares each method with its own alerts at random times (next slide), not with other methods’ raw counts. Budget rationale: ERCOT issued 11 conservation appeals in 2023; CAISO 5 Flex Alerts in 2020 and 8 in 2021. Sensitivity: setting the operating point on all 48 grids instead (still no labels) changes the four leading methods’ watches by at most 0.2.</aside>
+</section>

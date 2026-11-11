@@ -1,0 +1,20 @@
+<section id="chance" data-transition="fade" style="background:#EDEAE2;color:#3D4A5C;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#9C4A12">Significance</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#14213D">A method must beat its own alerts, moved to random times in the same season</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Same alerts</h3>
+<p style="font-size:26px;line-height:1.4">Keeps how often and how clustered the method alerts.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Same season</h3>
+<p style="font-size:26px;line-height:1.4">Shifted by whole years, so winter alerting can’t pass as skill.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Storms together</h3>
+<p style="font-size:26px;line-height:1.4">All grids shift as one, because events in one storm aren’t independent.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">2,000 shifts; p = (1 + shifts catching at least as many) / 2,001; Holm-corrected across the 11 methods</p>
+<aside>Each draw shifts every grid’s alerts by the same whole number of years (1 to 5) plus up to ±15 days, wrapped within the first 6 whole years of data. Why shared across grids: 7 of the 8 load sheds come from two storms; shifting each grid separately would treat them as independent and make p-values too small. Smallest possible p with 2,000 draws is 0.0005; after Holm over 11 methods, 0.0055. This test controls for each method’s own alert rate, which is why it, not raw counts, decides “carries warning”. If asked about a cluster bootstrap by storm: with only 3 storms among the Tier 1 events it is meaningless; we report leave-one-storm-out results instead (appendix). Intervals on catch rates are exact Clopper–Pearson.</aside>
+</section>

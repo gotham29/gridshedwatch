@@ -1,0 +1,21 @@
+<section id="data" data-transition="fade" style="background:#F7F6F2;color:#3D4A5C;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#9C4A12">Data</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#14213D">48 grids of public hourly data, frozen, and five signals every method sees</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1;color:#14213D">48 grids</p>
+<p style="font-size:26px;line-height:1.4">Every EIA-930 balancing authority with 90% coverage. 9 had an event; 39 are quiet.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1;color:#14213D">Frozen</p>
+<p style="font-size:26px;line-height:1.4">Demand, day-ahead forecast and net generation, 2019–2026, with checksums, because EIA revises past values.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1;color:#14213D">5 signals</p>
+<p style="font-size:26px;line-height:1.4">How far demand misses the operator’s own forecast, how much power the grid imports, and how unusual each is for the time of year.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.4;width:1550px">2019 is for calibration only; scoring starts in January 2020. No weather, outage or price data: the benchmark asks what public grid totals alone can warn of.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">Code MIT, data and results CC BY 4.0, Croissant metadata and datasheet included</p>
+<aside>Coverage rule: at least 90% of hours with demand, forecast and net generation in 2019 and in the scored period, after a bad-data filter set on 2019 (values at or below zero, or above twice the 2019 99.9th percentile). Signals: forecast error = demand minus day-ahead forecast; imbalance = demand minus net generation; seasonal anomaly = value minus the median of the same hour 1 to 4 weeks earlier. Data-quality flags (reported, never dropped): flat demand for 48 h or more (SWPP, LDWP, IID); a change in how the forecast is reported (CHPD, WACM). Known limit: hourly totals for the whole BA, so a shortfall in part of a large BA (MISO South within MISO) is diluted.</aside>
+</section>

@@ -48,6 +48,7 @@ what GridShedWatch measures.
 | **Status quo** | Every operator notice in the week before each event, with times and sources ([gridshedwatch/operator_notices.yaml](https://github.com/gotham29/gridshedwatch/blob/main/gridshedwatch/operator_notices.yaml)) |
 | **Reference methods** | 11: an operator-style rule, a seasonal z-score, CUSUM, critical slowing down, Sub-PCA, LSTM, PatchTST and LightGBM forecasters, Chronos-Bolt (zero-shot), HTM, and random scores, plus two weather controls built on the day-ahead forecast ([gridshedwatch/baselines/](https://github.com/gotham29/gridshedwatch/tree/main/gridshedwatch/baselines/)) |
 | **Datasheet** | Motivation, composition, collection, intended uses, known biases and maintenance ([docs/datasheet.md](https://github.com/gotham29/gridshedwatch/blob/main/docs/datasheet.md)) |
+| **Talk** | Slides on the benchmark and what it shows ([deck/gridshedwatch-talk.pdf](https://github.com/gotham29/gridshedwatch/blob/main/deck/gridshedwatch-talk.pdf)) |
 
 | Event | Grid | Shed at its worst | Split |
 |---|---|---|---|

@@ -1,0 +1,29 @@
+<section id="methods" data-transition="fade" style="background:#F7F6F2;color:#3D4A5C;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#9C4A12">Reference methods</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#14213D">Eleven methods, from a rule an operator could write to a foundation model</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Rules and statistics</h3>
+<ul style="font-size:24px;line-height:1.4">
+<li>Operator-style rule: demand above its forecast for 3 hours</li>
+<li>Seasonal z-score: unusual for the time of year</li>
+<li>CUSUM: small, steady deviations that add up</li>
+<li>Critical slowing down: a system near a tipping point swings more and recovers slower</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Forecasters</h3>
+<p style="font-size:24px;line-height:1.4">Predict the next hour and alert on large misses: LightGBM (gradient-boosted trees), LSTM, PatchTST (a transformer), Chronos-Bolt (a pretrained time-series model)</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Detectors</h3>
+<p style="font-size:24px;line-height:1.4">Sub-PCA: patterns unlike past ones. HTM: learns sequences and flags surprises</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Floor</h3>
+<p style="font-size:24px;line-height:1.4">Random scores: what pure luck achieves at the same alert rate</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">All see the same five signals; learned models fit on 2019 only; settings are published defaults, none tuned on events</p>
+<aside>Details: operator rule = demand above its day-ahead forecast by more than the trailing year’s percentile of forecast error. Z-score = each signal against its past-30-day median and MAD. CUSUM = two-sided, k 0.5, reset at h 5, on robust deviations. Critical slowing down = rolling 168 h variance and lag-1 autocorrelation (the classic early-warning indicators). Forecasters scored by absolute next-hour error, turned into causal percentiles: LSTM 2×64, 24 h input; PatchTST 168 h input, small-model defaults; LightGBM on hourly, weekly and calendar lags; Chronos-Bolt small, 512 h context, zero-shot (pretraining may include EIA-930: possible contamination, all events predate it). Sub-PCA = PCA reconstruction error on 24 h windows, TSB-AD defaults. HTM = one temporal memory per signal via htm-monitor, anomaly likelihood, trained on 2019 then frozen. Seeds: 5 for LSTM, PatchTST, LightGBM, HTM, random. Disclosure: HTM is run through htm-monitor, software I develop as an HTM practitioner (HTM itself comes from Numenta’s research), scored by the same code; the shared alert rules were first developed on HTM’s output on three development events. Checks that this didn’t favour HTM: alternative rules (any signal; forecast error only) and HTM’s other learning setups are in the appendix; HTM’s online setup scores 6.4 watches vs 6.0 for the entry. Refitting LightGBM every year leaves it at 7.2 watches.</aside>
+</section>

@@ -1,0 +1,15 @@
+<section id="checks" data-transition="fade" style="background:#EDEAE2;color:#3D4A5C;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<p style="font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#9C4A12">Robustness</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#14213D">The four leading methods hold up under every check</h2>
+<table style="font-size:24px;color:#3D4A5C">
+<tr><th style="width:42%;text-align:left">Check</th><th style="width:58%;text-align:left">Watches for the four leading methods</th></tr>
+<tr><td>Only the 5 held-out events</td><td>3.2 to 5.0 of 5</td></tr>
+<tr><td>Operating point set on all 48 grids</td><td>Within 0.2 of the headline</td></tr>
+<tr><td>Earlier onsets from DOE OE-417</td><td>At most 1 fewer</td></tr>
+<tr><td>Simpler alert rule: any signal hot</td><td>6.2 to 8.0; forecasters gain the most</td></tr>
+<tr><td>Forecaster refit every year</td><td>Gradient-boosted: 7.2 either way</td></tr>
+<tr><td>HTM: other learning setup, other tie-breaks</td><td>Online setup 6.4; 6.0 in all 5 tie-break draws</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">Every check, ablation and dated protocol change is in the appendix and the repository</p>
+<aside>Why the “any signal” row matters: the shared alert rules were first developed on HTM’s output. If they favoured HTM, a simpler rule should hurt HTM relative to others; instead HTM moves 6.0 to 6.2 while PatchTST rises to 8.0 and gradient-boosted to 7.8. Forecast error alone hurts everyone (HTM 3.6, gradient-boosted 5.4). HTM setups: online from 2020 (the original entry) 6.4 watches, 4.6 warnings; the frozen setup chosen as the entry 6.0 and 5.0, so the choice did not flatter HTM. Two other HTM setups (keep learning; same encoders) were only run on the 8 load-shed grids and keep their earlier numbers. Leave-one-storm-out: counts move with the storm; see the ranking slide. Other appendix items: alert-rate curves (¼× to 4× budget), Tier 2 case studies, near-miss masks, the likelihood ablation, per-grid burden, data-quality flags.</aside>
+</section>

@@ -1,0 +1,21 @@
+<section id="problem" data-transition="fade" style="background:#F7F6F2;color:#3D4A5C;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#9C4A12">The problem</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#14213D">Many methods claim to see grid emergencies coming. No common set of real emergencies tests them.</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Own events</h3>
+<p style="font-size:26px;line-height:1.4">Each study picks its own storms, often a single one, or simulated grids.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">Per-hour metrics</h3>
+<p style="font-size:26px;line-height:1.4">They reward flagging many hours, not one alert in time. Point-adjusted F1 even ranks random scores above every real method.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;padding:36px;border:1px solid #DDD9CF;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#14213D">False alarms unseen</h3>
+<p style="font-size:26px;line-height:1.4">An operator pays for every false alarm, but most evaluations never count them where nothing happened.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.4;width:1550px">Weather services solved this decades ago: score warnings as events, by how many were caught, how early, and with how many false alarms.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">Motivation: Winter Storm Uri (2021) cut power to 4.5 million people in Texas; Elliott (2022) forced load sheds at six Southeastern utilities</p>
+<aside>Supply-shortfall emergencies: an operator declares an Energy Emergency Alert (EEA) and may order firm load shed (rotating outages). NERC defines EEA 3 as firm load interruption imminent or in progress. Weather verification reference: Brooks & Correia (2018) on NWS tornado warnings: probability of detection, false alarm ratio, lead time. Per-hour metric critique: Kim et al. (AAAI 2022) showed point-adjusted F1 rewards random scores; Wu & Keogh (2023) showed anomaly benchmarks are flawed. If asked “why not just use VUS-PR”: it scores hours, and our test shows its ranking barely agrees with events caught.</aside>
+</section>

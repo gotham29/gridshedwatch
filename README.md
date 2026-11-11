@@ -15,6 +15,14 @@ whether a warning would actually have come in time. GridShedWatch is that test: 
 those eight load sheds, public hourly data, and one fixed scoring procedure that any method can
 be run through.
 
+**What it shows so far.** The operators' own day-ahead demand forecast, run through the same
+scoring, watches all 8 load sheds about 16 hours ahead, but it alerts just as readily on grids that
+weathered the same storm without trouble. Telling a coming shortfall from a cold week is the open
+problem: four learned methods beat chance and some are more selective, though on few grids. And
+speed matters: public net generation arrives the next morning, and with alerts a day late no method
+is shown to beat chance. With lag-free data, such as an operator's own real-time feeds, the replay
+results are the relevant ones.
+
 The idea behind it isn't new. The National Weather Service has
 [scored its warnings for decades](https://doi.org/10.1175/waf-d-18-0120.1) on three numbers read
 together: how many events were warned in advance, how much notice people got, and how many

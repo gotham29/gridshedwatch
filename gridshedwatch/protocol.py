@@ -464,6 +464,8 @@ def selectivity(methods: list):
         rows.append(dict(code=m, method=label(m), shed_pct=100 * val[shed].mean(), exposed_quiet_pct=100 * val[~shed].mean(),
                          n_shed=int(shed.sum()), n_quiet=int((~shed).sum()), p=float((null >= obs - 1e-12).mean())))
     t = pd.DataFrame(rows)
+    if t.empty:                                   # no method with alerts in this results folder
+        return t
     ent = t.index[t.code.isin(ENTRIES)]
     p = t.loc[ent, "p"].to_numpy(float)
     order = np.argsort(p)

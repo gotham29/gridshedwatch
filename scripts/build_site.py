@@ -1,8 +1,8 @@
-"""Build the GridShedWatch website (docs/index.html) from the v1.0 results and the event files.
+"""Build the GridShedWatch website (docs/index.html) from the final results and the event files.
 
     python scripts/build_site.py
 
-Everything the page shows comes from results/v1.0/ and the package's events.yaml and
+Everything the page shows comes from results/v3.0/ and the package's events.yaml and
 operator_notices.yaml; the layout lives in scripts/site_template.html. The link-preview
 image docs/og.png is a screenshot of scripts/og/card.html at 1200x630 (update its numbers by hand
 if the results change).
@@ -13,19 +13,20 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from gridshedwatch import benchmark, data
+from gridshedwatch import data
 from gridshedwatch.config import WINDOW
 
 ROOT = Path(__file__).resolve().parents[1]
-RES = ROOT / "results" / "v1.0"
+RES = ROOT / "results" / "v3.0"
 H = pd.Timedelta(hours=1)
 
-METHODS = [  # file stem, display name, family
-    ("oprule", "Operator-style rule", "Rules"),
-    ("zscore", "Seasonal z-score", "Statistics"),
-    ("lstm", "LSTM forecaster", "Machine learning"),
-    ("htm", "HTM (htm-monitor)", "Machine learning"),
-    ("chronos", "Chronos-Bolt (zero-shot)", "Foundation model"),
+METHODS = [  # code, display name, family (the 11 reference methods, then the weather control)
+    ("gbm", "LightGBM", "Forecaster"), ("lstm", "LSTM", "Forecaster"), ("htm", "HTM", "Sequence memory"),
+    ("patchtst", "PatchTST", "Forecaster"), ("chronos", "Chronos-Bolt", "Foundation model"),
+    ("cusum", "CUSUM", "Statistics"), ("zscore", "Seasonal z-score", "Statistics"),
+    ("oprule", "Operator-style rule", "Rules"), ("csd", "Critical slowing down", "Statistics"),
+    ("subpca", "Sub-PCA", "Detector"), ("random", "Random scores", "Floor"),
+    ("dfanom", "Forecast-anomaly control", "Weather control"),
 ]
 
 
@@ -41,39 +42,38 @@ def ci(s):
 
 
 def leaderboard():
-    lb = pd.read_csv(RES / "leaderboard.csv").set_index("method")
+    sm = pd.read_csv(RES / "summary.csv").set_index("code")
     out = []
-    for stem, name, fam in METHODS:
-        r = lb.loc[name]
-        m = {"id": stem, "name": name, "family": fam, "seeds": int(r.seeds)}
-        for lv in ("watch", "warning"):
-            m[lv] = {"caught": num(r[f"{lv}_caught_all"]), "ci": ci(r[f"{lv}_caught_all_ci"]),
-                     "held_out": num(r[f"{lv}_caught_held_out"]), "lead": num(r[f"{lv}_median_lead_h"]),
-                     "far": num(r[f"{lv}_false_alarm_ratio"]), "chance": num(r[f"{lv}_chance_caught"]),
-                     "chance_p": num(r[f"{lv}_chance_p"]), "rate": num(r[f"{lv}_alerts_per_grid_year"]),
-                     "setting": r[f"{lv}_setting"]}
+    for code, name, fam in METHODS:
+        r = sm.loc[code]
+        m = {"id": code, "name": name, "family": fam, "seeds": int(r.seeds)}
+        for lv, key in (("watch", "watch"), ("warning", "warning_pre")):      # warnings: before onset
+            lo, hi = ci(r[f"{key}_ci"]) or (None, None)
+            m[lv] = {"caught": num(r[f"{key}_caught"]), "ci": None if lo is None else [round(8 * lo, 1), round(8 * hi, 1)],
+                     "held_out": num(r[f"{key}_held_out"]), "lead": num(r[f"{lv}_median_lead_h"]),
+                     "far": num(r[f"{lv}_far"]), "chance": num(r[f"{key}_chance_season"]),
+                     "chance_p": num(r.get(f"{key}_p_season_holm", r[f"{key}_p_season"])),
+                     "rate": num(r[f"{lv}_burden_median"]), "setting": None}
         out.append(m)
-    op = lb.loc["Operators (public notices)"]
-    return out, {"caught": num(op.watch_caught_all), "held_out": num(op.watch_caught_held_out),
-                 "lead": num(op.watch_median_lead_h)}
+    ln = pd.read_csv(RES / "lead_vs_notice.csv").drop_duplicates("event").set_index("event").notice_lead_h
+    held = {e["id"] for e in data.event_list("2.0") if e["tier"] == 1 and e["split"] == "held-out"}
+    return out, {"caught": float(ln.notna().sum()), "held_out": float(ln[ln.index.isin(held)].notna().sum()),
+                 "lead": num(ln.median())}
 
 
 def per_event():
-    """Fraction of seeds that caught each event, and the median lead among catches."""
+    """Share of seeds that caught each event, and the median lead among catches; operators' public notices."""
+    ev = pd.read_csv(RES / "events.csv")
     cells = {}
-    for stem, _, _ in METHODS:
-        d = pd.read_csv(RES / f"{stem}_events.csv")
-        for (g, lv), x in d.groupby(["grid", "level"]):
-            lead = x.loc[x.caught, "lead_h"].dropna()   # NaN: caught only after onset (warnings)
-            cells[f"{stem}|{g}|{lv}"] = {"frac": round(float(x.caught.mean()), 2), "n": int(len(x)),
-                                         "lead": None if lead.empty else round(float(lead.median()), 0)}
-    sq = benchmark.status_quo()["by_grid"]
-    for g, e in data.operator_notices().items():
-        on = data.onset(g)
-        pre = [pd.Timestamp(n["utc"]) for n in e["notices"] if n.get("public")]
-        pre = [t for t in pre if on - WINDOW["watch"][0] * H <= t < on]
-        cells[f"operators|{g}|watch"] = {"frac": 1.0 if sq[g] else 0.0, "n": 1,
-                                         "lead": round((on - min(pre)) / H, 0) if pre else None}
+    for code, name, _ in METHODS:
+        d = ev[(ev.method == pd.read_csv(RES / "summary.csv").set_index("code").loc[code, "method"]) & (ev.tier == 1)]
+        for _, x in d.iterrows():
+            frac = x.caught_pre if x.level == "warning" else x.caught
+            cells[f"{code}|{x.event}|{x.level}"] = {"frac": round(float(frac), 2), "n": 1,
+                                                   "lead": None if pd.isna(x.lead_h) else round(float(x.lead_h), 0)}
+    ln = pd.read_csv(RES / "lead_vs_notice.csv").drop_duplicates("event").set_index("event").notice_lead_h
+    for g, v in ln.items():
+        cells[f"operators|{g}|watch"] = {"frac": 0.0 if pd.isna(v) else 1.0, "n": 1, "lead": None if pd.isna(v) else round(float(v), 0)}
     return cells
 
 

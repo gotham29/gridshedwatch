@@ -115,7 +115,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);f
 
 <main class="wrap">
 <div class="hero">
-  <div class="eyebrow">Benchmark · v1.0</div>
+  <div class="eyebrow">Benchmark</div>
   <h1>Early warning of grid load sheds, scored like weather warnings</h1>
   <p class="lede">Since 2020, US grid operators have had to cut power for lack of supply eight times. The public was warned beforehand in four. GridShedWatch is a shared test of whether a warning method would have caught them in time: all eight events, public hourly data, and one fixed scoring procedure any method can be run through.</p>
   <div class="btns">
@@ -127,14 +127,14 @@ footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);f
   <div class="stats">
     <div class="stat"><b>8</b><span>load sheds of 250 MW or more, 2020–2026</span></div>
     <div class="stat"><b>4 of 8</b><span>had a public notice beforehand</span></div>
-    <div class="stat"><b>5</b><span>reference methods, from rules to a foundation model</span></div>
+    <div class="stat"><b>11</b><span>reference methods, from rules to a foundation model</span></div>
     <div class="stat"><b>12 / 2</b><span>watches / warnings per grid per year, for every method</span></div>
   </div>
 </div>
 
 <section id="gap">
   <h2>Why a benchmark</h2>
-  <p class="sub">Plenty of methods claim to spot grid trouble early. None of them can be compared, because there has been no common test.</p>
+  <p class="sub">Plenty of methods claim to spot grid trouble early. But there has been no common set of real emergencies to test them on.</p>
   <div class="cols">
     <div class="card"><h3>What exists</h3>
       <ul class="tight">
@@ -146,7 +146,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);f
       <ul class="tight">
         <li>Every qualifying load shed since 2020, chosen by a stated rule, not by hand.</li>
         <li>The same data, rules and alert budget for every method, so only the method differs.</li>
-        <li>The operators' own public notices as the baseline to beat.</li>
+        <li>Baselines to beat: chance in the same season, the operators' own demand forecast, and their public notices.</li>
       </ul></div>
   </div>
 </section>
@@ -158,17 +158,17 @@ footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);f
     <div class="card"><span class="tag watch">Watch</span><h3>Something unusual is building</h3>
       <p>About one a month per grid. Counts if an alert starts in the 7 days before the load shed begins.</p></div>
     <div class="card"><span class="tag warn">Warning</span><h3>Act now</h3>
-      <p>Two a year per grid. Counts from 7 days before onset to 48 hours after, since a warning during the event still helps.</p></div>
+      <p>Two a year per grid. Counts if it starts in the 7 days before onset; warnings in the first 48 hours of the emergency are reported separately.</p></div>
   </div>
   <div class="chart scroll" style="margin-top:16px"><svg id="windows" viewBox="0 0 940 120" style="min-width:560px" role="img" aria-label="Scoring windows: watch from 7 days before onset to onset; warning from 7 days before to 48 hours after"></svg></div>
   <h3>The rules every method shares</h3>
   <ul class="tight">
-    <li><b>A method only scores each hour.</b> For each of five signals from EIA-930 (demand forecast error, demand minus generation, and seasonal anomalies of demand, generation and their gap) it says how unusual the hour is, from 0 to 1, using data up to that hour only.</li>
+    <li><b>A method only scores each hour.</b> For each of five signals from EIA-930 (demand forecast error, net imports, and seasonal anomalies of demand, net generation and net imports) it says how unusual the hour is, from 0 to 1, using data up to that hour only.</li>
     <li><b>One shared rule turns scores into alerts.</b> Both signal groups must be unusual at once and stay so for a few hours. The rule is the same for every method.</li>
-    <li><b>Same alert budget, set without the events.</b> Each method's threshold and persistence are chosen so it raises at most 12 watches and 2 warnings per grid per year, looking only at alert counts.</li>
-    <li><b>Read against chance.</b> Each method's own alerts are shifted to random times 2,000 times to show how many events it would catch by luck. Intervals come from resampling the events.</li>
+    <li><b>Same alert budget, set without the events.</b> Each method's threshold is set on 19 grids that never had an emergency, so that a typical one gets 12 watches and 2 warnings a year. No event grid is seen.</li>
+    <li><b>Read against chance, in the same season.</b> Each method's own alerts are moved, all grids together, by whole years plus up to 15 days, 2,000 times, so a method can't pass by alerting a lot in winter. False alarms are counted on 20 more grids that never had an emergency.</li>
   </ul>
-  <p class="note">Full protocol: <a href="https://github.com/gotham29/gridshedwatch/blob/main/docs/scoring.md">docs/scoring.md</a>.</p>
+  <p class="note">Full protocol: <a href="https://github.com/gotham29/gridshedwatch/blob/main/docs/protocol_v3.md">docs/protocol_v3.md</a>.</p>
 </section>
 
 <section id="events">
@@ -190,28 +190,28 @@ footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);f
 </section>
 
 <section id="results">
-  <h2>Results, v1.0</h2>
-  <p class="sub">The write-up: <a href="https://medium.com/@sheiser1/rules-stats-machine-learning-or-a-foundation-model-warning-of-grid-blackouts-e068e8881ab6">Rules, stats, machine learning or a foundation model?</a> Five reference methods, one from each family: rules, statistics, machine learning (LSTM, HTM) and a foundation model (Chronos-Bolt, zero-shot). All at the same alert budget.</p>
+  <h2>Results</h2>
+  <p class="sub">Eleven reference methods, from an operator-style rule to a time-series foundation model, and a weather control built only on the operators' own day-ahead demand forecast. All at the same alert budget, with data replayed as it happened. Warnings are counted before onset.</p>
   <div class="toggle" role="group" aria-label="Alert level"><button data-lv="watch" aria-pressed="true">Watches</button><button data-lv="warning" aria-pressed="false">Warnings</button></div>
   <div class="chart scroll"><svg id="dots" viewBox="0 0 940 300" style="min-width:600px" role="img" aria-label="Events caught by each method"></svg>
     <div class="legend">
       <span><i style="width:10px;height:10px;border-radius:50%;background:var(--accent)"></i>events caught (of 8)</span>
-      <span><i style="width:24px;height:3px;background:var(--accent-soft)"></i>5th–95th percentile, events resampled</span>
+      <span><i style="width:24px;height:3px;background:var(--accent-soft)"></i>exact 95% interval</span>
       <span><i style="width:2px;height:12px;background:var(--chance)"></i>caught by chance</span>
     </div></div>
   <div class="findings">
-    <div class="finding"><b>All but one beat chance.</b>Every method catches far more than its shifted alerts would, except Chronos's watches.</div>
-    <div class="finding"><b>No method leads at both levels.</b>The LSTM catches the most watches; the z-score the most warnings.</div>
-    <div class="finding"><b>It depends on the emergency.</b>Simple rules caught Uri days ahead; LSTM and HTM caught Elliott, which the public got no warning of.</div>
+    <div class="finding"><b>Four beat chance.</b>LightGBM, LSTM, PatchTST and HTM catch 6 to 7 of 8 with watches and 4 to 6 with warnings, where their own alerts in the same season catch about 2. Eight events can't rank them.</div>
+    <div class="finding"><b>The operators' forecast catches all 8.</b>Alerting when the day-ahead demand forecast is unusual for the season watches every load shed, about 16 hours ahead. But it also alerts on every equally cold grid that coped; some learned methods are more selective.</div>
+    <div class="finding"><b>Real-time data is the catch.</b>EIA publishes net generation the next morning. With alerts a day late, no method is shown to beat chance. Telling a coming shortfall from a cold week, fast enough, is the open problem.</div>
   </div>
 
   <h3 style="margin-top:34px">Event by event</h3>
-  <p class="sub" id="heatsub">Share of runs that caught each event, with the median lead time in hours. The LSTM and HTM have five seeds each.</p>
+  <p class="sub" id="heatsub">Share of runs that caught each event, with the median lead time in hours. Seeded methods have five seeds each.</p>
   <div class="chart scroll"><svg id="heat" viewBox="0 0 940 300" style="min-width:640px" role="img" aria-label="Which method caught which event"></svg></div>
 
   <h3 style="margin-top:34px">Full table</h3>
   <div class="scroll"><table class="tbl" id="lbtable"><thead></thead><tbody></tbody></table></div>
-  <p class="note">With eight events, differences of about one event are not meaningful. Per-event and per-seed results: <a href="https://github.com/gotham29/gridshedwatch/tree/main/results/v1.0">results/v1.0</a>.</p>
+  <p class="note">With eight events, differences of about one event are not meaningful. Per-event and per-seed results: <a href="https://github.com/gotham29/gridshedwatch/tree/main/results/v3.0">results/v3.0</a>.</p>
 </section>
 
 <section id="submit">
@@ -235,15 +235,15 @@ duk,watch,2022-12-24 00:00
 <pre>pip install gridshedwatch
 gridshedwatch score-alerts my_alerts.csv --name "My rule"</pre>
   <p><b>3. Read the result:</b></p>
-<pre>My rule  (1 seed)
-  watch    submitted alerts   caught 3.0 of 8 [1.0-5.0], chance 0.9; held-out 2.0 of 5;
-                              median lead 131.0 h; 5.7 alerts/grid/yr; false alarm ratio 99%
-  warning  submitted alerts   caught 1.0 of 8 [0.0-3.0], chance 0.1; held-out 0.0 of 5;
-                              median lead 130.0 h; 0.6 alerts/grid/yr; false alarm ratio 97%</pre>
-  <p>The rule watched 3 of the 8 load sheds, where its alerts at random times would have caught about one, and warned Texas five days before Uri. It missed the rest. A method in the scores track hands over its hourly scores instead (<code>my_scores/s0/&lt;grid&gt;.csv</code>, columns <code>p_&lt;signal&gt;</code> in [0, 1]) and runs <code>gridshedwatch score my_scores</code>; template: <a href="https://github.com/gotham29/gridshedwatch/blob/main/examples/my_method.py">examples/my_method.py</a>.</p>
+<pre>                     method  watches (of 8)  by chance       p  warnings before onset  median watch lead (h)  quiet grids: median / 90th pct / worst
+                   LightGBM             7.2       2.21  0.0055                    6.0                   43.0                            16 / 33 / 63
+...
+              Random scores             1.0       1.77  0.9730                    0.2                   65.0                            12 / 13 / 14
+                    my_rule             3.0       1.40  0.1439                    1.0                  131.0                               4 / 7 / 10</pre>
+  <p>Your method appears under the 11 reference methods, scored by the same code. This rule watched 3 of the 8 load sheds where chance gives 1.4: not enough to beat chance. A method in the scores track hands over its hourly scores instead (<code>my_scores/s0/&lt;grid&gt;.csv</code>, columns <code>p_&lt;signal&gt;</code> in [0, 1]) and runs <code>gridshedwatch score my_scores</code>; template: <a href="https://github.com/gotham29/gridshedwatch/blob/main/examples/my_method.py">examples/my_method.py</a>.</p>
   <ul class="tight">
-    <li>The budget: about 12 watches and 2 warnings per grid per year (median grid); in the alerts track, also no grid above 3 times that.</li>
-    <li>The five reference methods' alerts are published in the alerts format (<a href="https://github.com/gotham29/gridshedwatch/tree/main/results/v1.0/alerts">results/v1.0/alerts</a>), where they reproduce the table above.</li>
+    <li>The budget: about 12 watches and 2 warnings per grid per year on a typical calibration grid, the same for both tracks. List alerts for all 48 grids; a grid left out counts as raising none.</li>
+    <li>Every reference method's alerts are published in the alerts format (<code>results/v3.0/methods/&lt;method&gt;/alerts.csv</code>); scoring that file reproduces its row.</li>
     <li>Random methods submit several seeds; results are averaged.</li>
     <li>To be listed, open a pull request with your scores or alerts, the code that made them, the <code>--json</code> output, and short answers on the data used and, for the alerts track, which events you looked at while developing. Every result is added, including ones that beat the reference methods. Methods that use extra data, such as weather, are listed separately.</li>
   </ul>
@@ -253,11 +253,11 @@ gridshedwatch score-alerts my_alerts.csv --name "My rule"</pre>
   <h2>Limits</h2>
   <ul class="tight">
     <li>Eight events, seven from two storms (Uri and Elliott). One storm of a new kind could change the picture.</li>
-    <li>Three events shaped the shared rules; five were held out and scored once.</li>
-    <li>Reference methods see only five signals from EIA-930: no weather, outage or market data. The alerts track is open to methods that use more.</li>
-    <li>The baseline covers operators' public notices. Their notices to the industry and their false alarms in ordinary years are not yet compiled.</li>
+    <li>Three events shaped the shared rule; five were held out, but they share storms with the three.</li>
+    <li>Reference methods see only five signals from EIA-930: no weather, outage or market data, and nothing that shows lost generation directly. Net generation arrives the next morning in real time. The alerts track is open to methods that use more, or faster, data.</li>
+    <li>Operators' own notices to the industry often came days ahead; their false alarms in ordinary years are not yet compiled.</li>
   </ul>
-  <p>GridShedWatch grows as new events happen: each load shed that meets the rule is added in a new version and scored with the v1.0 rules.</p>
+  <p>GridShedWatch grows as new events happen: each load shed that meets the rule is added in a new release and scored by the frozen protocol.</p>
 </section>
 
 <section id="cite">
@@ -267,7 +267,7 @@ gridshedwatch score-alerts my_alerts.csv --name "My rule"</pre>
   <p class="note">Code: MIT. Event list, timelines, documentation and results: CC BY 4.0. EIA-930 data: U.S. public domain. HTM's entry is run with <a href="https://htm-monitor.com/grid">htm-monitor</a>, scored like any other submission.</p>
 </section>
 </main>
-<footer><div class="wrap">GridShedWatch v1.0 · <a href="https://github.com/gotham29/gridshedwatch">github.com/gotham29/gridshedwatch</a> · Data: U.S. EIA Hourly Electric Grid Monitor (EIA-930)</div></footer>
+<footer><div class="wrap">GridShedWatch · <a href="https://github.com/gotham29/gridshedwatch">github.com/gotham29/gridshedwatch</a> · Data: U.S. EIA Hourly Electric Grid Monitor (EIA-930)</div></footer>
 
 <script>
 const D = /*__DATA__*/null;
@@ -395,7 +395,7 @@ function heat() {
     });
   });
   document.getElementById("heatsub").textContent = (LV === "watch" ? "Watches: " : "Warnings: ") +
-    "share of runs that caught each event, with the median lead time in hours" + (LV === "warning" ? " (\"during\": the warning came only after the load shed began, which still counts)" : "") + ". The LSTM and HTM have five seeds each.";
+    "share of runs that caught each event, with the median lead time in hours" + (LV === "warning" ? " (\"during\": the warning came only after the load shed began, which still counts)" : "") + ". Seeded methods have five seeds each.";
 }
 function table() {
   const th = document.querySelector("#lbtable thead"), tb = document.querySelector("#lbtable tbody");

@@ -9,7 +9,7 @@ description = "A benchmark for early warning of grid load sheds, scored the way 
 readme = "README.md"
 license = {text = "MIT"}
 authors = [{name = "Sam Heiserman"}]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = ["numpy>=1.22", "pandas>=1.5", "pyyaml>=6", "scipy>=1.9"]   # scipy: intervals and tests in scoring
 
 [project.optional-dependencies]

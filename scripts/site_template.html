@@ -208,11 +208,6 @@ footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);f
       <span><i style="width:24px;height:3px;background:var(--accent-soft)"></i>exact 95% interval</span>
       <span><i style="width:2px;height:12px;background:var(--chance)"></i>caught by chance</span>
     </div></div>
-  <div class="findings">
-    <div class="finding"><b>Four beat chance.</b>LightGBM, LSTM, PatchTST and HTM catch 6 to 7 of 8 with watches and 4 to 6 with warnings, where their own alerts in the same season catch about 2. Eight events can't rank them.</div>
-    <div class="finding"><b>The operators' forecast catches all 8.</b>Alerting when the day-ahead demand forecast is unusual for the season watches every load shed, about 16 hours ahead. But it also alerts on every equally cold grid that coped; some learned methods are more selective.</div>
-    <div class="finding"><b>Real-time data is the catch.</b>EIA publishes net generation the next morning. With alerts a day late, no method is shown to beat chance. Telling a coming shortfall from a cold week, fast enough, is the open problem.</div>
-  </div>
 
   <h3 style="margin-top:34px">Event by event</h3>
   <p class="sub" id="heatsub">Share of runs that caught each event, with the median lead time in hours. Seeded methods have five seeds each.</p>
@@ -228,7 +223,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);f
   <p class="sub">Two ways in. Both are scored the same way, at the same alert budget.</p>
   <div class="cols">
     <div class="card"><h3>Scores track</h3>
-      <p style="margin:0">The controlled comparison. Your method scores how unusual each of the five signals is, every hour. The shared rules, the budget step and the scoring are done for you, so it cannot be tuned toward the eight events. All five reference methods are here.</p></div>
+      <p style="margin:0">The controlled comparison. Your method scores how unusual each of the five signals is, every hour. The shared rules, the budget step and the scoring are done for you, so it cannot be tuned toward the eight events.</p></div>
     <div class="card"><h3>Alerts track</h3>
       <p style="margin:0">Any method that decides on its own when to alert: a rule, a classifier, a weather-based model, a forecaster's judgment. List when each watch and warning started. Any data available at the time is allowed.</p></div>
   </div>
@@ -253,7 +248,6 @@ gridshedwatch score-alerts my_alerts.csv --name "My rule"</pre>
   <ul class="tight">
     <li>The budget: about 12 watches and 2 warnings per grid per year on a typical calibration grid, the same for both tracks. List alerts for all 48 grids; a grid left out counts as raising none.</li>
     <li>Every reference method's alerts are published in the alerts format (<code>results/v3.0/methods/&lt;method&gt;/alerts.csv</code>); scoring that file reproduces its row.</li>
-    <li>Random methods submit several seeds; results are averaged.</li>
     <li>To be listed, open a pull request with your scores or alerts, the code that made them, the <code>--json</code> output, and short answers on the data used and, for the alerts track, which events you looked at while developing. Every result is added, including ones that beat the reference methods. Methods that use extra data, such as weather, are listed separately.</li>
   </ul>
 </section>

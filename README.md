@@ -198,5 +198,5 @@ release and scored by the frozen protocol.
 
 ## Citation and license
 
-DOI: [10.5281/zenodo.23626223](https://doi.org/10.5281/zenodo.23626223) (archived on Zenodo with every release). See [CITATION.cff](https://github.com/gotham29/gridshedwatch/blob/main/CITATION.cff). Code: MIT. Event list, timelines, documentation and results:
+Paper: [10.5281/zenodo.24288273](https://doi.org/10.5281/zenodo.24288273) (preprint). Code DOI: [10.5281/zenodo.23626223](https://doi.org/10.5281/zenodo.23626223) (archived on Zenodo with every release). See [CITATION.cff](https://github.com/gotham29/gridshedwatch/blob/main/CITATION.cff). Code: MIT. Event list, timelines, documentation and results:
 CC BY 4.0. EIA-930 data: U.S. public domain ([DATA_LICENSE.md](https://github.com/gotham29/gridshedwatch/blob/main/DATA_LICENSE.md)).

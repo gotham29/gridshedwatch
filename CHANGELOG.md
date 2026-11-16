@@ -3,7 +3,8 @@
 The benchmark version (events, data, rules, scoring) and the package version are separate:
 a package patch release never changes a score.
 
-## Unreleased
+## 1.2.0 (2026-11-16)
+- The final release scored in the paper: 48 grids, 8 Tier 1 events, 11 reference methods, the forecast-anomaly control, seasonal chance tests, the selectivity test and the one-day delay check (`results/v3.0`, protocol `docs/protocol_v3.md`). `scipy` is now a core dependency.
 - v2.0 events, grids and scoring (protocol fixed before scoring: `docs/protocol_v2.md`). Two Tier 2
   events (`events.yaml`, `tier2`); 48 grids (`grids.yaml`): the 8 of v1.0 plus every EIA-930
   balancing authority that passes the coverage rule, with the 40 new data files in `snapshot_v2.0`

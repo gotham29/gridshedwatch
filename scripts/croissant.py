@@ -146,7 +146,7 @@ def build(version: str, ref: str) -> dict:
         "version": f"{version}.0", "datePublished": "2026-10-23", "url": REPO, "sameAs": DOI,
         "license": ["https://creativecommons.org/licenses/by/4.0/", "https://opensource.org/licenses/MIT"],
         "creator": {"@type": "sc:Person", "name": "Sam Heiserman", "email": "sam@htm-monitor.com"},
-        "citeAs": f"Heiserman, S. (2026). GridShedWatch: a benchmark for early warning of grid load sheds. {DOI}",
+        "citeAs": f"Heiserman, S. (2026). GridShedWatch: a benchmark for early warning of rolling blackouts. {DOI}",
         "keywords": ["power grid", "early warning", "anomaly detection", "benchmark", "EIA-930", "load shed"],
         "isLiveDataset": False, **RAI, "distribution": files, "recordSet": records,
     }

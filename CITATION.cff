@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use GridShedWatch, please cite it as below."
-title: "GridShedWatch: a benchmark for early warning of grid load sheds"
+title: "GridShedWatch: a benchmark for early warning of rolling blackouts"
 version: 1.2.0
 date-released: 2026-11-16
 authors:

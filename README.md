@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23626223.svg)](https://doi.org/10.5281/zenodo.23626223) [![tests](https://github.com/gotham29/gridshedwatch/actions/workflows/tests.yml/badge.svg)](https://github.com/gotham29/gridshedwatch/actions/workflows/tests.yml)
 
-**A benchmark for early warning of grid load sheds, scored the way forecasters score weather warnings.**
+**A benchmark for early warning of rolling blackouts (grid load sheds), scored the way forecasters score weather warnings.**
 
 Website: **https://gotham29.github.io/gridshedwatch** (built from this repo by `scripts/build_site.py`).
 The story behind it: [Grid emergency warnings don't have a scorecard. So I built one.](https://medium.com/@sheiser1/grid-emergency-warnings-dont-have-a-scorecard-so-i-built-one-0b504dd4e63c) (Medium).

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gridshedwatch"
 version = "1.2.0"
-description = "A benchmark for early warning of grid load sheds, scored the way forecasters score weather warnings"
+description = "A benchmark for early warning of rolling blackouts (grid load sheds), scored the way forecasters score weather warnings"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [{name = "Sam Heiserman"}]

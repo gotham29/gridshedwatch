@@ -32,7 +32,7 @@ packages = ["gridshedwatch", "gridshedwatch.baselines"]
 
 [tool.setuptools.package-data]
 gridshedwatch = ["events.yaml", "grids.yaml", "operator_notices.yaml", "reference_v3.csv", "snapshot_v*/SHA256SUMS", "snapshot_v*/bounds_2019.json",
-                 "snapshot_v*/quality.csv", "snapshot_v*/eia930/*.csv.gz"]
+                 "snapshot_v*/quality.csv", "snapshot_v*/eia930/*.csv.gz", "forecast_ladder.csv"]
 
 [tool.pytest.ini_options]
 markers = ["slow: rebuilds reference methods from the data (about a minute each)"]

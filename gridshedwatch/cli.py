@@ -112,6 +112,10 @@ def _score_v4(a):
     print(f"\n{a.name or a.file}  ({s['seeds']} seed{'s' if s['seeds'] > 1 else ''}), protocol v4.0")
     print(f"  primary comparison     {s['caught_before_notice']:g} caught before the operator's first notice; "
           f"{s['storm_hit_alerted_pct']}% of storm-hit quiet grids alerted; read against the forecast baseline below")
+    bn = ", ".join(f"{k} {v:g}" for k, v in s["before_notice_by_storm"].items())
+    sh = ", ".join(f"{k} {v}%" for k, v in s["storm_hit_by_storm"].items())
+    print(f"  by storm               before notice: {bn}; storm-hit quiet grids alerted: {sh}")
+    print(f"                         a method is ahead only if it leads in at least 2 of the 3 storms")
     by = ", ".join(f"{k} {v:g}" for k, v in s["caught_by_storm"].items())
     print(f"  load sheds caught      {s['caught']:g} of 8 ({by}); {s['caught_before_notice']:g} before the operator's first notice, "
           f"{s['caught_before_public']:g} before its first public notice")

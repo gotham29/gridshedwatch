@@ -126,14 +126,17 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
     seeds = sorted(alerts)
     hit = lambda us: np.array([np.mean([any(t - WEEK_H * H < s <= t for s in raw[(k, g)]) for k in seeds]) for _, g, _, t in us])
     val, every = hit(units), hit(storm_quiet_all())
+    storm_hit_by_storm = {st_: round(100 * val[[u[0] == st_ and not u[2] for u in units]].mean()) for st_ in STORMS}
     shed = np.array([u[2] for u in units])
     out = dict(seeds=len(seeds), caught=round(ev.groupby("seed").caught.sum().mean(), 1),
                caught_by_storm={s: round(x.groupby("seed").caught.sum().mean(), 1) for s, x in ev.groupby("storm")},
                caught_before_notice=round(ev.groupby("seed").before_notice.sum().mean(), 1),
                caught_before_public=round(ev.groupby("seed").before_public.sum().mean(), 1),
+               before_notice_by_storm={s: round(x.groupby("seed").before_notice.sum().mean(), 1) for s, x in ev.groupby("storm")},
                median_lead_h=round(float(ev[ev.caught].groupby("event").lead_h.median().median()), 0) if ev.caught.any() else None,
                fa_median=round(float(fa.median()), 1), fa_worst=round(float(fa.max()), 1), fa_worst_grid=fa.idxmax(),
                storm_hit_alerted_pct=round(100 * val[~shed].mean()), storm_hit_n=int((~shed).sum()),
+               storm_hit_by_storm=storm_hit_by_storm,
                shed_alerted_pct=round(100 * val[shed].mean()),
                storm_quiet_all_alerted_pct=round(100 * every.mean()), storm_quiet_all_n=len(every))
     if chance:

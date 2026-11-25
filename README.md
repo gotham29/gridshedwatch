@@ -143,6 +143,8 @@ alerted, the seasonal chance baseline, and the forecast baseline at about the sa
 ```
 Random alerts  (5 seeds), protocol v4.0
   primary comparison     0 caught before the operator's first notice; 21% of storm-hit quiet grids alerted; read against the forecast baseline below
+  by storm               before notice: Aug 2020 heat wave 0, Elliott 0, Uri 0; storm-hit quiet grids alerted: Uri 23%, Elliott 18%
+                         a method is ahead only if it leads in at least 2 of the 3 storms
   load sheds caught      1 of 8 (Aug 2020 heat wave 0, Elliott 0.4, Uri 0.6); 0 before the operator's first notice, 1 before its first public notice
   median lead            65.0 h
   false alarms per year  median grid 11.9, worst grid 13.2 (ava)

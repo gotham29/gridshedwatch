@@ -24,7 +24,7 @@ def main():
         op = cal(r)
         st = benchmark.starts_at(fn, [0], grids, "watch", op["threshold"], op["persistence"])
         s = verify.score({0: [(g, t) for (_, g), v in st.items() for t in v]}, chance=False)
-        rows.append(dict(rate=r, threshold=op["threshold"], **{k: v for k, v in s.items() if k != "caught_by_storm"}))
+        rows.append(dict(rate=r, threshold=op["threshold"], **{k: v for k, v in s.items() if not isinstance(v, dict)}))
         print(rows[-1], flush=True)
     pd.DataFrame(rows).to_csv(verify.FORECAST_LADDER, index=False)
 

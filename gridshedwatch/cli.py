@@ -115,6 +115,7 @@ def _score_v4(a):
     print(f"  median lead            {s['median_lead_h']} h")
     print(f"  false alarms per year  median grid {s['fa_median']}, worst grid {s['fa_worst']} ({s['fa_worst_grid']})")
     print(f"  storm-hit quiet grids  {s['storm_hit_alerted_pct']}% alerted (of {s['storm_hit_n']}); grids that shed {s['shed_alerted_pct']}%")
+    print(f"  every quiet grid       {s['storm_quiet_all_alerted_pct']}% alerted in the storm weeks (of {s['storm_quiet_all_n']})")
     if "chance_share" in s:
         print(f"  seasonal chance        moved copies catch {s['chance_mean']} on average; share doing as well {s['chance_share']}")
     print(f"\n  forecast baseline at a similar rate ({f['fa_median']} false alarms/yr, median grid): caught {f['caught']:g} of 8, "

@@ -9,7 +9,11 @@ a package patch release never changes a score.
   within 24 h of the first alert of a run on a grid count as one (runs do not chain); false alarms
   counted on every grid except within a week either side of each load shed or masked emergency; catches by storm and before the operator's first notice; storm-hit quiet grids alerted; and
   the forecast baseline at the same false-alarm rate (`gridshedwatch/forecast_ladder.csv`, built by
-  `scripts/forecast_ladder.py`). Southern Company's EEA 2 of 2022-12-24 (FERC-NERC Elliott
+  `scripts/forecast_ladder.py`). Catches use every alert; merging only counts false alarms. The scorer also reports the share of every
+  unmasked quiet grid alerted in the storm weeks, with no demand filter. A supply control,
+  `baselines/imanom.py` (demand minus net generation against the same hour in the previous four weeks,
+  a day late for publication). MISO's Uri cold weather alert, conservative operations and South Region
+  advisories added to `operator_notices.yaml` (MISO presentation to the Louisiana PSC). Southern Company's EEA 2 of 2022-12-24 (FERC-NERC Elliott
   report) added as a masked emergency. Earlier protocols stay available with `--version`.
 ## 1.2.0 (2026-11-16)
 - The final release scored in the paper: 48 grids, 8 Tier 1 events, 11 reference methods, the forecast-anomaly control, seasonal chance tests, the selectivity test and the one-day delay check (`results/v3.0`, protocol `docs/protocol_v3.md`). `scipy` is now a core dependency. Requires Python 3.10 or newer (3.9 is end-of-life).

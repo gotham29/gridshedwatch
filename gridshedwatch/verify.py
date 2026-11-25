@@ -1,8 +1,8 @@
 """Protocol v4.0: score a method's alert start times, with no alert budget.
 
 Input: {seed: [(grid, Timestamp), ...]} or a CSV with grid, start_utc[, seed]. Alerts on one grid that
-start within MERGE_H hours of the first alert of a run count as one, which keeps that first start
-(runs do not chain, so an alert renewed every day counts every day). For each seed, then averaged:
+start within MERGE_H hours of the first alert of a run count as one false alarm at most (runs do not
+chain, so an alert renewed every day counts every day); catches use every alert. For each seed, then averaged:
   caught          load sheds with an alert starting in the 7 days before onset (of 8), and by storm
   before_notice   of those, caught before the operator's first notice of any kind
   lead_h          median, over caught load sheds, of hours from the first such alert to onset
@@ -10,7 +10,8 @@ start within MERGE_H hours of the first alert of a run count as one, which keeps
                   a masked emergency on that grid; median and worst grid
   selectivity     share of storm-hit quiet grids (demand anomaly in its top 1% in the 7 days before the
                   storm's first load shed; Uri and Elliott; grids with a masked emergency that week left
-                  out) alerted in that week, next to the same share on the grids that shed load
+                  out) alerted in that week, next to the same share on the grids that shed load and
+                  on every unmasked quiet grid in those weeks, with no demand filter
   chance          the seasonal chance baseline (benchmark.chance_v3): share of 2,000 moved copies that
                   catch at least as many load sheds
 The forecast baseline at the same median false-alarm rate is read from FORECAST_LADDER.
@@ -55,6 +56,20 @@ def setup():
     return t1, near, grids, first, tuple(units)
 
 
+@lru_cache(maxsize=None)
+def storm_quiet_all() -> tuple:
+    """Every quiet grid in each storm's week, with no demand filter (grids with a masked emergency
+    that week left out): (storm, grid, False, t0)."""
+    t1, near, grids, _, _ = setup()
+    shed = {e["grid"] for e in t1}
+    out = []
+    for storm in STORMS:
+        t0 = min(e["onset"] for e in t1 if e["storm"] == storm)
+        out += [(storm, g, False, t0) for g in grids if g not in shed
+                and not any(n["grid"] == g and abs(n["time"] - t0) <= WEEK_H * H for n in near)]
+    return tuple(out)
+
+
 def merge(starts) -> list:
     out = []
     for t in sorted(starts):
@@ -78,14 +93,15 @@ def read(path) -> dict:
 
 def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
     t1, near, grids, first, units = setup()
-    st = {}
+    st, raw = {}, {}                                    # merged runs (false alarms) and raw starts (catches)
     for k, rows in alerts.items():
         by = {}
         for g, t in rows:
             by.setdefault(g, []).append(pd.Timestamp(t))
         for g in grids:
-            st[(k, g)] = merge(by.get(g, []))
-    ev, gr = benchmark.verify_v3(st, "watch", t1, near)
+            raw[(k, g)] = sorted(set(by.get(g, [])))
+            st[(k, g)] = merge(raw[(k, g)])
+    ev, gr = benchmark.verify_v3(raw, "watch", t1, near)
     on = {e["id"]: e["onset"] for e in t1}
     ev["before_notice"] = [bool(c) and (first.get(g) is None or l > (on[i] - first[g]) / H)
                            for c, g, l, i in zip(ev.caught, ev.grid, ev.lead_h, ev.event)]
@@ -96,7 +112,8 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
     fa = pd.Series({g: np.mean([sum(not any(abs(s - t) < WEEK_H * H for t in quiet_from.get(g, [])) for s in st[(k, g)])
                                 for k in alerts]) / yrs[g] for g in grids})
     seeds = sorted(alerts)
-    val = np.array([np.mean([any(t - WEEK_H * H < s <= t for s in st[(k, g)]) for k in seeds]) for _, g, _, t in units])
+    hit = lambda us: np.array([np.mean([any(t - WEEK_H * H < s <= t for s in raw[(k, g)]) for k in seeds]) for _, g, _, t in us])
+    val, every = hit(units), hit(storm_quiet_all())
     shed = np.array([u[2] for u in units])
     out = dict(seeds=len(seeds), caught=round(ev.groupby("seed").caught.sum().mean(), 1),
                caught_by_storm={s: round(x.groupby("seed").caught.sum().mean(), 1) for s, x in ev.groupby("storm")},
@@ -104,9 +121,10 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
                median_lead_h=round(float(ev[ev.caught].groupby("event").lead_h.median().median()), 0) if ev.caught.any() else None,
                fa_median=round(float(fa.median()), 1), fa_worst=round(float(fa.max()), 1), fa_worst_grid=fa.idxmax(),
                storm_hit_alerted_pct=round(100 * val[~shed].mean()), storm_hit_n=int((~shed).sum()),
-               shed_alerted_pct=round(100 * val[shed].mean()))
+               shed_alerted_pct=round(100 * val[shed].mean()),
+               storm_quiet_all_alerted_pct=round(100 * every.mean()), storm_quiet_all_n=len(every))
     if chance:
-        st_ev = {kg: v for kg, v in st.items() if kg[1] in {e["grid"] for e in t1}}
+        st_ev = {kg: v for kg, v in raw.items() if kg[1] in {e["grid"] for e in t1}}
         c = benchmark.chance_v3(st_ev, "watch", t1, np.random.default_rng(seed))["caught"]
         out.update(chance_mean=round(float(c.mean()), 2),
                    chance_share=round(float((1 + (c >= out["caught"] - 1e-9).sum()) / (len(c) + 1)), 4))

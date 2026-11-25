@@ -78,12 +78,17 @@ events:
     onset_label: MISO declares Max Gen Event Step 5 (EEA 3) for MISO South
     onset_source: {title: "MISO, The February 2021 Arctic Event", url: "https://cdn.misoenergy.org/2021%20Arctic%20Event%20Report554429.pdf"}
     notices:
+      - {utc: "2021-02-13 05:00", label: "Cold Weather Alert (MISO, February 2021 winter storm presentation to the Louisiana PSC (communication timeline))", by: operator}
+      - {utc: "2021-02-14 17:00", label: "Conservative Operations (MISO, February 2021 winter storm presentation to the Louisiana PSC (communication timeline))", by: operator}
+      - {utc: "2021-02-15 12:00", label: "Max Gen Alert, South Region (MISO, February 2021 winter storm presentation to the Louisiana PSC (communication timeline))", by: operator}
+      - {utc: "2021-02-15 14:00", label: "Capacity Advisory, South Region (MISO, February 2021 winter storm presentation to the Louisiana PSC (communication timeline))", by: operator}
       - {utc: "2021-02-15 10:40", label: "Local transmission emergency, East Texas shed (transmission, not a target)", by: operator}
       - {utc: "2021-02-15 23:00", label: "Max Gen Event Step 2c (EEA 2), South", by: operator}
       - {utc: "2021-02-16 01:09", label: "At MISO's request, Entergy and Cleco ask Louisiana customers to conserve; outages possible", by: operator, public: true, approx: true}
       - {utc: "2021-02-16 23:35", label: "Max Gen Event Step 2c (EEA 2) again", by: operator}
     sources:
       - {title: "MISO, The February 2021 Arctic Event", url: "https://cdn.misoenergy.org/2021%20Arctic%20Event%20Report554429.pdf"}
+      - {title: "MISO, February 2021 winter storm presentation to the Louisiana PSC (communication timeline)", url: "https://lpsc.louisiana.gov/docs/news/weather/MISO%20Presentation.pdf"}
       - {title: "DOE CESER, Extreme Cold & Winter Weather situation update 2", url: "https://www.energy.gov/ceser/articles/extreme-cold-winter-weather-hub-situation-update-2"}
       - {title: "WAFB, Entergy, Cleco customers asked to conserve electricity (Feb 15 2021, updated 7:09 p.m. CST)", url: "https://www.wafb.com/2021/02/15/entergy-customers-asked-conserve-electricity/"}
   duk:

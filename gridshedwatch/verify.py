@@ -4,8 +4,10 @@ Input: {seed: [(grid, Timestamp), ...]} or a CSV with grid, start_utc[, seed]. A
 start within MERGE_H hours of the first alert of a run count as one false alarm at most (runs do not
 chain, so an alert renewed every day counts every day); catches use every alert. For each seed, then averaged:
   caught          load sheds with an alert starting in the 7 days before onset (of 8), and by storm
-  before_notice   of those, caught before the operator's first notice of any kind (and before_public:
-                  before its first public notice)
+  before_notice   of the load sheds that had a notice, caught before the operator's first notice of any
+                  kind (and before_public: before its first public notice, of 8)
+  skill           grids that shed alerted minus every unmasked quiet grid alerted in the storm weeks
+                  (hit rate minus false-alarm rate), overall and by storm
   lead_h          median, over caught load sheds, of hours from the first such alert to onset
   false alarms    alerts per year on every grid, except those within a week either side of a load shed or
                   a masked emergency on that grid; median and worst grid
@@ -112,7 +114,7 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
             st[(k, g)] = merge(raw[(k, g)])
     ev, gr = benchmark.verify_v3(raw, "watch", t1, near)
     on = {e["id"]: e["onset"] for e in t1}
-    ev["before_notice"] = [bool(c) and (first.get(g) is None or l > (on[i] - first[g]) / H)
+    ev["before_notice"] = [bool(c) and first.get(g) is not None and first[g] < on[i] and l > (on[i] - first[g]) / H
                            for c, g, l, i in zip(ev.caught, ev.grid, ev.lead_h, ev.event)]
     pub = first_public()
     ev["before_public"] = [bool(c) and (pub.get(g) is None or l > (on[i] - pub[g]) / H)
@@ -127,6 +129,9 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
     hit = lambda us: np.array([np.mean([any(t - WEEK_H * H < s <= t for s in raw[(k, g)]) for k in seeds]) for _, g, _, t in us])
     val, every = hit(units), hit(storm_quiet_all())
     storm_hit_by_storm = {st_: round(100 * val[[u[0] == st_ and not u[2] for u in units]].mean()) for st_ in STORMS}
+    qa = storm_quiet_all()
+    skill_by_storm = {st_: round(val[[u[0] == st_ and u[2] for u in units]].mean()
+                                 - every[[u[0] == st_ for u in qa]].mean(), 2) for st_ in STORMS}
     shed = np.array([u[2] for u in units])
     out = dict(seeds=len(seeds), caught=round(ev.groupby("seed").caught.sum().mean(), 1),
                caught_by_storm={s: round(x.groupby("seed").caught.sum().mean(), 1) for s, x in ev.groupby("storm")},
@@ -137,6 +142,7 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
                fa_median=round(float(fa.median()), 1), fa_worst=round(float(fa.max()), 1), fa_worst_grid=fa.idxmax(),
                storm_hit_alerted_pct=round(100 * val[~shed].mean()), storm_hit_n=int((~shed).sum()),
                storm_hit_by_storm=storm_hit_by_storm,
+               skill=round(float(val[shed].mean() - every.mean()), 2), skill_by_storm=skill_by_storm,
                shed_alerted_pct=round(100 * val[shed].mean()),
                storm_quiet_all_alerted_pct=round(100 * every.mean()), storm_quiet_all_n=len(every))
     if chance:
@@ -144,6 +150,9 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
         c = benchmark.chance_v3(st_ev, "watch", t1, np.random.default_rng(seed))["caught"]
         out.update(chance_mean=round(float(c.mean()), 2),
                    chance_share=round(float((1 + (c >= out["caught"] - 1e-9).sum()) / (len(c) + 1)), 4))
+        b = chance_before_notice(raw, np.random.default_rng(seed))
+        out.update(chance_before_notice_mean=round(float(b.mean()), 2),
+                   chance_before_notice_as_many=int((b >= out["caught_before_notice"] - 1e-9).sum()))
     return out
 
 
@@ -151,3 +160,32 @@ def forecast_at(rate: float):
     """The forecast baseline's row at the ladder rate nearest a median false-alarm rate."""
     lad = pd.read_csv(FORECAST_LADDER)
     return lad.iloc[(lad.fa_median - rate).abs().argmin()].to_dict()
+
+
+def chance_before_notice(raw: dict, rng, shifts: int = None) -> np.ndarray:
+    """Catches before the operator's first notice (of the load sheds that had one) for each moved copy,
+    with the same moves as benchmark.chance_v3 (one shift for every grid: whole years plus up to
+    SEASON_SHIFT_DAYS, wrapped within 6 years), averaged over seeds."""
+    from .config import CHANCE_SHIFTS, SEASON_SHIFT_DAYS, SEASON_SHIFT_YEARS
+    t1, _, _, first, _ = setup()
+    shifts = shifts or CHANCE_SHIFTS
+    Y = 8760.0
+    off = Y * rng.integers(SEASON_SHIFT_YEARS[0], SEASON_SHIFT_YEARS[1] + 1, shifts) \
+        + rng.uniform(-24 * SEASON_SHIFT_DAYS, 24 * SEASON_SHIFT_DAYS, shifts)
+    seeds = sorted({k for k, _ in raw})
+    tot = np.zeros(shifts)
+    for e in t1:
+        g, on = e["grid"], e["onset"]
+        if first.get(g) is None or first[g] >= on:
+            continue
+        notice_h = (on - first[g]) / H
+        tb = data.timebase(g)
+        t0 = tb.loc[tb.in_warmup == 0, "timestamp"].iloc[0]
+        for k in seeds:
+            x = np.array([(t - t0) / H for t in raw.get((k, g), [])])
+            x = x[x < 6 * Y] if len(x) else x
+            if not len(x):
+                continue
+            d = (on - t0) / H - (x[None, :] + off[:, None]) % (6 * Y)
+            tot += ((d > notice_h) & (d <= WEEK_H)).any(axis=1) / len(seeds)
+    return tot

@@ -11,8 +11,10 @@ a package patch release never changes a score.
   the forecast baseline at the same false-alarm rate (`gridshedwatch/forecast_ladder.csv`, built by
   `scripts/forecast_ladder.py`). The scorer prints the primary comparison first (catches before the operator's first notice and
   storm-hit quiet grids alerted, against the forecast baseline at the same rate) and also counts catches
-  before the first public notice, with both primary numbers by storm (a method is ahead only if it
-  leads in at least 2 of the 3 storms). Catches use every alert; merging only counts false alarms. The scorer also reports the share of every
+  before the first public notice, with both primary numbers by storm. The primary numbers are now catches before the operator's
+  first notice, of the 7 load sheds that had one, and skill (grids that shed alerted minus every
+  unmasked quiet grid alerted in the storm weeks), each with the seasonal chance check. ERCOT's Feb 11
+  and SPP's Feb 14 2021 news releases added as public notices. Catches use every alert; merging only counts false alarms. The scorer also reports the share of every
   unmasked quiet grid alerted in the storm weeks, with no demand filter. A supply control,
   `baselines/imanom.py` (demand minus net generation against the same hour in the previous four weeks,
   a day late for publication). MISO's Uri cold weather alert, conservative operations and South Region

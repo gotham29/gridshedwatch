@@ -16,11 +16,13 @@ events:
       - {utc: "2021-02-09 00:53", label: "Operating Condition Notice: extreme cold approaching", by: operator}
       - {utc: "2021-02-10 18:00", label: "Advisory: extreme cold weather event", by: operator, approx: true}
       - {utc: "2021-02-11 18:00", label: "Watch: cold weather event", by: operator, approx: true}
+      - {utc: "2021-02-11 18:00", label: "News release: record electric use expected from extreme cold (ERCOT review presentation, Feb 24 2021; CBS DFW, Feb 11 2021)", by: operator, public: true, approx: true}
       - {utc: "2021-02-13 18:00", label: "Emergency Notice: extreme cold weather event", by: operator, approx: true}
       - {utc: "2021-02-14 14:30", label: "Conservation alert and media appeal", by: operator, public: true}
       - {utc: "2021-02-15 06:15", label: "EEA 1", by: operator}
       - {utc: "2021-02-15 07:07", label: "EEA 2", by: operator}
     sources:
+      - {title: "CBS DFW, ERCOT expecting record electricity use during extreme cold (Feb 11 2021)", url: "https://www.cbsnews.com/texas/news/ercot-record-electricity-extreme-cold/"}
       - {title: "ERCOT, Review of February 2021 Extreme Cold Weather Event (Texas Legislature, Feb 25 2021)", url: "https://www.ercot.com/files/docs/2021/03/03/Texas_Legislature_Hearings_2-25-2021.pdf"}
       - {title: "UT Austin Energy Institute, The Timeline and Events of the February 2021 Texas Electric Grid Blackouts", url: "https://energy.utexas.edu/sites/default/files/UTAustin%20(2021)%20EventsFebruary2021TexasBlackout%2020210714.pdf"}
   ca:
@@ -64,10 +66,12 @@ events:
     onset_source: {title: "U.S. House Energy & Commerce hearing materials, Feb 18 2021", url: "https://docs.house.gov/meetings/IF/IF03/20210218/111210/HHRG-117-IF03-20210218-SD017.pdf"}
     notices:
       - {utc: "2021-02-09 06:00", label: "Conservative operations declared", by: operator}
+      - {utc: "2021-02-14 18:00", label: "News release: SPP preparing for worsening system conditions due to extreme cold (SPP release of Feb 14 2021, as reposted by GRDA; time unpublished, set to midday)", by: operator, public: true, approx: true}
       - {utc: "2021-02-15 06:00", label: "EEA 1 announced Feb 14 for 05:00 Feb 15; members ask customers to conserve from midnight (time of the announcement unpublished; set to the start of the appeal)", by: operator, public: true}
       - {utc: "2021-02-15 11:00", label: "EEA 1", by: operator}
       - {utc: "2021-02-15 13:22", label: "EEA 2; members issue conservation appeals", by: operator, public: true}
     sources:
+      - {title: "SPP, Southwest Power Pool preparing for worsening system conditions due to extreme cold (Feb 14 2021, reposted by GRDA)", url: "https://grda.com/wp-content/uploads/2023/12/FOR-IMMEDIATE-RELEASE-SPP-preparing-for-worsening-system-conditions-du.pdf"}
       - {title: "U.S. House Energy & Commerce hearing materials, Feb 18 2021", url: "https://docs.house.gov/meetings/IF/IF03/20210218/111210/HHRG-117-IF03-20210218-SD017.pdf"}
       - {title: "GRDA statement on SPP Energy Emergency Alert (EEA) Level 1 declaration", url: "https://grda.com/grda-statement-on-spp-energy-emergency-alert-eea-level-1-declaration/"}
   miso:

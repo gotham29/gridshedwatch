@@ -142,17 +142,17 @@ alerted, the seasonal chance baseline, and the forecast baseline at about the sa
 
 ```
 Random alerts  (5 seeds), protocol v4.0
-  primary comparison     0 caught before the operator's first notice; 21% of storm-hit quiet grids alerted; read against the forecast baseline below
-  by storm               before notice: Aug 2020 heat wave 0, Elliott 0, Uri 0; storm-hit quiet grids alerted: Uri 23%, Elliott 18%
-                         a method is ahead only if it leads in at least 2 of the 3 storms
-  load sheds caught      1 of 8 (Aug 2020 heat wave 0, Elliott 0.4, Uri 0.6); 0 before the operator's first notice, 1 before its first public notice
+  primary comparison     0 of 7 caught before the operator's first notice; skill -0.04 (grids that shed alerted minus quiet grids alerted in the storm weeks); read against the forecast baseline below
+  by storm               before notice: Aug 2020 heat wave 0, Elliott 0, Uri 0; skill: Uri 0.01, Elliott -0.08
+                         ahead on a number only if leading in most storms it covers (2 of 3 before notice, both for skill)
+  load sheds caught      1 of 8 (Aug 2020 heat wave 0, Elliott 0.4, Uri 0.6); 0 of 7 before the operator's first notice, 1 before its first public notice
   median lead            65.0 h
   false alarms per year  median grid 11.9, worst grid 13.2 (ava)
   storm-hit quiet grids  21% alerted (of 26); grids that shed 14%
   every quiet grid       18% alerted in the storm weeks (of 76)
-  seasonal chance        moved copies catch 1.77 on average; share doing as well 0.973
+  seasonal chance        moved copies catch 1.77 on average; share doing as well 0.973; before notice 0.72 on average, 2000 of 2,000 as many
 
-  forecast baseline at a similar rate (12.5 false alarms/yr, median grid): caught 8 of 8, 2 before notice, 6 before public notice, median lead 24 h, worst grid 25.7, storm-hit quiet grids 88%
+  forecast baseline at a similar rate (12.5 false alarms/yr, median grid): caught 8 of 8, 1 before notice, 5 before public notice, median lead 24 h, worst grid 25.7, skill 0.64
 ```
 
 Your method is printed under the 11 reference methods, scored by the same rules: load sheds

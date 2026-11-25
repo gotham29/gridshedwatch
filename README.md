@@ -114,18 +114,16 @@ that hour only. Write the scores in the submission layout (`my_scores/s<seed>/<g
 shared rules, the label-free budget step and the scoring are done for you, so your method
 cannot be tuned toward the eight events. Template: [examples/my_method.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_method.py).
 
-**Alerts track** (any method). If your method decides on its own when to raise a watch or a
-warning (a rule, a classifier, a weather-based model, a human forecaster), list when each alert
-started and score the list. For example, take a simple rule: raise a watch when demand has run
-unusually far above its forecast for three hours, and a warning when it has done so badly for
-six ([examples/my_alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_alerts.py)).
-Running it writes one line per alert (add a `seed` column if your method is random):
+**Scoring alert times** (any method, the paper's protocol). If your method decides on its own when to
+raise an alert (a rule, a classifier, a weather-based model, a human forecaster), list when each
+alert started, in UTC, one line per alert (add a `seed` column if your method is random). Alerts
+should come only from data available at the time. Alerts on one grid that start within 24 hours of
+the previous one count as one. Template: [examples/my_alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_alerts.py).
 
 ```
-grid,level,start_utc
-tx,watch,2021-02-09 12:00
-tx,warning,2021-02-09 21:00
-duk,watch,2022-12-24 00:00
+grid,start_utc
+tx,2021-02-09 12:00
+duk,2022-12-24 00:00
 ...
 ```
 
@@ -135,12 +133,19 @@ Score it:
 gridshedwatch score-alerts my_alerts.csv --name "My rule"
 ```
 
+You get load sheds caught (of 8, by storm, and how many before the operator's first notice), the
+median lead, false alarms per year (median and worst grid), the share of storm-hit quiet grids
+alerted, the seasonal chance baseline, and the forecast baseline at about the same false-alarm rate:
+
 ```
-                     method  watches (of 8)  by chance       p  warnings before onset  median watch lead (h)  quiet grids: median / 90th pct / worst  within budget
-Gradient-boosted forecaster             7.2       2.21  0.0055                    6.0                   43.0                            16 / 33 / 63           True
-...
-              Random scores             1.0       1.77  0.9730                    0.2                   65.0                            12 / 13 / 14           True
-                    my_rule             3.0       1.40  0.1439                    1.0                  131.0                               4 / 7 / 10           True
+Random alerts  (5 seeds), protocol v4.0
+  load sheds caught      1 of 8 (Aug 2020 heat wave 0, Elliott 0.4, Uri 0.6); 0 before the operator's first notice
+  median lead            65.0 h
+  false alarms per year  median grid 11.9, worst grid 13.2 (ava)
+  storm-hit quiet grids  21% alerted (of 27); grids that shed 14%
+  seasonal chance        moved copies catch 1.76 on average; share doing as well 0.971
+
+  forecast baseline at a similar rate (12.6 false alarms/yr, median grid): caught 8 of 8, 2 before notice, median lead 24 h, worst grid 25.7, storm-hit quiet grids 89%
 ```
 
 Your method is printed under the 11 reference methods, scored by the same rules: load sheds

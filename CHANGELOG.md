@@ -3,6 +3,13 @@
 The benchmark version (events, data, rules, scoring) and the package version are separate:
 a package patch release never changes a score.
 
+
+## Unreleased
+- Protocol v4.0 (`gridshedwatch/verify.py`), now the default for `score-alerts`: no alert budget; alerts
+  within 24 h on a grid count as one; false alarms counted on every grid outside the week before each
+  load shed; catches by storm and before the operator's first notice; storm-hit quiet grids alerted; and
+  the forecast baseline at the same false-alarm rate (`gridshedwatch/forecast_ladder.csv`, built by
+  `scripts/forecast_ladder.py`). Earlier protocols stay available with `--version`.
 ## 1.2.0 (2026-11-16)
 - The final release scored in the paper: 48 grids, 8 Tier 1 events, 11 reference methods, the forecast-anomaly control, seasonal chance tests, the selectivity test and the one-day delay check (`results/v3.0`, protocol `docs/protocol_v3.md`). `scipy` is now a core dependency. Requires Python 3.10 or newer (3.9 is end-of-life).
 - v2.0 events, grids and scoring (protocol fixed before scoring: `docs/protocol_v2.md`). Two Tier 2

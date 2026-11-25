@@ -5,7 +5,8 @@
   gridshedwatch baseline zscore -o DIR        write reference scores in the submission layout
   gridshedwatch score DIR --name NAME         scores track: score a method from its per-signal scores, under the
                                               final protocol, and print it next to the 11 reference methods
-  gridshedwatch score-alerts FILE --name NAME  alerts track: the same from a method's watch/warning start times
+  gridshedwatch score-alerts FILE --name NAME  score a method's alert start times (protocol v4.0, the paper's),
+                                              next to the forecast baseline at the same false-alarm rate
   (--version 1.0 or 2.0 reproduces an earlier release's scoring)
 """
 import argparse
@@ -14,7 +15,7 @@ import sys
 
 import pandas as pd
 
-from . import alerts, benchmark, data, submission
+from . import alerts, benchmark, data, submission, verify
 from .config import BUDGET, GRID_CAP, VERSION
 
 
@@ -88,6 +89,8 @@ def _score(a):
 
 
 def _score_alerts(a):
+    if a.version == "4.0":
+        return _score_v4(a)
     if a.version == "3.0":
         return _protocol(a, file=a.file)
     r = benchmark.evaluate_alerts(a.name or str(a.file), alerts.load(a.file), chance=not a.no_chance)
@@ -98,6 +101,25 @@ def _score_alerts(a):
             print(f"\n  OVER BUDGET ({lv}): the median grid must be at most {BUDGET[lv]:g} alerts/yr and every grid at most "
                   f"{GRID_CAP * BUDGET[lv]:g}/yr; this entry has median {r.summary[lv + '_median_grid_rate']} and "
                   f"highest {r.summary[lv + '_max_grid_rate']}. Not comparable with the table until reduced.")
+
+
+def _score_v4(a):
+    s = verify.score(verify.read(a.file), chance=not a.no_chance)
+    f = verify.forecast_at(s["fa_median"])
+    if a.json:
+        print(json.dumps(dict(method=s, forecast_baseline_same_rate=f), indent=2, default=float))
+        return
+    print(f"\n{a.name or a.file}  ({s['seeds']} seed{'s' if s['seeds'] > 1 else ''}), protocol v4.0")
+    by = ", ".join(f"{k} {v:g}" for k, v in s["caught_by_storm"].items())
+    print(f"  load sheds caught      {s['caught']:g} of 8 ({by}); {s['caught_before_notice']:g} before the operator's first notice")
+    print(f"  median lead            {s['median_lead_h']} h")
+    print(f"  false alarms per year  median grid {s['fa_median']}, worst grid {s['fa_worst']} ({s['fa_worst_grid']})")
+    print(f"  storm-hit quiet grids  {s['storm_hit_alerted_pct']}% alerted (of {s['storm_hit_n']}); grids that shed {s['shed_alerted_pct']}%")
+    if "chance_share" in s:
+        print(f"  seasonal chance        moved copies catch {s['chance_mean']} on average; share doing as well {s['chance_share']}")
+    print(f"\n  forecast baseline at a similar rate ({f['fa_median']} false alarms/yr, median grid): caught {f['caught']:g} of 8, "
+          f"{f['caught_before_notice']:g} before notice, median lead {f['median_lead_h']:g} h, worst grid {f['fa_worst']}, "
+          f"storm-hit quiet grids {f['storm_hit_alerted_pct']:g}%")
 
 
 def _report(a, r):
@@ -164,8 +186,9 @@ def main(argv=None):
     p.add_argument("--out", default="gsw_results", help="results folder (final protocol)")
     p.set_defaults(fn=_score)
     p = sub.add_parser("score-alerts")
-    p.add_argument("file", help="CSV with grid, level, start_utc[, seed] (see gridshedwatch/alerts.py)")
-    p.add_argument("--version", default="3.0", choices=["1.0", "3.0"], help="3.0: the final protocol (default)")
+    p.add_argument("file", help="CSV with grid, start_utc[, seed] (see gridshedwatch/verify.py)")
+    p.add_argument("--version", default="4.0", choices=["1.0", "3.0", "4.0"],
+                   help="4.0: the paper's protocol, no alert budget (default); 1.0 or 3.0 reproduce earlier releases")
     p.add_argument("--out", default="gsw_results", help="results folder (final protocol)")
     p.add_argument("--name")
     p.add_argument("--no-chance", action="store_true")

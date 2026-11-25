@@ -24,6 +24,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from gridshedwatch import data  # noqa: E402
+from gridshedwatch.config import SNAPSHOTS  # noqa: E402
 
 API = "https://api.eia.gov/v2/electricity/rto/region-data/data/"
 
@@ -86,8 +87,8 @@ def main():
         except (KeyError, ValueError) as e:             # respondents without D, DF or NG
             print(f"{ba:5s} skipped: {e}")
             continue
-        old_file = data.DATA / "eia930" / f"{ba}.csv.gz"
-        if old_file.exists():
+        old_file = next((f for f in (d / "eia930" / f"{ba}.csv.gz" for d in SNAPSHOTS.values()) if f.exists()), None)
+        if old_file:
             old = pd.read_csv(old_file, index_col="period_utc")
             j = old.add_suffix("_v1").join(new.add_suffix("_now"), how="outer")
             diff = {c: int((j[f"{c}_v1"].fillna(-1) != j[f"{c}_now"].fillna(-1)).sum()) for c in ("D", "DF", "NG")}

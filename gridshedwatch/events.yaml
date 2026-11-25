@@ -403,6 +403,11 @@ near_miss:
     time_utc: 2022-12-23 22:30
     what: Maximum Generation Emergency Action and Emergency Load Management Reduction Action, NERC EEA 2, from 5:30 PM EPT, Winter Storm Elliott (again from 4:20 AM Dec 24)
     source: PJM, Winter Storm Elliott overview, Markets and Reliability Committee, 2023-01-11
+  soco_2022-12-24:
+    grid_id: soco
+    time_utc: 2022-12-24 11:25
+    what: EEA 2 by 6:25 AM EST Dec 24, after EEA 1 earlier that morning, Winter Storm Elliott
+    source: FERC-NERC-Regional Entity staff, Inquiry into Bulk-Power System Operations During December 2022 Winter Storm Elliott (October 2023), p. 12
   sceg_2022-12-24:
     grid_id: sceg
     time_utc: 2022-12-24 10:18

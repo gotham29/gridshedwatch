@@ -118,7 +118,9 @@ cannot be tuned toward the eight events. Template: [examples/my_method.py](https
 raise an alert (a rule, a classifier, a weather-based model, a human forecaster), list when each
 alert started, in UTC, one line per alert (add a `seed` column if your method is random). Alerts
 should come only from data available at the time. Alerts on one grid that start within 24 hours of
-the previous one count as one. Template: [examples/my_alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_alerts.py).
+the first alert of a run count as one (runs do not chain, so an alert renewed every day counts every
+day). Alerts within a week either side of a load shed or a masked emergency on that grid are not
+counted as false alarms. Template: [examples/my_alerts.py](https://github.com/gotham29/gridshedwatch/blob/main/examples/my_alerts.py).
 
 ```
 grid,start_utc
@@ -142,10 +144,10 @@ Random alerts  (5 seeds), protocol v4.0
   load sheds caught      1 of 8 (Aug 2020 heat wave 0, Elliott 0.4, Uri 0.6); 0 before the operator's first notice
   median lead            65.0 h
   false alarms per year  median grid 11.9, worst grid 13.2 (ava)
-  storm-hit quiet grids  21% alerted (of 27); grids that shed 14%
+  storm-hit quiet grids  21% alerted (of 26); grids that shed 14%
   seasonal chance        moved copies catch 1.76 on average; share doing as well 0.971
 
-  forecast baseline at a similar rate (12.6 false alarms/yr, median grid): caught 8 of 8, 2 before notice, median lead 24 h, worst grid 25.7, storm-hit quiet grids 89%
+  forecast baseline at a similar rate (12.5 false alarms/yr, median grid): caught 8 of 8, 2 before notice, median lead 24 h, worst grid 25.7, storm-hit quiet grids 88%
 ```
 
 Your method is printed under the 11 reference methods, scored by the same rules: load sheds

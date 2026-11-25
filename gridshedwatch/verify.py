@@ -1,12 +1,13 @@
 """Protocol v4.0: score a method's alert start times, with no alert budget.
 
 Input: {seed: [(grid, Timestamp), ...]} or a CSV with grid, start_utc[, seed]. Alerts on one grid that
-start within MERGE_H hours of the previous one count as one alert. For each seed, then averaged:
+start within MERGE_H hours of the first alert of a run count as one, which keeps that first start
+(runs do not chain, so an alert renewed every day counts every day). For each seed, then averaged:
   caught          load sheds with an alert starting in the 7 days before onset (of 8), and by storm
   before_notice   of those, caught before the operator's first notice of any kind
   lead_h          median, over caught load sheds, of hours from the first such alert to onset
-  false alarms    alerts per year on every grid, outside the week before each load shed and outside
-                  masked emergencies; median and worst grid
+  false alarms    alerts per year on every grid, except those within a week either side of a load shed or
+                  a masked emergency on that grid; median and worst grid
   selectivity     share of storm-hit quiet grids (demand anomaly in its top 1% in the 7 days before the
                   storm's first load shed; Uri and Elliott; grids with a masked emergency that week left
                   out) alerted in that week, next to the same share on the grids that shed load
@@ -88,8 +89,12 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
     on = {e["id"]: e["onset"] for e in t1}
     ev["before_notice"] = [bool(c) and (first.get(g) is None or l > (on[i] - first[g]) / H)
                            for c, g, l, i in zip(ev.caught, ev.grid, ev.lead_h, ev.event)]
-    gr["fa"] = (gr.n_alerts - gr.n_verified - gr.n_masked) / gr.years
-    fa = gr.groupby("grid").fa.mean()
+    quiet_from = {}                                     # the week before and the week after each shed or masked emergency
+    for t in [(e["grid"], e["onset"]) for e in t1] + [(n["grid"], n["time"]) for n in near]:
+        quiet_from.setdefault(t[0], []).append(t[1])
+    yrs = {g: data.scored_years(g) for g in grids}
+    fa = pd.Series({g: np.mean([sum(not any(abs(s - t) < WEEK_H * H for t in quiet_from.get(g, [])) for s in st[(k, g)])
+                                for k in alerts]) / yrs[g] for g in grids})
     seeds = sorted(alerts)
     val = np.array([np.mean([any(t - WEEK_H * H < s <= t for s in st[(k, g)]) for k in seeds]) for _, g, _, t in units])
     shed = np.array([u[2] for u in units])

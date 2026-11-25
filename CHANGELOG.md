@@ -9,7 +9,9 @@ a package patch release never changes a score.
   within 24 h of the first alert of a run on a grid count as one (runs do not chain); false alarms
   counted on every grid except within a week either side of each load shed or masked emergency; catches by storm and before the operator's first notice; storm-hit quiet grids alerted; and
   the forecast baseline at the same false-alarm rate (`gridshedwatch/forecast_ladder.csv`, built by
-  `scripts/forecast_ladder.py`). Catches use every alert; merging only counts false alarms. The scorer also reports the share of every
+  `scripts/forecast_ladder.py`). The scorer prints the primary comparison first (catches before the operator's first notice and
+  storm-hit quiet grids alerted, against the forecast baseline at the same rate) and also counts catches
+  before the first public notice. Catches use every alert; merging only counts false alarms. The scorer also reports the share of every
   unmasked quiet grid alerted in the storm weeks, with no demand filter. A supply control,
   `baselines/imanom.py` (demand minus net generation against the same hour in the previous four weeks,
   a day late for publication). MISO's Uri cold weather alert, conservative operations and South Region

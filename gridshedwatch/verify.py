@@ -4,7 +4,8 @@ Input: {seed: [(grid, Timestamp), ...]} or a CSV with grid, start_utc[, seed]. A
 start within MERGE_H hours of the first alert of a run count as one false alarm at most (runs do not
 chain, so an alert renewed every day counts every day); catches use every alert. For each seed, then averaged:
   caught          load sheds with an alert starting in the 7 days before onset (of 8), and by storm
-  before_notice   of those, caught before the operator's first notice of any kind
+  before_notice   of those, caught before the operator's first notice of any kind (and before_public:
+                  before its first public notice)
   lead_h          median, over caught load sheds, of hours from the first such alert to onset
   false alarms    alerts per year on every grid, except those within a week either side of a load shed or
                   a masked emergency on that grid; median and worst grid
@@ -57,6 +58,14 @@ def setup():
 
 
 @lru_cache(maxsize=None)
+def first_public() -> dict:
+    """Each shed grid's first public notice (conservation appeal, emergency alert or press release)."""
+    notices = yaml.safe_load((PACKAGE / "operator_notices.yaml").read_text())["events"]
+    return {g: min((pd.Timestamp(n["utc"]) for n in v.get("notices", []) if n.get("public")), default=None)
+            for g, v in notices.items()}
+
+
+@lru_cache(maxsize=None)
 def storm_quiet_all() -> tuple:
     """Every quiet grid in each storm's week, with no demand filter (grids with a masked emergency
     that week left out): (storm, grid, False, t0)."""
@@ -105,6 +114,9 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
     on = {e["id"]: e["onset"] for e in t1}
     ev["before_notice"] = [bool(c) and (first.get(g) is None or l > (on[i] - first[g]) / H)
                            for c, g, l, i in zip(ev.caught, ev.grid, ev.lead_h, ev.event)]
+    pub = first_public()
+    ev["before_public"] = [bool(c) and (pub.get(g) is None or l > (on[i] - pub[g]) / H)
+                           for c, g, l, i in zip(ev.caught, ev.grid, ev.lead_h, ev.event)]
     quiet_from = {}                                     # the week before and the week after each shed or masked emergency
     for t in [(e["grid"], e["onset"]) for e in t1] + [(n["grid"], n["time"]) for n in near]:
         quiet_from.setdefault(t[0], []).append(t[1])
@@ -118,6 +130,7 @@ def score(alerts: dict, chance: bool = True, seed: int = 0) -> dict:
     out = dict(seeds=len(seeds), caught=round(ev.groupby("seed").caught.sum().mean(), 1),
                caught_by_storm={s: round(x.groupby("seed").caught.sum().mean(), 1) for s, x in ev.groupby("storm")},
                caught_before_notice=round(ev.groupby("seed").before_notice.sum().mean(), 1),
+               caught_before_public=round(ev.groupby("seed").before_public.sum().mean(), 1),
                median_lead_h=round(float(ev[ev.caught].groupby("event").lead_h.median().median()), 0) if ev.caught.any() else None,
                fa_median=round(float(fa.median()), 1), fa_worst=round(float(fa.max()), 1), fa_worst_grid=fa.idxmax(),
                storm_hit_alerted_pct=round(100 * val[~shed].mean()), storm_hit_n=int((~shed).sum()),

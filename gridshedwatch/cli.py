@@ -110,8 +110,11 @@ def _score_v4(a):
         print(json.dumps(dict(method=s, forecast_baseline_same_rate=f), indent=2, default=float))
         return
     print(f"\n{a.name or a.file}  ({s['seeds']} seed{'s' if s['seeds'] > 1 else ''}), protocol v4.0")
+    print(f"  primary comparison     {s['caught_before_notice']:g} caught before the operator's first notice; "
+          f"{s['storm_hit_alerted_pct']}% of storm-hit quiet grids alerted; read against the forecast baseline below")
     by = ", ".join(f"{k} {v:g}" for k, v in s["caught_by_storm"].items())
-    print(f"  load sheds caught      {s['caught']:g} of 8 ({by}); {s['caught_before_notice']:g} before the operator's first notice")
+    print(f"  load sheds caught      {s['caught']:g} of 8 ({by}); {s['caught_before_notice']:g} before the operator's first notice, "
+          f"{s['caught_before_public']:g} before its first public notice")
     print(f"  median lead            {s['median_lead_h']} h")
     print(f"  false alarms per year  median grid {s['fa_median']}, worst grid {s['fa_worst']} ({s['fa_worst_grid']})")
     print(f"  storm-hit quiet grids  {s['storm_hit_alerted_pct']}% alerted (of {s['storm_hit_n']}); grids that shed {s['shed_alerted_pct']}%")
@@ -119,7 +122,7 @@ def _score_v4(a):
     if "chance_share" in s:
         print(f"  seasonal chance        moved copies catch {s['chance_mean']} on average; share doing as well {s['chance_share']}")
     print(f"\n  forecast baseline at a similar rate ({f['fa_median']} false alarms/yr, median grid): caught {f['caught']:g} of 8, "
-          f"{f['caught_before_notice']:g} before notice, median lead {f['median_lead_h']:g} h, worst grid {f['fa_worst']}, "
+          f"{f['caught_before_notice']:g} before notice, {f.get('caught_before_public', float('nan')):g} before public notice, median lead {f['median_lead_h']:g} h, worst grid {f['fa_worst']}, "
           f"storm-hit quiet grids {f['storm_hit_alerted_pct']:g}%")
 
 
